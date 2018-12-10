@@ -24,7 +24,7 @@ public class IdProof {
 	}
 
 	public IdProof(String proofNo, String name, String fatherName, String motherName, String address, char sex,
-			boolean isForeigner, LocalDateTime createdDate, LocalDateTime updatedDate) {
+			boolean isForeigner, LocalDateTime updatedDate, LocalDateTime createdDate) {
 		super();
 		this.proofNo = proofNo;
 		this.name = name;
