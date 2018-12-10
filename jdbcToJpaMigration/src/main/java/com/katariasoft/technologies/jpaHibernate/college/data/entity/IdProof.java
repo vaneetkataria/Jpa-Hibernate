@@ -2,22 +2,34 @@ package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "id_proof_tbl")
 public class IdProof {
 
 	@Id
 	private int id;
+	@Column(length = 20, name = "proof_sequence_no", nullable = false, unique = true)
 	private String proofNo;
-	private String name;;
+	@Column(length = 64, nullable = false)
+	private String name;
+	@Column(length = 64, nullable = false)
 	private String fatherName;
+	@Column(length = 64)
 	private String motherName;
+	@Column(length = 1000, nullable = false)
 	private String address;
+	@Column(columnDefinition = "char(1)", length = 1, nullable = false)
 	private char sex;
+	@Column(nullable = false)
 	private boolean isForeigner;
+	@Column(nullable = false)
 	private LocalDateTime createdDate;
+	@Column(nullable = false)
 	private LocalDateTime updatedDate;
 
 	public IdProof() {

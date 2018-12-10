@@ -5,23 +5,36 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "instructor_tbl")
 public class Instructor {
 
 	@Id
 	private int id;
+	@Column(length = 64, nullable = false)
 	private String name;
+	@Column(length = 64, nullable = false)
 	private String fatherName;
+	@Column(length = 64)
 	private String motherName;
+	@Column(length = 1000, nullable = false)
 	private String address;
+	@Column(nullable = false, name = "monthly_salary", scale = 2, precision = 9)
 	private BigDecimal salary;
+	@Column(nullable = false)
 	private LocalDate birthDate;
+	@Column(nullable = false)
 	private LocalTime dayStartTime;
+	@Column(nullable = false)
 	private LocalTime dayOffTime;
+	@Column(nullable = false)
 	private LocalDateTime createdDate;
+	@Column(nullable = false)
 	private LocalDateTime updatedDate;
 
 	public Instructor() {

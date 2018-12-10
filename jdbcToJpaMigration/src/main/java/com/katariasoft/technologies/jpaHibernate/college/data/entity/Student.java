@@ -4,22 +4,34 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "student_tbl")
 public class Student {
 
 	@Id
 	private int id;
+	@Column(length = 64, nullable = false)
 	private String name;
+	@Column(length = 64, nullable = false)
 	private String fatherName;
+	@Column(length = 64)
 	private String motherName;
+	@Column(length = 1000, nullable = false)
 	private String address;
+	@Column(precision = 9, scale = 2, nullable = false)
 	private BigDecimal fees;
+	@Column(nullable = false)
 	private LocalTime dayStartTime;
+	@Column(nullable = false)
 	private LocalTime dayOffTime;
+	@Column(nullable = false)
 	private LocalDateTime createdDate;
+	@Column(nullable = false)
 	private LocalDateTime updatedDate;
 
 	public Student() {
