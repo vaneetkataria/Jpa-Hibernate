@@ -2,9 +2,9 @@ package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,8 +31,10 @@ public class Instructor {
 	private byte[] photo;
 	@Column(nullable = false, name = "monthly_salary", scale = 2, precision = 9)
 	private BigDecimal salary;
+	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)")
+	private Instant birthDateTime;
 	@Column(nullable = false)
-	private LocalDate birthDate;
+	private int birthDateTimeZoneOffset;
 	@Column(nullable = false)
 	private LocalTime dayStartTime;
 	@Column(nullable = false)
@@ -45,17 +47,19 @@ public class Instructor {
 	public Instructor() {
 	}
 
-	public Instructor(String name, String fatherName, String motherName, String address, byte[] photo,
-			BigDecimal salary, LocalDate birthDate, LocalTime dayStartTime, LocalTime dayOffTime, Instant createdDate,
-			Instant updatedDate) {
+	public Instructor(int version, String name, String fatherName, String motherName, String address, byte[] photo,
+			BigDecimal salary, Instant birthDateTime, int birthDateTimeZoneOffset, LocalTime dayStartTime,
+			LocalTime dayOffTime, Instant createdDate, Instant updatedDate) {
 		super();
+		this.version = version;
 		this.name = name;
 		this.fatherName = fatherName;
 		this.motherName = motherName;
 		this.address = address;
 		this.photo = photo;
 		this.salary = salary;
-		this.birthDate = birthDate;
+		this.birthDateTime = birthDateTime;
+		this.birthDateTimeZoneOffset = birthDateTimeZoneOffset;
 		this.dayStartTime = dayStartTime;
 		this.dayOffTime = dayOffTime;
 		this.createdDate = createdDate;
@@ -118,12 +122,22 @@ public class Instructor {
 		this.salary = salary;
 	}
 
-	public LocalDate getBirthDate() {
-		return birthDate;
+	public Instant getBirthDateTime() {
+		return birthDateTime;
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
+	public OffsetDateTime getZoneOffsetBirthDateTime() {
+		return birthDateTime.atOffset(ZoneOffset.ofTotalSeconds(birthDateTimeZoneOffset));
+	}
+
+	public void setBirthDateTime(Instant birthDate) {
+		this.birthDateTime = birthDate;
+		this.birthDateTimeZoneOffset = 0;
+	}
+
+	public void setBirthDateTime(OffsetDateTime birthDateTime) {
+		this.birthDateTime = birthDateTime.toInstant();
+		this.birthDateTimeZoneOffset = birthDateTime.getOffset().getTotalSeconds();
 	}
 
 	public LocalTime getDayStartTime() {
