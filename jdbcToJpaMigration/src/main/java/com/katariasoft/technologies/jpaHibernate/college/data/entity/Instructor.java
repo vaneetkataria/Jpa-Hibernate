@@ -18,7 +18,7 @@ public class Instructor {
 	private int id;
 	@Version
 	@Column(columnDefinition = "int(11) not null default 0")
-	private int version;
+	private int version = 0;
 	@Column(length = 64, nullable = false)
 	private String name;
 	@Column(length = 64, nullable = false)

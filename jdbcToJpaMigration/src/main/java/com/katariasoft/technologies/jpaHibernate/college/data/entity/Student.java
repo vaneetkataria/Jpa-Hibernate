@@ -15,7 +15,7 @@ public class Student {
 	@Id
 	private int id;
 	@Version
-	@Column(columnDefinition = "default 0")
+	@Column(columnDefinition = "int(11) not null default 0")
 	private int version;
 	@Column(length = 64, nullable = false)
 	private String name;
