@@ -8,10 +8,8 @@ import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "instructor_tbl")
 public class Instructor {
 
 	@Id
@@ -24,6 +22,8 @@ public class Instructor {
 	private String motherName;
 	@Column(length = 1000, nullable = false)
 	private String address;
+	@Column(columnDefinition = "BLOB")
+	private byte[] photo;
 	@Column(nullable = false, name = "monthly_salary", scale = 2, precision = 9)
 	private BigDecimal salary;
 	@Column(nullable = false)
@@ -40,14 +40,15 @@ public class Instructor {
 	public Instructor() {
 	}
 
-	public Instructor(String name, String fatherName, String motherName, String address, BigDecimal salary,
-			LocalDate birthDate, LocalTime dayStartTime, LocalTime dayOffTime, LocalDateTime createdDate,
-			LocalDateTime updatedDate) {
+	public Instructor(String name, String fatherName, String motherName, String address, byte[] photo,
+			BigDecimal salary, LocalDate birthDate, LocalTime dayStartTime, LocalTime dayOffTime,
+			LocalDateTime createdDate, LocalDateTime updatedDate) {
 		super();
 		this.name = name;
 		this.fatherName = fatherName;
 		this.motherName = motherName;
 		this.address = address;
+		this.photo = photo;
 		this.salary = salary;
 		this.birthDate = birthDate;
 		this.dayStartTime = dayStartTime;
@@ -94,6 +95,14 @@ public class Instructor {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 
 	public BigDecimal getSalary() {

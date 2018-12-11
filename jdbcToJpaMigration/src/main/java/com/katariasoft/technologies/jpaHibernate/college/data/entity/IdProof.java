@@ -23,7 +23,7 @@ public class IdProof {
 	private String motherName;
 	@Column(length = 1000, nullable = false)
 	private String address;
-	@Column(columnDefinition = "char(1)", length = 1, nullable = false)
+	@Column(nullable = false)
 	private char sex;
 	@Column(nullable = false)
 	private boolean isForeigner;

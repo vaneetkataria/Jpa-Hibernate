@@ -7,10 +7,8 @@ import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "student_tbl")
 public class Student {
 
 	@Id
@@ -23,6 +21,8 @@ public class Student {
 	private String motherName;
 	@Column(length = 1000, nullable = false)
 	private String address;
+	@Column(columnDefinition = "BLOB")
+	private byte[] photo;
 	@Column(precision = 9, scale = 2, nullable = false)
 	private BigDecimal fees;
 	@Column(nullable = false)
@@ -37,13 +37,14 @@ public class Student {
 	public Student() {
 	}
 
-	public Student(String name, String fatherName, String motherName, String address, BigDecimal fees,
+	public Student(String name, String fatherName, String motherName, String address, byte[] photo, BigDecimal fees,
 			LocalTime dayStartTime, LocalTime dayOffTime, LocalDateTime createdDate, LocalDateTime updatedDate) {
 		super();
 		this.name = name;
 		this.fatherName = fatherName;
 		this.motherName = motherName;
 		this.address = address;
+		this.photo = photo;
 		this.fees = fees;
 		this.dayStartTime = dayStartTime;
 		this.dayOffTime = dayOffTime;
@@ -97,6 +98,14 @@ public class Student {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 
 	public BigDecimal getFees() {
