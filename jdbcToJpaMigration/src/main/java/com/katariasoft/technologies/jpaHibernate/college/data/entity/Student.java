@@ -1,18 +1,22 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Version;
 
 @Entity
 public class Student {
 
 	@Id
 	private int id;
+	@Version
+	@Column(columnDefinition = "default 0")
+	private int version;
 	@Column(length = 64, nullable = false)
 	private String name;
 	@Column(length = 64, nullable = false)
@@ -29,16 +33,16 @@ public class Student {
 	private LocalTime dayStartTime;
 	@Column(nullable = false)
 	private LocalTime dayOffTime;
-	@Column(nullable = false)
-	private LocalDateTime createdDate;
-	@Column(nullable = false)
-	private LocalDateTime updatedDate;
+	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
+	private Instant createdDate;
+	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
+	private Instant updatedDate;
 
 	public Student() {
 	}
 
 	public Student(String name, String fatherName, String motherName, String address, byte[] photo, BigDecimal fees,
-			LocalTime dayStartTime, LocalTime dayOffTime, LocalDateTime createdDate, LocalDateTime updatedDate) {
+			LocalTime dayStartTime, LocalTime dayOffTime, Instant createdDate, Instant updatedDate) {
 		super();
 		this.name = name;
 		this.fatherName = fatherName;
@@ -132,19 +136,19 @@ public class Student {
 		this.dayOffTime = dayOffTime;
 	}
 
-	public LocalDateTime getCreatedDate() {
+	public Instant getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(LocalDateTime createdDate) {
+	public void setCreatedDate(Instant createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public LocalDateTime getUpdatedDate() {
+	public Instant getUpdatedDate() {
 		return updatedDate;
 	}
 
-	public void setUpdatedDate(LocalDateTime updatedDate) {
+	public void setUpdatedDate(Instant updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 

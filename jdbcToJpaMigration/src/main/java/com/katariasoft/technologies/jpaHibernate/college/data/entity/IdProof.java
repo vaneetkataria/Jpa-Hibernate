@@ -1,13 +1,11 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "id_proof_tbl")
@@ -15,6 +13,9 @@ public class IdProof {
 
 	@Id
 	private int id;
+	@Version
+	@Column(columnDefinition = "int(11) not null default 0")
+	private int version;
 	@Column(length = 20, name = "proof_sequence_no", nullable = false, unique = true)
 	private String proofNo;
 	@Column(length = 64, nullable = false)
@@ -29,16 +30,16 @@ public class IdProof {
 	private char sex;
 	@Column(nullable = false)
 	private boolean isForeigner;
-	@Column(nullable = false)
-	private LocalDateTime createdDate;
-	@Column(nullable = false)
-	private LocalDateTime updatedDate;
+	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
+	private Instant createdDate;
+	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
+	private Instant updatedDate;
 
 	public IdProof() {
 	}
 
 	public IdProof(String proofNo, String name, String fatherName, String motherName, String address, char sex,
-			boolean isForeigner, LocalDateTime updatedDate, LocalDateTime createdDate) {
+			boolean isForeigner, Instant updatedDate, Instant createdDate) {
 		super();
 		this.proofNo = proofNo;
 		this.name = name;
@@ -115,19 +116,19 @@ public class IdProof {
 		this.sex = sex;
 	}
 
-	public LocalDateTime getCreatedDate() {
+	public Instant getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(LocalDateTime createdDate) {
+	public void setCreatedDate(Instant createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public LocalDateTime getUpdatedDate() {
+	public Instant getUpdatedDate() {
 		return updatedDate;
 	}
 
-	public void setUpdatedDate(LocalDateTime updatedDate) {
+	public void setUpdatedDate(Instant updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 
