@@ -8,13 +8,19 @@ import java.time.ZoneOffset;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Instructor {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
 	@Version
 	@Column(columnDefinition = "int(11) not null default 0")

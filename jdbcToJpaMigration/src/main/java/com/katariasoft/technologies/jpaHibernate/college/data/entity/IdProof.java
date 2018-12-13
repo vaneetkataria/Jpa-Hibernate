@@ -3,15 +3,22 @@ package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "id_proof_tbl")
 public class IdProof {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name = "native", strategy = "native")
+	@Column(updatable = false)
 	private int id;
 	@Version
 	@Column(columnDefinition = "int(11) not null default 0")
