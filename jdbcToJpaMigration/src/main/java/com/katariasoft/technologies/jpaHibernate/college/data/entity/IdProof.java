@@ -9,7 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "id_proof_tbl")
@@ -37,8 +39,10 @@ public class IdProof {
 	private char sex;
 	@Column(nullable = false)
 	private boolean isForeigner;
+	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
 	private Instant createdDate;
+	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
 	private Instant updatedDate;
 

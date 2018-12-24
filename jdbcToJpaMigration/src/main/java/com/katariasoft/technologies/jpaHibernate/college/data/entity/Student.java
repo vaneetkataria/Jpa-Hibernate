@@ -11,7 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 public class Student {
@@ -39,8 +41,10 @@ public class Student {
 	private LocalTime dayStartTime;
 	@Column(nullable = false)
 	private LocalTime dayOffTime;
+	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
 	private Instant createdDate;
+	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
 	private Instant updatedDate;
 
