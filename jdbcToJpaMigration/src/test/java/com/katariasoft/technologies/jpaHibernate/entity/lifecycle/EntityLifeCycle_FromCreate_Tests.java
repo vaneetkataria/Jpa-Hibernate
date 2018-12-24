@@ -252,6 +252,60 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	@Transactional
+	public void detachingRemovedAndFlushedEntityTest() {
+		try {
+			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
+			// create
+			em.persist(instructor);
+			// read
+			Instructor instructorFromDb = em.find(Instructor.class, 1);
+			// update
+			instructor.setAddress("Pankhon wali Gali update 2.");
+			em.flush();
+			instructor.setAddress("Pankhon wali Gali update 3.");
+			em.flush();
+			em.remove(instructor);
+			instructor.setMotherName("Neelam Kataria.");
+			instructor.setFatherName("Naresh Kataria.");
+			// remove any as both are same objects fetched from P.C.
+			em.flush();
+			em.detach(instructor);
+
+		} catch (RuntimeException e) {
+			throw e;
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional
+	public void persistingRemovedAndFlushedEntityTest() {
+		try {
+			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
+			// create
+			em.persist(instructor);
+			// read
+			Instructor instructorFromDb = em.find(Instructor.class, 1);
+			// update
+			instructor.setAddress("Pankhon wali Gali update 2.");
+			em.flush();
+			instructor.setAddress("Pankhon wali Gali update 3.");
+			em.flush();
+			em.remove(instructor);
+			instructor.setMotherName("Neelam Kataria.");
+			instructor.setFatherName("Naresh Kataria.");
+			em.flush();
+			// remove any as both are same objects fetched from P.C.
+
+			em.persist(instructor);
+		} catch (RuntimeException e) {
+			throw e;
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional
 	public void mergingRemovedEntityTest() {
 		try {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
@@ -268,7 +322,6 @@ public class EntityLifeCycle_FromCreate_Tests {
 			instructor.setMotherName("Neelam Kataria updated 2.");
 			instructor.setFatherName("Naresh Kataria updated 2.");
 			// remove any as both are same objects fetched from P.C.
-
 			em.merge(instructor);
 		} catch (RuntimeException e) {
 			throw e;
