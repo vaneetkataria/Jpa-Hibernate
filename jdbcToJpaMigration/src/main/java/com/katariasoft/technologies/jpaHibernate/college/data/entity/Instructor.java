@@ -5,12 +5,15 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
@@ -27,7 +30,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @DynamicUpdate
 @DynamicInsert
+@NamedQueries({ @NamedQuery(name = "fetchAllInstructors", query = "select i from Instructor i") })
+
 public class Instructor implements Cloneable {
+
+	public static final String DELETE_INSTRICTORS_HAVING_IDS = "delete from Instructor i where i.id IN (:ids) ";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -194,6 +201,19 @@ public class Instructor implements Cloneable {
 
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Instructor [id=").append(id).append(", version=").append(version).append(", name=").append(name)
+				.append(", fatherName=").append(fatherName).append(", motherName=").append(motherName)
+				.append(", address=").append(address).append(", photo=").append(Arrays.toString(photo))
+				.append(", salary=").append(salary).append(", birthDateTime=").append(birthDateTime)
+				.append(", birthDateTimeZoneOffset=").append(birthDateTimeZoneOffset).append(", dayStartTime=")
+				.append(dayStartTime).append(", dayOffTime=").append(dayOffTime).append(", createdDate=")
+				.append(createdDate).append(", updatedDate=").append(updatedDate).append("]");
+		return builder.toString();
 	}
 
 }
