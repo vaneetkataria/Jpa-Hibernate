@@ -1,12 +1,10 @@
 package com.katariasoft.technologies.jpaHibernate.entity.lifecycle;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,9 +18,7 @@ import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.Entit
 public class EntityLifeCycle_FromCreate_Tests {
 
 	@PersistenceContext
-	EntityManager em;
-	@Autowired
-	EntityManagerFactory emf;
+	private EntityManager em;
 
 	@Test
 	@Rollback(false)
