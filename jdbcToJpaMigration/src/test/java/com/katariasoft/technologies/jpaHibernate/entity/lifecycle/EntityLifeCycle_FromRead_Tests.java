@@ -333,6 +333,90 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
+	// 1. Merge method looks up to database if entity with same id and version is
+	// found then a new object is created for that in PC and input entity state is
+	// merged into it .
+	// 2. New entity becomes persistent and input entity continue remain unmanaged
+	// by
+	// PC
+	// 3.If record is not present in db even then a new object is created and input
+	// entity state is
+	// merged into it .
+	// 4. Merging input entity never becomes persistent .
+	// 5. If an entity already present in PC then no db lookup will happen and
+	// input entity will be merge into that . Input entity continue remaining
+	// unmanaged .
+	@Test
+	@Rollback(false)
+	@Transactional
+	public void mergedEntityTest() {
+		try {
+			// read
+			Instructor instructor = getInstructorForTest();
+			// update
+			instructor.setAddress("mergingRemovedEntityTest");
+			em.flush();
+			instructor.setAddress("mergingRemovedEntityTest");
+			em.flush();
+			instructor.setMotherName("mergingRemovedEntityTest");
+			instructor.setFatherName("mergingRemovedEntityTest");
+			// remove any as both are same objects fetched from P.C.
+			Instructor mergedInstance = em.merge(instructor);
+			instructor.setAddress("Address set in input entity merged");
+			instructor.setFatherName("Father name set in input entity merged");
+			instructor.setMotherName("Mother name set in input entity merged");
+			// set in merged returned instance .
+			mergedInstance.setAddress("Address set in merged and managed entity");
+			mergedInstance.setFatherName("Father name set in merged and managed entity");
+			mergedInstance.setMotherName("Mother name set in merged and managed entity");
+		} catch (RuntimeException e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+	}
+
+	// 1. Merge method looks up to database if entity with same id and version is
+	// found then a new object is created for that in PC and input entity state is
+	// merged into it .
+	// 2. New entity becomes persistent and input entity continue remain unmanaged
+	// by
+	// PC
+	// 3.If record is not present in db even then a new object is created and input
+	// entity state is
+	// merged into it .
+	// 4. Merging input entity never becomes persistent .
+	// 5. If an entity already present in PC then no db lookup will happen and
+	// input entity will be merge into that . Input entity continue remaining
+	// unmanaged .
+	@Test
+	@Rollback(false)
+	@Transactional
+	public void mergedEntityTest_AlreadyPresentInPC() {
+		try {
+			Instructor fromDb = em.find(Instructor.class, 1);
+			System.out.println(fromDb);
+			// read
+			Instructor instructor = getInstructorForTest();
+			// update
+			instructor.setAddress("mergingRemovedEntityTest");
+			em.flush();
+			instructor.setAddress("mergingRemovedEntityTest");
+			em.flush();
+			instructor.setMotherName("mergingRemovedEntityTest");
+			instructor.setFatherName("mergingRemovedEntityTest");
+			// remove any as both are same objects fetched from P.C.
+			Instructor mergedInstance = em.merge(instructor);
+			instructor.setAddress("Address set in input entity merged");
+			instructor.setFatherName("Father name set in input entity merged");
+			instructor.setMotherName("Mother name set in input entity merged");
+			// set in merged returned instance .
+			mergedInstance.setAddress("Address set in merged and managed entity");
+			mergedInstance.setFatherName("Father name set in merged and managed entity");
+			mergedInstance.setMotherName("Mother name set in merged and managed entity");
+		} catch (RuntimeException e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+	}
+
 	private Instructor getInstructorForTest() {
 		switch (executionCase) {
 		case TRANSIENT:

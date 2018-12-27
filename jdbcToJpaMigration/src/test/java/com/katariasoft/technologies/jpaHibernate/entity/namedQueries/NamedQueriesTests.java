@@ -2,7 +2,6 @@ package com.katariasoft.technologies.jpaHibernate.entity.namedQueries;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -49,8 +48,14 @@ public class NamedQueriesTests {
 	public void fetchAndDeleteAllInstructorsOneByOne() {
 		try {
 			Optional<List<Instructor>> instructors = instructorDao.fetchAllInstructors();
-			if (instructors.isPresent())
-				instructors.get().stream().forEach(e -> em.remove(e));
+			if (instructors.isPresent()) {
+				instructors.get().stream().forEach(e -> {
+					em.remove(e);
+					em.flush();
+				});
+				instructors.get().stream().forEach(e -> em.detach(e));
+			}
+
 		} catch (RuntimeException e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 
@@ -68,6 +73,7 @@ public class NamedQueriesTests {
 				instructorsToDelete = instructors.get().stream().limit(4).skip(2).map(Instructor::getId)
 						.collect(Collectors.toList());
 			instructorDao.deleteAllInstructors(instructorsToDelete);
+			instructors.get().stream().forEach(i -> em.detach(i));
 		} catch (RuntimeException e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 
