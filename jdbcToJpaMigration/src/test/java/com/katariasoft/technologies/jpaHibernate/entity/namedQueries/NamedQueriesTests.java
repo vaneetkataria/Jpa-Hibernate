@@ -1,7 +1,9 @@
 package com.katariasoft.technologies.jpaHibernate.entity.namedQueries;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -16,8 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import com.katariasoft.technologies.jpaHibernate.college.data.dao.InstructorDao;
+import com.katariasoft.technologies.jpaHibernate.college.data.dao.InstructorRepository;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.utils.DataPrinters;
+
+import static com.katariasoft.technologies.jpaHibernate.college.data.utils.DataPrinters.listDataPrinter;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,37 +31,16 @@ public class NamedQueriesTests {
 	@PersistenceContext
 	private EntityManager em;
 	@Autowired
-	private InstructorDao instructorDao;
+	private InstructorRepository instructorDao;
 
-	// @Test
+	@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndPrintAllInstructors() {
 		try {
-			Optional<List<Instructor>> instructors = instructorDao.fetchAllInstructors();
-			if (instructors.isPresent())
-				instructors.get().stream().forEach(System.out::println);
-		} catch (RuntimeException e) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-
-		}
-	}
-
-	// @Test
-	@Rollback(false)
-	@Transactional(rollbackFor = Exception.class)
-	public void fetchAndDeleteAllInstructorsOneByOne() {
-		try {
-			Optional<List<Instructor>> instructors = instructorDao.fetchAllInstructors();
-			if (instructors.isPresent()) {
-				instructors.get().stream().forEach(e -> {
-					em.remove(e);
-					em.flush();
-				});
-				instructors.get().stream().forEach(e -> em.detach(e));
-			}
-
-		} catch (RuntimeException e) {
+			List<Instructor> instructors = instructorDao.fetchAllInstructors();
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 
 		}
@@ -65,16 +49,192 @@ public class NamedQueriesTests {
 	@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
+	public void findAllHavingAddressLike() {
+		try {
+			List<Instructor> instructors = instructorDao.findAllHavingAddressLike("Block");
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void findAllHavingFatherNameLike() {
+		try {
+			List<Instructor> instructors = instructorDao.findAllHavingFatherNameLike("giri");
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void findAllOrderByBirthDateTimeDesc() {
+		try {
+			List<Instructor> instructors = instructorDao.findAllOrderByBirthDateTimeDesc();
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void findAllHavingSalaryGreaterThan() {
+		try {
+			List<Instructor> instructors = instructorDao.findAllHavingSalaryGreaterThan(BigDecimal.valueOf(10000));
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void findAllHavingSalaryGreaterThanBigQuery() {
+		try {
+			List<Instructor> instructors = instructorDao
+					.findAllHavingSalaryGreaterThanBigQuery(BigDecimal.valueOf(10000));
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void findDistinctFatherName() {
+		try {
+			List<String> instructors = instructorDao.findDistinctFatherName();
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void countHavingSalaryBetween() {
+		try {
+			BigDecimal salaryMin = BigDecimal.valueOf(10000);
+			BigDecimal salaryMax = BigDecimal.valueOf(120000);
+			long count = instructorDao.countHavingSalaryBetween(salaryMin, salaryMax);
+			System.out.println("Number of Instructors having salary between " + salaryMin + " and salary max "
+					+ salaryMax + " are " + count);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void calculateAverageSalary() {
+		try {
+			System.out.println("Average salary is : " + instructorDao.calculateAverageSalary());
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void minSalary() {
+		try {
+			System.out.println("Min salary is : " + instructorDao.findMinSalary());
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void maxSalary() {
+		try {
+			System.out.println("Max salary is : " + instructorDao.findMaxSalary());
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void findAllBornBetweenBirthDateTimesOrderByBirthDateTimeDesc() {
+		try {
+			Instant birthDateTimeStart = Instant.parse("1970-08-15T16:30:30.000001Z");
+			Instant birthDateTimeEnd = Instant.parse("1993-09-19T14:27:29.999999Z");
+			List<Instructor> instructors = instructorDao
+					.findAllBornBetweenBirthDateTimesOrderByBirthDateTimeDesc(birthDateTimeStart, birthDateTimeEnd);
+			DataPrinters.print(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void findAllNotBornBetweenBirthDateTimesOrderByBirthDateTimeDesc() {
+		try {
+			Instant birthDateTimeStart = Instant.parse("1970-08-15T16:30:30.000001Z");
+			Instant birthDateTimeEnd = Instant.parse("1993-09-19T14:27:29.999999Z");
+			List<Instructor> instructors = instructorDao
+					.findAllNotBornBetweenBirthDateTimesOrderByBirthDateTimeDesc(birthDateTimeStart, birthDateTimeEnd);
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	// //@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void fetchAndDeleteAllInstructorsOneByOne() {
+		try {
+			List<Instructor> instructors = instructorDao.fetchAllInstructors();
+			if (Objects.nonNull(instructors) && !instructors.isEmpty())
+				instructors.stream().forEach(e -> {
+					em.remove(e);
+					em.flush();
+				});
+			instructors.stream().forEach(e -> em.detach(e));
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	// //@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndChnageAllInstructorsBatch() {
 		try {
-			Optional<List<Instructor>> instructors = instructorDao.fetchAllInstructors();
+			List<Instructor> instructors = instructorDao.fetchAllInstructors();
 			List<Integer> instructorsToDelete = null;
-			if (instructors.isPresent())
-				instructorsToDelete = instructors.get().stream().limit(4).skip(2).map(Instructor::getId)
+			if (Objects.nonNull(instructors) && !instructors.isEmpty())
+				instructorsToDelete = instructors.stream().limit(4).skip(2).map(Instructor::getId)
 						.collect(Collectors.toList());
 			instructorDao.deleteAllInstructors(instructorsToDelete);
-			instructors.get().stream().forEach(i -> em.detach(i));
-		} catch (RuntimeException e) {
+			instructors.stream().forEach(i -> em.detach(i));
+		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 
 		}

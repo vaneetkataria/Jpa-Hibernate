@@ -1,0 +1,16 @@
+select * from instructor;
+select * from instructor order by birth_date_time desc;
+select * from instructor where address like '%#1074%';
+select * from instructor where father_name like '%Naresh%';
+select * from instructor where birth_date_time between '1980-01-01 00:00:00.000000' and '1995-01-01 23:59:59.999999' order by birth_date_time desc; 
+select * from instructor where birth_date_time not between '1980-01-01 00:00:00.000000' and '1995-01-01 23:59:59.999999' order by birth_date_time ; 
+select * from instructor where day_start_time > '10:00:00' and  day_off_time < '19:01:00';
+select count(*) from instructor where monthly_salary between 10000 and 100000;
+select distinct father_name from instructor ;
+select sum(monthly_salary) from instructor;
+select avg(monthly_salary) from instructor;
+select min(monthly_salary) from instructor;
+select max(monthly_salary) from instructor;
+select * from instructor where id in (select id from instructor where monthly_salary >= 10000);
+select * from instructor where id in (select id from instructor where name in (select name from instructor where monthly_salary >= 10000 ));
+select father_name , count(*) from instructor where father_name like '%Naresh%' group by father_name having count(*) > 0;

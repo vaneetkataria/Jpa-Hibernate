@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import com.katariasoft.technologies.jpaHibernate.college.data.dao.InstructorDao;
+import com.katariasoft.technologies.jpaHibernate.college.data.dao.InstructorRepository;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils;
 
@@ -31,7 +31,7 @@ public class EntityLifeCycle_FromRead_Tests {
 	@PersistenceContext
 	private EntityManager em;
 	@Autowired
-	private InstructorDao instructorDao;
+	private InstructorRepository instructorDao;
 
 	// @Before
 	public void createAnInstructor() {

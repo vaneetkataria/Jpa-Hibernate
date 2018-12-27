@@ -1,6 +1,7 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 
 import java.math.BigDecimal;
+
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
@@ -15,23 +16,48 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Synchronize;
 import org.hibernate.annotations.UpdateTimestamp;
+
+/*
+select * from instructor;
+select * from instructor order by birth_date_time desc;
+select * from instructor where address like '%#1074%';
+select * from instructor where father_name like '%Naresh%';
+select * from instructor where birth_date_time between '1980-01-01 00:00:00.000000' and '1995-01-01 23:59:59.999999' order by birth_date_time desc; 
+select * from instructor where birth_date_time not between '1980-01-01 00:00:00.000000' and '1995-01-01 23:59:59.999999' order by birth_date_time ; 
+select * from instructor where day_start_time > '10:00:00' and  day_off_time < '19:01:00';
+select count(*) from instructor where monthly_salary between 10000 and 100000;
+select distinct father_name from instructor ;
+select sum(monthly_salary) from instructor;
+select avg(monthly_salary) from instructor;
+select min(monthly_salary) from instructor;
+select max(monthly_salary) from instructor;
+select * from instructor where id in (select id from instructor where monthly_salary >= 10000);
+select * from instructor where id in (select id from instructor where name in (select name from instructor where monthly_salary >= 10000 ));
+select father_name , count(*) from instructor where father_name like '%Naresh%' group by father_name having count(*) > 0
+*/
 
 @Entity
 @DynamicUpdate
 @DynamicInsert
-@NamedQueries({ @NamedQuery(name = "fetchAllInstructors", query = "select i from Instructor i") })
-
+@NamedQueries({ @NamedQuery(name = "findAll", query = "select i from Instructor i"),
+		@NamedQuery(name = "findAllOrderByBirthDateTimeDesc", query = "select i from Instructor i order by i.birthDateTime desc"),
+		@NamedQuery(name = "findAllHavingAddressLike", query = "select i from Instructor i where i.address LIKE CONCAT('%',:address ,'%')"),
+		@NamedQuery(name = "findAllHavingFatherNameLike", query = "select i from Instructor i where i.fatherName like CONCAT('%',:fatherName ,'%')"),
+		@NamedQuery(name = "findAllBornBetweenBirthDateTimesOrderByBirthDateTimeDesc", query = "select i from Instructor i where i.birthDateTime between :birthDateTimeStart and :birthDateTimeEnd order by i.birthDateTime desc"),
+		@NamedQuery(name = "findAllNotBornBetweenBirthDateTimesOrderByBirthDateTimeDesc", query = "select i from Instructor i where i.birthDateTime not between :birthDateTimeStart and :birthDateTimeEnd order by i.birthDateTime desc"),
+		@NamedQuery(name = "findAllHavingWorkingTimeBetween", query = "select i from Instructor i where i.dayStartTime > :dayStartTime and i.dayOffTime < :dayOffTime "),
+		@NamedQuery(name = "countHavingSalaryBetween", query = "select count(*) from Instructor i  where i.salary between :monthlySalaryMin and :monthlySalaryMax"),
+		@NamedQuery(name = "findDistinctFatherName", query = "select distinct(i.fatherName) from Instructor i"),
+		@NamedQuery(name = "calculateAverageSalary", query = "select avg(i.salary) from Instructor i"),
+		@NamedQuery(name = "findMinSalary", query = "select min(i.salary) from Instructor i"),
+		@NamedQuery(name = "findMaxSalary", query = "select max(i.salary) from Instructor i"),
+		@NamedQuery(name = "findAllHavingSalaryGreaterThan", query = "select i from Instructor i where i.id in (select j.id from Instructor j where j.salary >= :salary)"),
+		@NamedQuery(name = "findAllHavingSalaryGreaterThanBigQuery", query = "select i from Instructor i where i.id in (select j.id from Instructor j where j.name in (select k.name from Instructor k where k.salary >= :salary))") })
 public class Instructor implements Cloneable {
 
 	public static final String DELETE_INSTRICTORS_HAVING_IDS = "delete from Instructor i where i.id IN (:ids) ";
