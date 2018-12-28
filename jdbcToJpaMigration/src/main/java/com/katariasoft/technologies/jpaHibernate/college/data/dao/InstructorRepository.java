@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
@@ -29,6 +30,14 @@ import com.katariasoft.technologies.jpaHibernate.college.data.utils.QueryExecuto
 /*
 	
 	@NamedQuery(name = "findAllHavingWorkingTimeBetween", query = "select i from Instructor i where i.dayStartTime > :dayStartTime and i.dayOffTime < :dayOffTime "),
+	@NamedQuery(name = "updateInstructorSalaryHavingId", query = "update Instructor i set i.salary = :salary where i.id = :id"),
+		@NamedQuery(name = "updateInstructorSalaryHavingIdsIn", query = "update Instructor i set i.salary = :salary where i.id in (:ids)"),
+		@NamedQuery(name = "updateInstructorSalaryHavingFatherNameLike", query = "update Instructor i set i.salary = :salary where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
+		@NamedQuery(name = "updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "update Instructor i set i.salary = :salary where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)"),
+		@NamedQuery(name = "deleteInstructorSalaryHavingId", query = "delete from Instructor i where i.id = :id"),
+		@NamedQuery(name = "deleteInstructorSalaryHavingIdsIn", query = "delete from Instructor i where i.id in (:ids)"),
+		@NamedQuery(name = "deleteInstructorSalaryHavingFatherNameLike", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
+		@NamedQuery(name = "deleteInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)") })
 */
 
 @Repository
@@ -101,6 +110,44 @@ public class InstructorRepository {
 		return queryExecutor.fetchList("findAllNotBornBetweenBirthDateTimesOrderByBirthDateTimeDesc",
 				CollectionUtils.mapOf("birthDateTimeStart", birthDateTimeStart, "birthDateTimeEnd", birthDateTimeEnd),
 				Instructor.class);
+	}
+
+	public void updateInstructorSalaryHavingId(int id) {
+		queryExecutor.executeQuery("updateInstructorSalaryHavingId", Collections.singletonMap("id", id));
+	}
+
+	public void updateInstructorSalaryHavingIdsIn(List<Integer> ids) {
+		queryExecutor.executeQuery("updateInstructorSalaryHavingIdsIn", Collections.singletonMap("ids", ids));
+	}
+
+	public void updateInstructorSalaryHavingFatherNameLike(String fatherName, BigDecimal salary) {
+		queryExecutor.executeQuery("updateInstructorSalaryHavingFatherNameLike",
+				CollectionUtils.mapOf("fatherName", fatherName, "salary", salary));
+	}
+
+	public void updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
+			BigDecimal salaryToUpdate, BigDecimal salaryGreaterThan) {
+		queryExecutor.executeQuery("updateInstructorSalaryHavingFatherNameLike", CollectionUtils.mapOf("fatherName",
+				fatherName, "salary", salaryToUpdate, "selectSalary", salaryGreaterThan));
+	}
+
+	public void deleteInstructorSalaryHavingId(int id) {
+		queryExecutor.executeQuery("deleteInstructorSalaryHavingId", Collections.singletonMap("id", id));
+	}
+
+	public void deleteInstructorSalaryHavingIdsIn(List<Integer> ids) {
+		queryExecutor.executeQuery("deleteInstructorSalaryHavingIdsIn", Collections.singletonMap("ids", ids));
+	}
+
+	public void deleteInstructorSalaryHavingFatherNameLike(String fatherName) {
+		queryExecutor.executeQuery("updateInstructorSalaryHavingFatherNameLike",
+				CollectionUtils.mapOf("fatherName", fatherName));
+	}
+
+	public void deleteInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
+			BigDecimal salaryGreaterThan) {
+		queryExecutor.executeQuery("updateInstructorSalaryHavingFatherNameLike",
+				CollectionUtils.mapOf("fatherName", fatherName, "selectSalary", salaryGreaterThan));
 	}
 
 	public boolean deleteAllInstructors(List<Integer> ids) {
