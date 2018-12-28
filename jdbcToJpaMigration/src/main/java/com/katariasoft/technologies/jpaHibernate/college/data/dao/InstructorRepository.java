@@ -105,41 +105,39 @@ public class InstructorRepository {
 	}
 
 	public void updateInstructorSalaryHavingId(int id, BigDecimal salary) {
-		queryExecutor.executeQuery("updateInstructorSalaryHavingId", CollectionUtils.mapOf("id", id, "salary", salary));
+		queryExecutor.execute("updateInstructorSalaryHavingId", CollectionUtils.mapOf("id", id, "salary", salary));
 	}
 
 	public void updateInstructorSalaryHavingIdsIn(List<Integer> ids, BigDecimal salary) {
-		queryExecutor.executeQuery("updateInstructorSalaryHavingIdsIn",
-				CollectionUtils.mapOf("ids", ids, "salary", salary));
+		queryExecutor.execute("updateInstructorSalaryHavingIdsIn", CollectionUtils.mapOf("ids", ids, "salary", salary));
 	}
 
 	public void updateInstructorSalaryHavingFatherNameLike(String fatherName, BigDecimal salary) {
-		queryExecutor.executeQuery("updateInstructorSalaryHavingFatherNameLike",
+		queryExecutor.execute("updateInstructorSalaryHavingFatherNameLike",
 				CollectionUtils.mapOf("fatherName", fatherName, "salary", salary));
 	}
 
 	public void updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
 			BigDecimal salaryToUpdate, BigDecimal salaryGreaterThan) {
-		queryExecutor.executeQuery("updateInstructorSalaryHavingFatherNameLike", CollectionUtils.mapOf("fatherName",
-				fatherName, "salary", salaryToUpdate, "selectSalary", salaryGreaterThan));
+		queryExecutor.execute("updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", CollectionUtils
+				.mapOf("fatherName", fatherName, "salary", salaryToUpdate, "selectSalary", salaryGreaterThan));
 	}
 
 	public void deleteInstructorHavingId(int id) {
-		queryExecutor.executeQuery("deleteInstructorHavingId", Collections.singletonMap("id", id));
+		queryExecutor.execute("deleteInstructorHavingId", Collections.singletonMap("id", id));
 	}
 
 	public void deleteInstructorHavingIdsIn(List<Integer> ids) {
-		queryExecutor.executeQuery("deleteInstructorHavingIdsIn", Collections.singletonMap("ids", ids));
+		queryExecutor.execute("deleteInstructorHavingIdsIn", Collections.singletonMap("ids", ids));
 	}
 
 	public void deleteInstructorHavingFatherNameLike(String fatherName) {
-		queryExecutor.executeQuery("deleteInstructorHavingFatherNameLike",
-				CollectionUtils.mapOf("fatherName", fatherName));
+		queryExecutor.execute("deleteInstructorHavingFatherNameLike", CollectionUtils.mapOf("fatherName", fatherName));
 	}
 
 	public void deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
 			BigDecimal salaryGreaterThan) {
-		queryExecutor.executeQuery("deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan",
+		queryExecutor.execute("deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan",
 				CollectionUtils.mapOf("fatherName", fatherName, "selectSalary", salaryGreaterThan));
 	}
 

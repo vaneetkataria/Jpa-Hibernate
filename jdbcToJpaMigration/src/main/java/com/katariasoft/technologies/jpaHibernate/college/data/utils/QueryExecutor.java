@@ -37,7 +37,7 @@ public class QueryExecutor {
 		}
 	}
 
-	public void executeQuery(String queryName, Map<String, Object> queryParams) {
+	public void execute(String queryName, Map<String, Object> queryParams) {
 		try {
 			Query query = em.createNamedQuery(queryName);
 			applyParameters(query, queryParams);
