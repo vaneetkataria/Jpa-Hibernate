@@ -81,10 +81,10 @@ delete from instructor where id in (select id from (select id from instructor wh
 		@NamedQuery(name = "updateInstructorSalaryHavingIdsIn", query = "update Instructor i set i.salary = :salary where i.id in (:ids)"),
 		@NamedQuery(name = "updateInstructorSalaryHavingFatherNameLike", query = "update Instructor i set i.salary = :salary where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
 		@NamedQuery(name = "updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "update Instructor i set i.salary = :salary where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)"),
-		@NamedQuery(name = "deleteInstructorSalaryHavingId", query = "delete from Instructor i where i.id = :id"),
-		@NamedQuery(name = "deleteInstructorSalaryHavingIdsIn", query = "delete from Instructor i where i.id in (:ids)"),
-		@NamedQuery(name = "deleteInstructorSalaryHavingFatherNameLike", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
-		@NamedQuery(name = "deleteInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)") })
+		@NamedQuery(name = "deleteInstructorHavingId", query = "delete from Instructor i where i.id = :id"),
+		@NamedQuery(name = "deleteInstructorHavingIdsIn", query = "delete from Instructor i where i.id in (:ids)"),
+		@NamedQuery(name = "deleteInstructorHavingFatherNameLike", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
+		@NamedQuery(name = "deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)") })
 public class Instructor implements Cloneable {
 
 	public static final String DELETE_INSTRICTORS_HAVING_IDS = "delete from Instructor i where i.id IN (:ids) ";

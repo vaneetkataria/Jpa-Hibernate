@@ -47,7 +47,7 @@ public class QueryExecutor {
 		}
 	}
 
-	private void applyParameters(Query query, Map<String, Object> queryParams) {
+	public static void applyParameters(Query query, Map<String, Object> queryParams) {
 		if (Objects.nonNull(queryParams))
 			queryParams.forEach((key, value) -> query.setParameter(key, value));
 	}

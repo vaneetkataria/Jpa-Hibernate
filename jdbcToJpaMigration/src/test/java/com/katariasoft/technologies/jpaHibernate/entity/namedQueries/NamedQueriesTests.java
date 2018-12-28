@@ -2,6 +2,7 @@ package com.katariasoft.technologies.jpaHibernate.entity.namedQueries;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -204,7 +205,66 @@ public class NamedQueriesTests {
 		}
 	}
 
-	// //@Test
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void updateInstructorSalaryHavingId() {
+		instructorDao.updateInstructorSalaryHavingId(1, BigDecimal.valueOf(2500000));
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void updateInstructorSalaryHavingIdsIn() {
+		instructorDao.updateInstructorSalaryHavingIdsIn(Arrays.asList(1, 2, 3), BigDecimal.valueOf(2500000));
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void updateInstructorSalaryHavingFatherNameLike() {
+		instructorDao.updateInstructorSalaryHavingFatherNameLike("Naresh", BigDecimal.valueOf(2500000));
+
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan() {
+		instructorDao.updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan("Nare",
+				BigDecimal.valueOf(250001), BigDecimal.valueOf(100));
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteInstructorHavingId() {
+		instructorDao.deleteInstructorHavingId(1);
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteInstructorHavingIdsIn() {
+		instructorDao.deleteInstructorHavingIdsIn(Arrays.asList(1, 2, 3));
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteInstructorHavingFatherNameLike() {
+		instructorDao.deleteInstructorHavingFatherNameLike("Nare");
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
+			BigDecimal salaryGreaterThan) {
+		instructorDao.deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan("Gir", BigDecimal.valueOf(100));
+	}
+
+	@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndDeleteAllInstructorsOneByOne() {
@@ -222,7 +282,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	// //@Test
+	@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndChnageAllInstructorsBatch() {
