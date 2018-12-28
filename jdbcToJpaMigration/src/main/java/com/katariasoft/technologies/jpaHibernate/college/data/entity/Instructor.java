@@ -38,7 +38,26 @@ select min(monthly_salary) from instructor;
 select max(monthly_salary) from instructor;
 select * from instructor where id in (select id from instructor where monthly_salary >= 10000);
 select * from instructor where id in (select id from instructor where name in (select name from instructor where monthly_salary >= 10000 ));
-select father_name , count(*) from instructor where father_name like '%Naresh%' group by father_name having count(*) > 0
+select father_name , count(*) from instructor where father_name like '%Naresh%' group by father_name having count(*) > 0;
+*/
+//updates
+/*
+update instructor set monthly_salary = 130000 where id = 1; 
+update instructor set monthly_salary = 150000 where id in (1 , 2); 
+update instructor set monthly_salary = 170000 where id in 
+(select id from  (select * from instructor i where i.father_name like '%Naresh%')
+as j);
+update instructor set monthly_salary = 200000 where id in (
+select id from (select id from instructor where father_name like '%Naresh%' and monthly_salary > 50000) as j);
+*/
+//deletes
+/*
+delete from instructor where id = 5;
+delete from instructor where id in (3 , 4);
+delete from instructor where id in (
+select id from  
+(select id from instructor where father_name like '%Naresh%') as j);
+delete from instructor where id in (select id from (select id from instructor where father_name like '%Naresh%' and monthly_salary > 20000)as j);
 */
 
 @Entity
@@ -57,7 +76,15 @@ select father_name , count(*) from instructor where father_name like '%Naresh%' 
 		@NamedQuery(name = "findMinSalary", query = "select min(i.salary) from Instructor i"),
 		@NamedQuery(name = "findMaxSalary", query = "select max(i.salary) from Instructor i"),
 		@NamedQuery(name = "findAllHavingSalaryGreaterThan", query = "select i from Instructor i where i.id in (select j.id from Instructor j where j.salary >= :salary)"),
-		@NamedQuery(name = "findAllHavingSalaryGreaterThanBigQuery", query = "select i from Instructor i where i.id in (select j.id from Instructor j where j.name in (select k.name from Instructor k where k.salary >= :salary))") })
+		@NamedQuery(name = "findAllHavingSalaryGreaterThanBigQuery", query = "select i from Instructor i where i.id in (select j.id from Instructor j where j.name in (select k.name from Instructor k where k.salary >= :salary))"),
+		@NamedQuery(name = "updateInstructorSalaryHavingId", query = "update Instructor i set i.salary = :salary where i.id = :id"),
+		@NamedQuery(name = "updateInstructorSalaryHavingIdsIn", query = "update Instructor i set i.salary = :salary where i.id in (:ids)"),
+		@NamedQuery(name = "updateInstructorSalaryHavingFatherNameLike", query = "update Instructor i set i.salary = :salary where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
+		@NamedQuery(name = "updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "update Instructor i set i.salary = :salary where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)"),
+		@NamedQuery(name = "deleteInstructorSalaryHavingId", query = "delete from Instructor i where i.id = :id"),
+		@NamedQuery(name = "deleteInstructorSalaryHavingIdsIn", query = "delete from Instructor i where i.id in (:ids)"),
+		@NamedQuery(name = "deleteInstructorSalaryHavingFatherNameLike", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
+		@NamedQuery(name = "deleteInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)") })
 public class Instructor implements Cloneable {
 
 	public static final String DELETE_INSTRICTORS_HAVING_IDS = "delete from Instructor i where i.id IN (:ids) ";

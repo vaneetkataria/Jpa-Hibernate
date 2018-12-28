@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.utils.CollectionUtils;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.QueryExecutor;
 
 /*
@@ -71,11 +72,9 @@ public class InstructorRepository {
 	}
 
 	public long countHavingSalaryBetween(BigDecimal monthlySalaryMin, BigDecimal monthlySalaryMax) {
-		Map<String, Object> salryMap = Stream
-				.of(new SimpleEntry<String, BigDecimal>("monthlySalaryMin", monthlySalaryMin),
-						new SimpleEntry<String, BigDecimal>("monthlySalaryMax", monthlySalaryMax))
-				.collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue));
-		return queryExecutor.fetchValue("countHavingSalaryBetween", salryMap, Long.class);
+		return queryExecutor.fetchValue("countHavingSalaryBetween",
+				CollectionUtils.mapOf("monthlySalaryMin", monthlySalaryMax, "monthlySalaryMax", monthlySalaryMax),
+				Long.class);
 	}
 
 	public BigDecimal findMinSalary() {
@@ -93,18 +92,14 @@ public class InstructorRepository {
 	public List<Instructor> findAllBornBetweenBirthDateTimesOrderByBirthDateTimeDesc(Instant birthDateTimeStart,
 			Instant birthDateTimeEnd) {
 		return queryExecutor.fetchList("findAllBornBetweenBirthDateTimesOrderByBirthDateTimeDesc",
-				Stream.of(new SimpleEntry<String, Instant>("birthDateTimeStart", birthDateTimeStart),
-						new SimpleEntry<String, Instant>("birthDateTimeEnd", birthDateTimeEnd))
-						.collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)),
+				CollectionUtils.mapOf("birthDateTimeStart", birthDateTimeStart, "birthDateTimeEnd", birthDateTimeEnd),
 				Instructor.class);
 	}
 
 	public List<Instructor> findAllNotBornBetweenBirthDateTimesOrderByBirthDateTimeDesc(Instant birthDateTimeStart,
 			Instant birthDateTimeEnd) {
 		return queryExecutor.fetchList("findAllNotBornBetweenBirthDateTimesOrderByBirthDateTimeDesc",
-				Stream.of(new SimpleEntry<String, Instant>("birthDateTimeStart", birthDateTimeStart),
-						new SimpleEntry<String, Instant>("birthDateTimeEnd", birthDateTimeEnd))
-						.collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)),
+				CollectionUtils.mapOf("birthDateTimeStart", birthDateTimeStart, "birthDateTimeEnd", birthDateTimeEnd),
 				Instructor.class);
 	}
 
