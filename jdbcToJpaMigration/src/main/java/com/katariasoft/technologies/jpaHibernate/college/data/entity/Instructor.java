@@ -64,6 +64,7 @@ delete from instructor where id in (select id from (select id from instructor wh
 @DynamicUpdate
 @DynamicInsert
 @NamedQueries({ @NamedQuery(name = "findAll", query = "select i from Instructor i"),
+		@NamedQuery(name = "findNameAndSalaryHavingSalaryGreterThan", query = "select i.name , i.salary from Instructor i where i.salary > :salary"),
 		@NamedQuery(name = "findAllOrderByBirthDateTimeDesc", query = "select i from Instructor i order by i.birthDateTime desc"),
 		@NamedQuery(name = "findAllHavingAddressLike", query = "select i from Instructor i where i.address LIKE CONCAT('%',:address ,'%')"),
 		@NamedQuery(name = "findAllHavingFatherNameLike", query = "select i from Instructor i where i.fatherName like CONCAT('%',:fatherName ,'%')"),

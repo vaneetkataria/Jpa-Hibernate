@@ -34,7 +34,7 @@ public class NamedQueriesTests {
 	@Autowired
 	private InstructorRepository instructorDao;
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndPrintAllInstructors() {
@@ -50,6 +50,20 @@ public class NamedQueriesTests {
 	@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
+	public void findNameAndSalaryHavingSalaryGreterThan() {
+		try {
+			List<Object[]> instructors = instructorDao
+					.findNameAndSalaryHavingSalaryGreterThan(BigDecimal.valueOf(100000));
+			listDataPrinter.accept(instructors);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	// @Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
 	public void findAllHavingAddressLike() {
 		try {
 			List<Instructor> instructors = instructorDao.findAllHavingAddressLike("Block");
@@ -59,7 +73,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void findAllHavingFatherNameLike() {
@@ -71,7 +85,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void findAllOrderByBirthDateTimeDesc() {
@@ -83,7 +97,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void findAllHavingSalaryGreaterThan() {
@@ -95,7 +109,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void findAllHavingSalaryGreaterThanBigQuery() {
@@ -108,7 +122,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void findDistinctFatherName() {
@@ -121,7 +135,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void countHavingSalaryBetween() {
@@ -137,7 +151,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void calculateAverageSalary() {
@@ -149,7 +163,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void minSalary() {
@@ -161,7 +175,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void maxSalary() {
@@ -173,7 +187,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void findAllBornBetweenBirthDateTimesOrderByBirthDateTimeDesc() {
@@ -189,7 +203,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void findAllNotBornBetweenBirthDateTimesOrderByBirthDateTimeDesc() {
@@ -205,35 +219,35 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void updateInstructorSalaryHavingId() {
 		instructorDao.updateInstructorSalaryHavingId(1, BigDecimal.valueOf(2500000));
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void updateInstructorSalaryHavingIdsIn() {
 		instructorDao.updateInstructorSalaryHavingIdsIn(Arrays.asList(1, 2, 3), BigDecimal.valueOf(2500000));
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteInstructorHavingId() {
 		instructorDao.deleteInstructorHavingId(1);
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteInstructorHavingIdsIn() {
 		instructorDao.deleteInstructorHavingIdsIn(Arrays.asList(1, 2, 3));
 	}
 
-	// @Test
+	// //@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndDeleteAllInstructorsOneByOne() {
@@ -251,7 +265,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	// @Test
+	// //@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndChnageAllInstructorsBatch() {

@@ -2,21 +2,11 @@ package com.katariasoft.technologies.jpaHibernate.college.data.dao;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder.In;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -42,6 +32,11 @@ public class InstructorRepository {
 
 	public List<Instructor> fetchAllInstructors() {
 		return queryExecutor.fetchList("findAll", null, Instructor.class);
+	}
+
+	public List<Object[]> findNameAndSalaryHavingSalaryGreterThan(BigDecimal salary) {
+		return queryExecutor.fetchList("findNameAndSalaryHavingSalaryGreterThan",
+				CollectionUtils.mapOf("salary", salary), Object[].class);
 	}
 
 	public List<Instructor> findAllHavingAddressLike(String address) {
