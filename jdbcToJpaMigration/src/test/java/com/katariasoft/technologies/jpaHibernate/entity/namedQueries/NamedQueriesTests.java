@@ -259,12 +259,11 @@ public class NamedQueriesTests {
 	@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
-	public void deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
-			BigDecimal salaryGreaterThan) {
+	public void deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan() {
 		instructorDao.deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan("Gir", BigDecimal.valueOf(100));
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndDeleteAllInstructorsOneByOne() {
@@ -282,7 +281,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void fetchAndChnageAllInstructorsBatch() {
