@@ -69,8 +69,13 @@ public class InstructorRepository {
 
 	public long countHavingSalaryBetween(BigDecimal monthlySalaryMin, BigDecimal monthlySalaryMax) {
 		return queryExecutor.fetchValue("countHavingSalaryBetween",
-				CollectionUtils.mapOf("monthlySalaryMin", monthlySalaryMax, "monthlySalaryMax", monthlySalaryMax),
+				CollectionUtils.mapOf("monthlySalaryMin", monthlySalaryMin, "monthlySalaryMax", monthlySalaryMax),
 				Long.class);
+	}
+
+	public List<Object[]> countHavingFatherName(BigDecimal salary) {
+		return queryExecutor.fetchList("countHavingFatherName", CollectionUtils.mapOf("salary", salary),
+				Object[].class);
 	}
 
 	public BigDecimal findMinSalary() {

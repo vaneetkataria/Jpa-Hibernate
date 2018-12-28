@@ -81,7 +81,8 @@ delete from instructor where id in (select id from (select id from instructor wh
 		@NamedQuery(name = "updateInstructorSalaryHavingId", query = "update Instructor i set i.salary = :salary where i.id = :id"),
 		@NamedQuery(name = "updateInstructorSalaryHavingIdsIn", query = "update Instructor i set i.salary = :salary where i.id in (:ids)"),
 		@NamedQuery(name = "deleteInstructorHavingId", query = "delete from Instructor i where i.id = :id"),
-		@NamedQuery(name = "deleteInstructorHavingIdsIn", query = "delete from Instructor i where i.id in (:ids)")
+		@NamedQuery(name = "deleteInstructorHavingIdsIn", query = "delete from Instructor i where i.id in (:ids)"),
+		@NamedQuery(name = "countHavingFatherName", query = "select i.fatherName , count(i) from Instructor i where i.salary > :salary group by i.fatherName having count(i) > 0")
 
 })
 public class Instructor implements Cloneable {

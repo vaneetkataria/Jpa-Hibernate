@@ -47,7 +47,7 @@ public class NamedQueriesTests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
 	public void findNameAndSalaryHavingSalaryGreterThan() {
@@ -145,6 +145,19 @@ public class NamedQueriesTests {
 			long count = instructorDao.countHavingSalaryBetween(salaryMin, salaryMax);
 			System.out.println("Number of Instructors having salary between " + salaryMin + " and salary max "
 					+ salaryMax + " are " + count);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+		}
+	}
+
+	@Test
+	@Rollback(false)
+	@Transactional(rollbackFor = Exception.class)
+	public void countHavingFatherName() {
+		try {
+			List<Object[]> objs = instructorDao.countHavingFatherName(BigDecimal.valueOf(0));
+			System.out.println(objs);
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 
