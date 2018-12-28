@@ -47,6 +47,16 @@ public class QueryExecutor {
 		}
 	}
 
+	public void executeNativeQuery(String queryString, Map<String, Object> queryParams) {
+		try {
+			Query query = em.createNativeQuery(queryString);
+			applyParameters(query, queryParams);
+			query.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 	public static void applyParameters(Query query, Map<String, Object> queryParams) {
 		if (Objects.nonNull(queryParams))
 			queryParams.forEach((key, value) -> query.setParameter(key, value));

@@ -222,22 +222,6 @@ public class NamedQueriesTests {
 	@Test
 	@Rollback(false)
 	@Transactional(rollbackFor = Exception.class)
-	public void updateInstructorSalaryHavingFatherNameLike() {
-		instructorDao.updateInstructorSalaryHavingFatherNameLike("Naresh", BigDecimal.valueOf(2500000));
-
-	}
-
-	@Test
-	@Rollback(false)
-	@Transactional(rollbackFor = Exception.class)
-	public void updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan() {
-		instructorDao.updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan("Nare",
-				BigDecimal.valueOf(250001), BigDecimal.valueOf(100));
-	}
-
-	@Test
-	@Rollback(false)
-	@Transactional(rollbackFor = Exception.class)
 	public void deleteInstructorHavingId() {
 		instructorDao.deleteInstructorHavingId(1);
 	}
@@ -247,20 +231,6 @@ public class NamedQueriesTests {
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteInstructorHavingIdsIn() {
 		instructorDao.deleteInstructorHavingIdsIn(Arrays.asList(1, 2, 3));
-	}
-
-	@Test
-	@Rollback(false)
-	@Transactional(rollbackFor = Exception.class)
-	public void deleteInstructorHavingFatherNameLike() {
-		instructorDao.deleteInstructorHavingFatherNameLike("Nare");
-	}
-
-	@Test
-	@Rollback(false)
-	@Transactional(rollbackFor = Exception.class)
-	public void deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan() {
-		instructorDao.deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan("Gir", BigDecimal.valueOf(100));
 	}
 
 	// @Test

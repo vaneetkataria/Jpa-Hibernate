@@ -70,7 +70,7 @@ delete from instructor where id in (select id from (select id from instructor wh
 		@NamedQuery(name = "findAllBornBetweenBirthDateTimesOrderByBirthDateTimeDesc", query = "select i from Instructor i where i.birthDateTime between :birthDateTimeStart and :birthDateTimeEnd order by i.birthDateTime desc"),
 		@NamedQuery(name = "findAllNotBornBetweenBirthDateTimesOrderByBirthDateTimeDesc", query = "select i from Instructor i where i.birthDateTime not between :birthDateTimeStart and :birthDateTimeEnd order by i.birthDateTime desc"),
 		@NamedQuery(name = "findAllHavingWorkingTimeBetween", query = "select i from Instructor i where i.dayStartTime > :dayStartTime and i.dayOffTime < :dayOffTime "),
-		@NamedQuery(name = "countHavingSalaryBetween", query = "select count(*) from Instructor i  where i.salary between :monthlySalaryMin and :monthlySalaryMax"),
+		@NamedQuery(name = "countHavingSalaryBetween", query = "select count(i) from Instructor i  where i.salary between :monthlySalaryMin and :monthlySalaryMax"),
 		@NamedQuery(name = "findDistinctFatherName", query = "select distinct(i.fatherName) from Instructor i"),
 		@NamedQuery(name = "calculateAverageSalary", query = "select avg(i.salary) from Instructor i"),
 		@NamedQuery(name = "findMinSalary", query = "select min(i.salary) from Instructor i"),
@@ -79,15 +79,16 @@ delete from instructor where id in (select id from (select id from instructor wh
 		@NamedQuery(name = "findAllHavingSalaryGreaterThanBigQuery", query = "select i from Instructor i where i.id in (select j.id from Instructor j where j.name in (select k.name from Instructor k where k.salary >= :salary))"),
 		@NamedQuery(name = "updateInstructorSalaryHavingId", query = "update Instructor i set i.salary = :salary where i.id = :id"),
 		@NamedQuery(name = "updateInstructorSalaryHavingIdsIn", query = "update Instructor i set i.salary = :salary where i.id in (:ids)"),
-		@NamedQuery(name = "updateInstructorSalaryHavingFatherNameLike", query = "update Instructor i set i.salary = :salary where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
-		@NamedQuery(name = "updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "update Instructor i set i.salary = :salary where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)"),
 		@NamedQuery(name = "deleteInstructorHavingId", query = "delete from Instructor i where i.id = :id"),
-		@NamedQuery(name = "deleteInstructorHavingIdsIn", query = "delete from Instructor i where i.id in (:ids)"),
-		@NamedQuery(name = "deleteInstructorHavingFatherNameLike", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%')) as j)"),
-		@NamedQuery(name = "deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan", query = "delete from Instructor i where i.id in (select j.id from (select k.id from Instructor k where k.fatherName like CONCAT('%',:fatherName ,'%') and k.salary = :selectSalary) as j)") })
-public class Instructor implements Cloneable {
+		@NamedQuery(name = "deleteInstructorHavingIdsIn", query = "delete from Instructor i where i.id in (:ids)")
 
-	public static final String DELETE_INSTRICTORS_HAVING_IDS = "delete from Instructor i where i.id IN (:ids) ";
+})
+public class Instructor implements Cloneable {
+	public static final String DELETE_INSTRICTORS_HAVING_IDS = "delete from instructor where id IN (:ids) ";
+	public static final String UPDATE_INSTRUCTORS_HAVING_FATHERNAME_LIKE = "update instructor i set i.monthly_salary = :salary where i.id in (select j.id from(select k.id from instructor k where k.father_name like CONCAT('%',:fatherName,'%')) as j)";
+	public static final String UPDATE_INSTRUCTORS_HAVING_FATHERNAME_LIKE_SALARY_GREATER_THAN = "update instructor i set i.monthly_salary = :salary where i.id in (select j.id from (select k.id from instructor k where k.father_name like CONCAT('%',:fatherName ,'%') and k.monthly_salary > :selectSalary) as j)";
+	public static final String DELETE_INSTRUCTORS_HAVING_FATHERNAME_LIKE = "delete from instructor where id in (select j.id from (select k.id from instructor k where k.father_name like CONCAT('%',:fatherName,'%')) as j)";
+	public static final String DELETE_INSTRUCTORS_HAVING_FATHERNAME_LIKE_SALARY_GREATER_THAN = "delete from instructor where id in (select j.id from (select k.id from instructor k where k.father_name like CONCAT('%',:fatherName ,'%') and k.monthly_salary > :selectSalary) as j)";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")

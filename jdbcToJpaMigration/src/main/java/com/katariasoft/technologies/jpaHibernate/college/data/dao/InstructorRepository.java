@@ -113,14 +113,8 @@ public class InstructorRepository {
 	}
 
 	public void updateInstructorSalaryHavingFatherNameLike(String fatherName, BigDecimal salary) {
-		queryExecutor.execute("updateInstructorSalaryHavingFatherNameLike",
+		queryExecutor.executeNativeQuery(Instructor.UPDATE_INSTRUCTORS_HAVING_FATHERNAME_LIKE,
 				CollectionUtils.mapOf("fatherName", fatherName, "salary", salary));
-	}
-
-	public void updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
-			BigDecimal salaryToUpdate, BigDecimal salaryGreaterThan) {
-		queryExecutor.execute("updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan", CollectionUtils
-				.mapOf("fatherName", fatherName, "salary", salaryToUpdate, "selectSalary", salaryGreaterThan));
 	}
 
 	public void deleteInstructorHavingId(int id) {
@@ -131,25 +125,30 @@ public class InstructorRepository {
 		queryExecutor.execute("deleteInstructorHavingIdsIn", Collections.singletonMap("ids", ids));
 	}
 
+	// Native queries
+	public void updateInstructorSalaryHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
+			BigDecimal salaryToUpdate, BigDecimal salaryGreaterThan) {
+		queryExecutor.executeNativeQuery(Instructor.UPDATE_INSTRUCTORS_HAVING_FATHERNAME_LIKE_SALARY_GREATER_THAN,
+				CollectionUtils.mapOf("fatherName", fatherName, "salary", salaryToUpdate, "selectSalary",
+						salaryGreaterThan));
+	}
+
 	public void deleteInstructorHavingFatherNameLike(String fatherName) {
-		queryExecutor.execute("deleteInstructorHavingFatherNameLike", CollectionUtils.mapOf("fatherName", fatherName));
+		queryExecutor.executeNativeQuery(Instructor.DELETE_INSTRUCTORS_HAVING_FATHERNAME_LIKE,
+				CollectionUtils.mapOf("fatherName", fatherName));
 	}
 
 	public void deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan(String fatherName,
 			BigDecimal salaryGreaterThan) {
-		queryExecutor.execute("deleteInstructorHavingFatherNameLikeAndMonthlySalaryGreaterThan",
+		queryExecutor.executeNativeQuery(Instructor.DELETE_INSTRUCTORS_HAVING_FATHERNAME_LIKE_SALARY_GREATER_THAN,
 				CollectionUtils.mapOf("fatherName", fatherName, "selectSalary", salaryGreaterThan));
 	}
 
-	public boolean deleteAllInstructors(List<Integer> ids) {
-		try {
-			em.createQuery(Instructor.DELETE_INSTRICTORS_HAVING_IDS).setParameter("ids", ids).executeUpdate();
-			return true;
-		} catch (Exception e) {
-			throw e;
-		}
+	public void deleteAllInstructors(List<Integer> ids) {
+		queryExecutor.executeNativeQuery(Instructor.DELETE_INSTRICTORS_HAVING_IDS, CollectionUtils.mapOf("ids", ids));
 	}
 
+	// In separate Transaction
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Instructor getInstructor(int id) {
 		try {
