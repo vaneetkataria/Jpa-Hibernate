@@ -8,13 +8,16 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Version;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -104,6 +107,8 @@ public class Instructor implements Cloneable {
 	private String name;
 	@Column(length = 64, nullable = false)
 	private String fatherName;
+	@OneToOne(cascade = { CascadeType.ALL }, orphanRemoval = true)
+	private IdProof idProof;
 	@Column(length = 64)
 	private String motherName;
 	@Column(length = 1000, nullable = false)

@@ -1,11 +1,14 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 
 import java.time.Instant;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -16,7 +19,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "id_proof_tbl")
 public class IdProof {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
@@ -27,6 +29,8 @@ public class IdProof {
 	private int version;
 	@Column(length = 20, name = "proof_sequence_no", nullable = false, unique = true)
 	private String proofNo;
+	@OneToOne(cascade = { CascadeType.ALL }, orphanRemoval = true, mappedBy = "idProof")
+	private Instructor instructor;
 	@Column(length = 64, nullable = false)
 	private String name;
 	@Column(length = 64, nullable = false)
