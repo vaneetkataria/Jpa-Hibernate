@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -34,7 +35,7 @@ public class IdProof {
 	private int version;
 	@Column(length = 20, name = "proof_sequence_no", nullable = false, unique = true)
 	private String proofNo;
-	@OneToOne(mappedBy = "idProof", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(mappedBy = "idProof", fetch = FetchType.LAZY)
 	private Instructor instructor;
 	@Column(length = 64, nullable = false)
 	private String name;
