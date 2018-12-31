@@ -41,7 +41,7 @@ public class OneToOneTests {
 		System.out.println(idProof.getInstructor());
 	}
 
-	// @Test
+	@Test
 	@Transactional
 	@Rollback(false)
 	public void orphanRemovalInstructor() {
@@ -65,7 +65,8 @@ public class OneToOneTests {
 		em.remove(idProof);
 	}
 
-	// @Test
+	//
+	@Test
 	@Transactional
 	@Rollback(false)
 	public void setInstructorAsNullInIdProof() {
