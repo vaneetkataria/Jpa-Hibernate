@@ -5,6 +5,7 @@ import java.time.Instant;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,11 +14,15 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "id_proof_tbl")
+@DynamicInsert
+@DynamicUpdate
 public class IdProof {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -29,7 +34,7 @@ public class IdProof {
 	private int version;
 	@Column(length = 20, name = "proof_sequence_no", nullable = false, unique = true)
 	private String proofNo;
-	@OneToOne(cascade = { CascadeType.ALL }, orphanRemoval = true, mappedBy = "idProof")
+	@OneToOne(mappedBy = "idProof", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	private Instructor instructor;
 	@Column(length = 64, nullable = false)
 	private String name;
@@ -65,6 +70,14 @@ public class IdProof {
 		this.isForeigner = isForeigner;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
+	}
+
+	public Instructor getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(Instructor instructor) {
+		this.instructor = instructor;
 	}
 
 	public String getName() {
@@ -145,6 +158,17 @@ public class IdProof {
 
 	public void setUpdatedDate(Instant updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("IdProof [id=").append(id).append(", version=").append(version).append(", proofNo=")
+				.append(proofNo).append(", name=").append(name).append(", fatherName=").append(fatherName)
+				.append(", motherName=").append(motherName).append(", address=").append(address).append(", sex=")
+				.append(sex).append(", isForeigner=").append(isForeigner).append(", createdDate=").append(createdDate)
+				.append(", updatedDate=").append(updatedDate).append("]");
+		return builder.toString();
 	}
 
 }

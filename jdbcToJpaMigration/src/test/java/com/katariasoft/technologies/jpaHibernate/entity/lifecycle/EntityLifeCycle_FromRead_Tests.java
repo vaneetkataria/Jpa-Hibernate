@@ -26,7 +26,7 @@ public class EntityLifeCycle_FromRead_Tests {
 	private static final String FETCH_FROM_DIFFERENT_TARNSACTION = "FETCH_FROM_DIFFERENT_TARNSACTION";
 	private static final String TRANSIENT = "TRANSIENT";
 	private static final String DETACHED = "DETACHED";
-	private String executionCase = DETACHED;
+	private String executionCase = FETCH_FROM_SAME_TARNSACTION;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -430,7 +430,7 @@ public class EntityLifeCycle_FromRead_Tests {
 			return instructorDao.getInstructor(1);
 		case FETCH_FROM_SAME_TARNSACTION:
 		default:
-			return em.find(Instructor.class, 1);
+			return em.find(Instructor.class, 4);
 		}
 	}
 

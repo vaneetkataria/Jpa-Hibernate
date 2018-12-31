@@ -10,21 +10,21 @@ import com.katariasoft.technologies.jpaHibernate.college.data.utils.CollectionUt
 
 public class CollectionUtilsTests {
 
-	// @Test
+	@Test
 	public void test() {
 		Map<String, Object> map = CollectionUtils.mapOf("id", 1, "bds", "red", "ks", new ArrayList<>(),
 				new ArrayList<>(), new ArrayList<>());
 		System.out.println(map);
 	}
 
-	// @Test
+	@Test
 	public void testForOddNumberOfParams() {
 		Map<String, Object> map = CollectionUtils.mapOf("id", 1, "bds", "red", "ks", new ArrayList<>(),
 				new ArrayList<>());
 		System.out.println(map);
 	}
 
-	// @Test
+	@Test
 	public void testForNullParams() {
 		Map<String, Object> map = CollectionUtils.mapOf(null);
 		System.out.println(map);

@@ -15,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -24,44 +25,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
-
-/*
-select * from instructor;
-select * from instructor order by birth_date_time desc;
-select * from instructor where address like '%#1074%';
-select * from instructor where father_name like '%Naresh%';
-select * from instructor where birth_date_time between '1980-01-01 00:00:00.000000' and '1995-01-01 23:59:59.999999' order by birth_date_time desc; 
-select * from instructor where birth_date_time not between '1980-01-01 00:00:00.000000' and '1995-01-01 23:59:59.999999' order by birth_date_time ; 
-select * from instructor where day_start_time > '10:00:00' and  day_off_time < '19:01:00';
-select count(*) from instructor where monthly_salary between 10000 and 100000;
-select distinct father_name from instructor ;
-select sum(monthly_salary) from instructor;
-select avg(monthly_salary) from instructor;
-select min(monthly_salary) from instructor;
-select max(monthly_salary) from instructor;
-select * from instructor where id in (select id from instructor where monthly_salary >= 10000);
-select * from instructor where id in (select id from instructor where name in (select name from instructor where monthly_salary >= 10000 ));
-select father_name , count(*) from instructor where father_name like '%Naresh%' group by father_name having count(*) > 0;
-*/
-//updates
-/*
-update instructor set monthly_salary = 130000 where id = 1; 
-update instructor set monthly_salary = 150000 where id in (1 , 2); 
-update instructor set monthly_salary = 170000 where id in 
-(select id from  (select * from instructor i where i.father_name like '%Naresh%')
-as j);
-update instructor set monthly_salary = 200000 where id in (
-select id from (select id from instructor where father_name like '%Naresh%' and monthly_salary > 50000) as j);
-*/
-//deletes
-/*
-delete from instructor where id = 5;
-delete from instructor where id in (3 , 4);
-delete from instructor where id in (
-select id from  
-(select id from instructor where father_name like '%Naresh%') as j);
-delete from instructor where id in (select id from (select id from instructor where father_name like '%Naresh%' and monthly_salary > 20000)as j);
-*/
 
 @Entity
 @DynamicUpdate
@@ -107,7 +70,7 @@ public class Instructor implements Cloneable {
 	private String name;
 	@Column(length = 64, nullable = false)
 	private String fatherName;
-	@OneToOne(cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	private IdProof idProof;
 	@Column(length = 64)
 	private String motherName;
@@ -160,6 +123,14 @@ public class Instructor implements Cloneable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public IdProof getIdProof() {
+		return idProof;
+	}
+
+	public void setIdProof(IdProof idProof) {
+		this.idProof = idProof;
 	}
 
 	public String getName() {
