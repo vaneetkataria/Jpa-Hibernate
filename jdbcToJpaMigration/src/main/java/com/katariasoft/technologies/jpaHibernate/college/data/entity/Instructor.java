@@ -70,7 +70,7 @@ public class Instructor implements Cloneable {
 	private String name;
 	@Column(length = 64, nullable = false)
 	private String fatherName;
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, orphanRemoval = true, optional = false)
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	@JoinColumn(name = "proof_id")
 	private IdProof idProof;
 	@Column(length = 64)

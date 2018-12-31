@@ -94,8 +94,8 @@ public class OneToOneTests {
 		// em.persist(idProof);
 		// instructor.setIdProof(null);
 		// em.remove(idProof);
-		em.flush();
-		em.detach(idProof);
+		//em.flush();
+		//em.detach(idProof);
 		// em.persist(instructor);
 		// em.merge(idProof);
 	}
