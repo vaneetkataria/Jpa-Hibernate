@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +17,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 import org.hibernate.annotations.CreationTimestamp;
@@ -51,7 +55,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 		@NamedQuery(name = "countHavingFatherName", query = "select i.fatherName , count(i) from Instructor i where i.salary > :salary group by i.fatherName having count(i) > 0")
 
 })
-public class Instructor implements Cloneable {
+public class Instructor {
 	public static final String DELETE_INSTRICTORS_HAVING_IDS = "delete from instructor where id IN (:ids) ";
 	public static final String UPDATE_INSTRUCTORS_HAVING_FATHERNAME_LIKE = "update instructor i set i.monthly_salary = :salary where i.id in (select j.id from(select k.id from instructor k where k.father_name like CONCAT('%',:fatherName,'%')) as j)";
 	public static final String UPDATE_INSTRUCTORS_HAVING_FATHERNAME_LIKE_SALARY_GREATER_THAN = "update instructor i set i.monthly_salary = :salary where i.id in (select j.id from (select k.id from instructor k where k.father_name like CONCAT('%',:fatherName ,'%') and k.monthly_salary > :selectSalary) as j)";
@@ -70,9 +74,15 @@ public class Instructor implements Cloneable {
 	private String name;
 	@Column(length = 64, nullable = false)
 	private String fatherName;
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "proof_id")
 	private IdProof idProof;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "instructor")
+	private Set<vehicle> vehicles;
+	@ManyToMany()
+	@JoinTable(name = "instructors_students_junction_tbl", joinColumns = {
+			@JoinColumn(name = "instructor_id") }, inverseJoinColumns = { @JoinColumn(name = "student_id") })
+	private Set<Student> students;
 	@Column(length = 64)
 	private String motherName;
 	@Column(length = 1000, nullable = false)
@@ -132,6 +142,14 @@ public class Instructor implements Cloneable {
 
 	public void setIdProof(IdProof idProof) {
 		this.idProof = idProof;
+	}
+
+	public Set<vehicle> getVehicles() {
+		return vehicles;
+	}
+
+	public void setVehicles(Set<vehicle> vehicles) {
+		this.vehicles = vehicles;
 	}
 
 	public String getName() {

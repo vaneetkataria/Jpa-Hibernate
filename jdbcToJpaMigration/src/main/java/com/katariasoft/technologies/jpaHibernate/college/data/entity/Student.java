@@ -3,12 +3,14 @@ package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,6 +35,8 @@ public class Student {
 	private String motherName;
 	@Column(length = 1000, nullable = false)
 	private String address;
+	@ManyToMany(mappedBy = "students")
+	private Set<Instructor> instructors;
 	@Column(columnDefinition = "BLOB")
 	private byte[] photo;
 	@Column(precision = 9, scale = 2, nullable = false)
