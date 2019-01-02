@@ -26,7 +26,7 @@ public class EntityLifeCycle_FromRead_Tests {
 	private static final String FETCH_FROM_DIFFERENT_TARNSACTION = "FETCH_FROM_DIFFERENT_TARNSACTION";
 	private static final String TRANSIENT = "TRANSIENT";
 	private static final String DETACHED = "DETACHED";
-	private String executionCase = FETCH_FROM_SAME_TARNSACTION;
+	private String executionCase = FETCH_FROM_DIFFERENT_TARNSACTION;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -63,7 +63,7 @@ public class EntityLifeCycle_FromRead_Tests {
 
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void ruTest() {
@@ -82,7 +82,7 @@ public class EntityLifeCycle_FromRead_Tests {
 
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void rudTest() {
@@ -102,7 +102,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void rud_Flush_Test() {
@@ -126,7 +126,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void ru_Flush_Detach_Test() {
@@ -148,7 +148,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void removingDetachedEntityTest() {
@@ -172,7 +172,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void persistingDetachedEntityTest() {
@@ -194,7 +194,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void mergingDetachedEntityTest() {
@@ -216,7 +216,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void detachingRemovedEntityTest() {
@@ -240,7 +240,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void persistingRemovedEntityTest() {
@@ -263,7 +263,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void detachingRemovedAndFlushedEntityTest() {
@@ -287,7 +287,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void persistingRemovedAndFlushedEntityTest() {
@@ -310,7 +310,7 @@ public class EntityLifeCycle_FromRead_Tests {
 		}
 	}
 
-	@Test
+	// @Test
 	@Rollback(false)
 	@Transactional
 	public void mergingRemovedEntityTest() {
@@ -392,7 +392,7 @@ public class EntityLifeCycle_FromRead_Tests {
 	@Transactional
 	public void mergedEntityTest_AlreadyPresentInPC() {
 		try {
-			Instructor fromDb = em.find(Instructor.class, 1);
+			Instructor fromDb = em.find(Instructor.class, 2);
 			System.out.println(fromDb);
 			// read
 			Instructor instructor = getInstructorForTest();
@@ -427,10 +427,10 @@ public class EntityLifeCycle_FromRead_Tests {
 			return instructor;
 		}
 		case FETCH_FROM_DIFFERENT_TARNSACTION:
-			return instructorDao.getInstructor(1);
+			return instructorDao.getInstructor(2);
 		case FETCH_FROM_SAME_TARNSACTION:
 		default:
-			return em.find(Instructor.class, 4);
+			return em.find(Instructor.class, 1);
 		}
 	}
 
