@@ -5,6 +5,7 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils;
+import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -19,12 +21,13 @@ public class EntityLifeCycle_FromCreate_Tests {
 
 	@PersistenceContext
 	private EntityManager em;
+	@Autowired
+	private TransactionExecutionTemplate transactionTemplate;
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void cruTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -35,18 +38,13 @@ public class EntityLifeCycle_FromCreate_Tests {
 			instructor.setAddress("Pankhon wali Gali update 3.");
 			instructor.setMotherName("Neelam Kataria.");
 			instructor.setFatherName("Naresh Kataria.");
-
-		} catch (RuntimeException e) {
-			throw e;
-		}
-
+		});
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void crudTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -59,16 +57,15 @@ public class EntityLifeCycle_FromCreate_Tests {
 			instructor.setFatherName("Naresh Kataria.");
 			// remove any as both are same objects fetched from P.C.
 			em.remove(instructor);
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void crud_Flush_Test() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -86,16 +83,15 @@ public class EntityLifeCycle_FromCreate_Tests {
 			// remove any as both are same objects fetched from P.C.
 			em.remove(instructor);
 			em.flush();
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void cru_Flush_Detach_Test() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -111,16 +107,15 @@ public class EntityLifeCycle_FromCreate_Tests {
 			instructor.setFatherName("Naresh Kataria.");
 			instructor.setMotherName("Neelam Kataria update 2.");
 			instructor.setFatherName("Naresh Kataria update 2.");
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void removingDetachedEntityTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -137,16 +132,15 @@ public class EntityLifeCycle_FromCreate_Tests {
 			// remove any as both are same objects fetched from P.C.
 			em.remove(instructor);
 			em.flush();
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void persistingDetachedEntityTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -162,16 +156,15 @@ public class EntityLifeCycle_FromCreate_Tests {
 			instructor.setFatherName("Naresh Kataria.");
 			// remove any as both are same objects fetched from P.C.
 			em.persist(instructor);
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void mergingDetachedEntityTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -187,16 +180,15 @@ public class EntityLifeCycle_FromCreate_Tests {
 			instructor.setFatherName("Naresh Kataria updated 2.");
 			// remove any as both are same objects fetched from P.C.
 			em.merge(instructor);
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void detachingRemovedEntityTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -214,16 +206,14 @@ public class EntityLifeCycle_FromCreate_Tests {
 
 			em.detach(instructor);
 
-		} catch (RuntimeException e) {
-			throw e;
-		}
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void persistingRemovedEntityTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -240,16 +230,15 @@ public class EntityLifeCycle_FromCreate_Tests {
 			// remove any as both are same objects fetched from P.C.
 
 			em.persist(instructor);
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void detachingRemovedAndFlushedEntityTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -267,16 +256,14 @@ public class EntityLifeCycle_FromCreate_Tests {
 			em.flush();
 			em.detach(instructor);
 
-		} catch (RuntimeException e) {
-			throw e;
-		}
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void persistingRemovedAndFlushedEntityTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -294,16 +281,15 @@ public class EntityLifeCycle_FromCreate_Tests {
 			// remove any as both are same objects fetched from P.C.
 
 			em.persist(instructor);
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
+
 	}
 
 	@Test
 	@Rollback(false)
-	@Transactional
 	public void mergingRemovedEntityTest() {
-		try {
+		transactionTemplate.doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -319,9 +305,8 @@ public class EntityLifeCycle_FromCreate_Tests {
 			instructor.setFatherName("Naresh Kataria updated 2.");
 			// remove any as both are same objects fetched from P.C.
 			em.merge(instructor);
-		} catch (RuntimeException e) {
-			throw e;
-		}
+
+		});
 	}
 
 }
