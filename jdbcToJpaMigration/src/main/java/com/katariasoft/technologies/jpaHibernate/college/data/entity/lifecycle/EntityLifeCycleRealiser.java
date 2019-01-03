@@ -75,32 +75,32 @@ public abstract class EntityLifeCycleRealiser<T> {
 		return mergedEntityRealiser_AlreadyPresentInPC;
 	}
 
-	public abstract Consumer<T> setUpdateRealiser();
+	protected abstract Consumer<T> setUpdateRealiser();
 
-	public abstract Consumer<T> setUpdateAndDeleteRealiser();
+	protected abstract Consumer<T> setUpdateAndDeleteRealiser();
 
-	public abstract Consumer<T> setUpdateDeleteFlushRealiser();
+	protected abstract Consumer<T> setUpdateDeleteFlushRealiser();
 
-	public abstract Consumer<T> setUpdateFlushDetachRealiser();
+	protected abstract Consumer<T> setUpdateFlushDetachRealiser();
 
-	public abstract Consumer<T> setRemovingDetachedEntityRealiser();
+	protected abstract Consumer<T> setRemovingDetachedEntityRealiser();
 
-	public abstract Consumer<T> setPersistingDetachedEntityRealiser();
+	protected abstract Consumer<T> setPersistingDetachedEntityRealiser();
 
-	public abstract Consumer<T> setMergingDetachedEntityRealiser();
+	protected abstract Consumer<T> setMergingDetachedEntityRealiser();
 
-	public abstract Consumer<T> setDetachingRemovedEntityRealiser();
+	protected abstract Consumer<T> setDetachingRemovedEntityRealiser();
 
-	public abstract Consumer<T> setPersistingRemovedEntityRealiser();
+	protected abstract Consumer<T> setPersistingRemovedEntityRealiser();
 
-	public abstract Consumer<T> setDetachingRemovedAndFlushedEntityRealiser();
+	protected abstract Consumer<T> setDetachingRemovedAndFlushedEntityRealiser();
 
-	public abstract Consumer<T> setPersistingRemovedAndFlushedEntityRealiser();
+	protected abstract Consumer<T> setPersistingRemovedAndFlushedEntityRealiser();
 
-	public abstract Consumer<T> setMergingRemovedEntityRealiser();
+	protected abstract Consumer<T> setMergingRemovedEntityRealiser();
 
-	public abstract Consumer<T> setMergedEntityRealiser();
+	protected abstract Consumer<T> setMergedEntityRealiser();
 
-	public abstract Consumer<T> setMergedEntityRealiser_AlreadyPresentInPC();
+	protected abstract Consumer<T> setMergedEntityRealiser_AlreadyPresentInPC();
 
 }

@@ -152,7 +152,7 @@ public class VehicleLifeCycleTests {
 		 */ case FETCH_FROM_SAME_TARNSACTION:
 		default:
 			return em.find(Vehicle.class, 1);
-		}
+		} 
 	}
 
 	private void doInTransaction(Executable executable) {

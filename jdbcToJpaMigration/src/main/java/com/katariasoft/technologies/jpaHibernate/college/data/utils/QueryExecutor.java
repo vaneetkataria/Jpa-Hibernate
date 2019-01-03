@@ -57,6 +57,17 @@ public class QueryExecutor {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> List<T> fetchListWithNativeQuery(String query, Map<String, Object> queryParams, Class<T> clazz) {
+		try {
+			Query typedQuery = em.createNativeQuery(query, clazz);
+			applyParameters(typedQuery, queryParams);
+			return typedQuery.getResultList();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 	public static void applyParameters(Query query, Map<String, Object> queryParams) {
 		if (Objects.nonNull(queryParams))
 			queryParams.forEach((key, value) -> query.setParameter(key, value));

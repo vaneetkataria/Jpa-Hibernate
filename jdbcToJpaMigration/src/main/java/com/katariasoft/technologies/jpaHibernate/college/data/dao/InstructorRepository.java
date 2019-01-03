@@ -34,6 +34,10 @@ public class InstructorRepository {
 		return queryExecutor.fetchList("findAll", null, Instructor.class);
 	}
 
+	public List<Instructor> fetchAllInstructorsWithNativeQuery() {
+		return queryExecutor.fetchListWithNativeQuery(Instructor.FIND_ALL_INSTRUCTORS, null, Instructor.class);
+	}
+
 	public List<Object[]> findNameAndSalaryHavingSalaryGreterThan(BigDecimal salary) {
 		return queryExecutor.fetchList("findNameAndSalaryHavingSalaryGreterThan",
 				CollectionUtils.mapOf("salary", salary), Object[].class);

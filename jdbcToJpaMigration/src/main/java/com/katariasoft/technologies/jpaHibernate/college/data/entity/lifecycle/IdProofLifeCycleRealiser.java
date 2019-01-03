@@ -13,9 +13,9 @@ import com.katariasoft.technologies.jpaHibernate.college.data.entity.IdProof;
 public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 
 	@PersistenceContext
-	public EntityManager em;
+	private EntityManager em;
 
-	public Consumer<IdProof> setUpdateRealiser() {
+	protected Consumer<IdProof> setUpdateRealiser() {
 		return idProof -> {
 			// update
 			idProof.setAddress("ruRealiser");
@@ -25,7 +25,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 		};
 	}
 
-	public Consumer<IdProof> setUpdateAndDeleteRealiser() {
+	protected Consumer<IdProof> setUpdateAndDeleteRealiser() {
 		return idProof -> {
 			idProof.setAddress("rudRealiser");
 			idProof.setAddress("rudRealiser");
@@ -37,7 +37,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 
 	}
 
-	public Consumer<IdProof> setUpdateDeleteFlushRealiser() {
+	protected Consumer<IdProof> setUpdateDeleteFlushRealiser() {
 		return idProof -> {
 			idProof.setAddress("rud_Flush_Realiser");
 			em.flush();
@@ -53,7 +53,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 		};
 	}
 
-	public Consumer<IdProof> setUpdateFlushDetachRealiser() {
+	protected Consumer<IdProof> setUpdateFlushDetachRealiser() {
 		return idProof -> {
 			idProof.setAddress("ru_Flush_Detach_Realiser");
 			em.flush();
@@ -67,7 +67,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 		};
 	}
 
-	public Consumer<IdProof> setRemovingDetachedEntityRealiser() {
+	protected Consumer<IdProof> setRemovingDetachedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("removingDetachedEntityRealiser");
 			em.flush();
@@ -82,7 +82,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 		};
 	}
 
-	public Consumer<IdProof> setPersistingDetachedEntityRealiser() {
+	protected Consumer<IdProof> setPersistingDetachedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("persistingDetachedEntityRealiser");
 			em.flush();
@@ -96,7 +96,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 		};
 	}
 
-	public Consumer<IdProof> setMergingDetachedEntityRealiser() {
+	protected Consumer<IdProof> setMergingDetachedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("mergingDetachedEntityRealiser");
 			em.flush();
@@ -111,7 +111,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 
 	}
 
-	public Consumer<IdProof> setDetachingRemovedEntityRealiser() {
+	protected Consumer<IdProof> setDetachingRemovedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("detachingRemovedEntityRealiser");
 			em.flush();
@@ -126,7 +126,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 
 	}
 
-	public Consumer<IdProof> setPersistingRemovedEntityRealiser() {
+	protected Consumer<IdProof> setPersistingRemovedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("persistingRemovedEntityRealiser");
 			em.flush();
@@ -140,7 +140,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 		};
 	}
 
-	public Consumer<IdProof> setDetachingRemovedAndFlushedEntityRealiser() {
+	protected Consumer<IdProof> setDetachingRemovedAndFlushedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("detachingRemovedAndFlushedEntityRealiser");
 			em.flush();
@@ -156,7 +156,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 
 	}
 
-	public Consumer<IdProof> setPersistingRemovedAndFlushedEntityRealiser() {
+	protected Consumer<IdProof> setPersistingRemovedAndFlushedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("persistingRemovedAndFlushedEntityRealiser");
 			em.flush();
@@ -173,7 +173,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 
 	}
 
-	public Consumer<IdProof> setMergingRemovedEntityRealiser() {
+	protected Consumer<IdProof> setMergingRemovedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("mergingRemovedEntityRealiser");
 			em.flush();
@@ -202,7 +202,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 	// input entity will be merge into that . Input entity continue remaining
 	// unmanaged .
 
-	public Consumer<IdProof> setMergedEntityRealiser() {
+	protected Consumer<IdProof> setMergedEntityRealiser() {
 		return idProof -> {
 			idProof.setAddress("mergingRemovedEntityRealiser");
 			em.flush();
@@ -237,7 +237,7 @@ public class IdProofLifeCycleRealiser extends EntityLifeCycleRealiser<IdProof> {
 	// input entity will be merge into that . Input entity continue remaining
 	// unmanaged .
 
-	public Consumer<IdProof> setMergedEntityRealiser_AlreadyPresentInPC() {
+	protected Consumer<IdProof> setMergedEntityRealiser_AlreadyPresentInPC() {
 		return idProof -> {
 			IdProof fromDb = em.find(IdProof.class, 2);
 			System.out.println(fromDb);

@@ -13,9 +13,9 @@ import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
 public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instructor> {
 
 	@PersistenceContext
-	public EntityManager em;
+	private EntityManager em;
 
-	public Consumer<Instructor> setUpdateRealiser() {
+	protected Consumer<Instructor> setUpdateRealiser() {
 		return instructor -> {
 			// update
 			instructor.setAddress("ruRealiser");
@@ -25,7 +25,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 		};
 	}
 
-	public Consumer<Instructor> setUpdateAndDeleteRealiser() {
+	protected Consumer<Instructor> setUpdateAndDeleteRealiser() {
 		return instructor -> {
 			instructor.setAddress("rudRealiser");
 			instructor.setAddress("rudRealiser");
@@ -37,7 +37,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 
 	}
 
-	public Consumer<Instructor> setUpdateDeleteFlushRealiser() {
+	protected Consumer<Instructor> setUpdateDeleteFlushRealiser() {
 		return instructor -> {
 			instructor.setAddress("rud_Flush_Realiser");
 			em.flush();
@@ -53,7 +53,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 		};
 	}
 
-	public Consumer<Instructor> setUpdateFlushDetachRealiser() {
+	protected Consumer<Instructor> setUpdateFlushDetachRealiser() {
 		return instructor -> {
 			instructor.setAddress("ru_Flush_Detach_Realiser");
 			em.flush();
@@ -67,7 +67,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 		};
 	}
 
-	public Consumer<Instructor> setRemovingDetachedEntityRealiser() {
+	protected Consumer<Instructor> setRemovingDetachedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("removingDetachedEntityRealiser");
 			em.flush();
@@ -82,7 +82,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 		};
 	}
 
-	public Consumer<Instructor> setPersistingDetachedEntityRealiser() {
+	protected Consumer<Instructor> setPersistingDetachedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("persistingDetachedEntityRealiser");
 			em.flush();
@@ -96,7 +96,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 		};
 	}
 
-	public Consumer<Instructor> setMergingDetachedEntityRealiser() {
+	protected Consumer<Instructor> setMergingDetachedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("mergingDetachedEntityRealiser");
 			em.flush();
@@ -111,7 +111,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 
 	}
 
-	public Consumer<Instructor> setDetachingRemovedEntityRealiser() {
+	protected Consumer<Instructor> setDetachingRemovedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("detachingRemovedEntityRealiser");
 			em.flush();
@@ -126,7 +126,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 
 	}
 
-	public Consumer<Instructor> setPersistingRemovedEntityRealiser() {
+	protected Consumer<Instructor> setPersistingRemovedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("persistingRemovedEntityRealiser");
 			em.flush();
@@ -140,7 +140,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 		};
 	}
 
-	public Consumer<Instructor> setDetachingRemovedAndFlushedEntityRealiser() {
+	protected Consumer<Instructor> setDetachingRemovedAndFlushedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("detachingRemovedAndFlushedEntityRealiser");
 			em.flush();
@@ -156,7 +156,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 
 	}
 
-	public Consumer<Instructor> setPersistingRemovedAndFlushedEntityRealiser() {
+	protected Consumer<Instructor> setPersistingRemovedAndFlushedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("persistingRemovedAndFlushedEntityRealiser");
 			em.flush();
@@ -173,7 +173,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 
 	}
 
-	public Consumer<Instructor> setMergingRemovedEntityRealiser() {
+	protected Consumer<Instructor> setMergingRemovedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("mergingRemovedEntityRealiser");
 			em.flush();
@@ -202,7 +202,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 	// input entity will be merge into that . Input entity continue remaining
 	// unmanaged .
 
-	public Consumer<Instructor> setMergedEntityRealiser() {
+	protected Consumer<Instructor> setMergedEntityRealiser() {
 		return instructor -> {
 			instructor.setAddress("mergingRemovedEntityRealiser");
 			em.flush();
@@ -237,7 +237,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 	// input entity will be merge into that . Input entity continue remaining
 	// unmanaged .
 
-	public Consumer<Instructor> setMergedEntityRealiser_AlreadyPresentInPC() {
+	protected Consumer<Instructor> setMergedEntityRealiser_AlreadyPresentInPC() {
 		return instructor -> {
 			Instructor fromDb = em.find(Instructor.class, 2);
 			System.out.println(fromDb);

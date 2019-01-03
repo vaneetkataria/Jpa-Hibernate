@@ -14,16 +14,16 @@ import com.katariasoft.technologies.jpaHibernate.college.data.enums.VechicleType
 public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 
 	@PersistenceContext
-	public EntityManager em;
+	private EntityManager em;
 
-	public Consumer<Vehicle> setUpdateRealiser() {
+	protected Consumer<Vehicle> setUpdateRealiser() {
 		return vehicle -> {
 			// update
 			vehicle.setVehicleNumber("ruRealiser");
 		};
 	}
 
-	public Consumer<Vehicle> setUpdateAndDeleteRealiser() {
+	protected Consumer<Vehicle> setUpdateAndDeleteRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("ruRealiser");
 			// remove any as both are same objects fetched from P.C.
@@ -32,7 +32,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 
 	}
 
-	public Consumer<Vehicle> setUpdateDeleteFlushRealiser() {
+	protected Consumer<Vehicle> setUpdateDeleteFlushRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("rud_Flush_Realiser");
 			em.flush();
@@ -46,7 +46,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 		};
 	}
 
-	public Consumer<Vehicle> setUpdateFlushDetachRealiser() {
+	protected Consumer<Vehicle> setUpdateFlushDetachRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("ru_Flush_Detach_Realiser");
 			em.flush();
@@ -57,7 +57,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 		};
 	}
 
-	public Consumer<Vehicle> setRemovingDetachedEntityRealiser() {
+	protected Consumer<Vehicle> setRemovingDetachedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("removingDetachedEntityRealiser");
 			em.flush();
@@ -71,7 +71,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 		};
 	}
 
-	public Consumer<Vehicle> setPersistingDetachedEntityRealiser() {
+	protected Consumer<Vehicle> setPersistingDetachedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("persistingDetachedEntityRealiser");
 			em.flush();
@@ -84,7 +84,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 		};
 	}
 
-	public Consumer<Vehicle> setMergingDetachedEntityRealiser() {
+	protected Consumer<Vehicle> setMergingDetachedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("mergingDetachedEntityRealiser");
 			em.flush();
@@ -98,7 +98,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 
 	}
 
-	public Consumer<Vehicle> setDetachingRemovedEntityRealiser() {
+	protected Consumer<Vehicle> setDetachingRemovedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("detachingRemovedEntityRealiser");
 			em.flush();
@@ -112,7 +112,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 
 	}
 
-	public Consumer<Vehicle> setPersistingRemovedEntityRealiser() {
+	protected Consumer<Vehicle> setPersistingRemovedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("persistingRemovedEntityRealiser");
 			em.flush();
@@ -125,7 +125,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 		};
 	}
 
-	public Consumer<Vehicle> setDetachingRemovedAndFlushedEntityRealiser() {
+	protected Consumer<Vehicle> setDetachingRemovedAndFlushedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("detachingRemovedAndFlushedEntityRealiser");
 			em.flush();
@@ -140,7 +140,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 
 	}
 
-	public Consumer<Vehicle> setPersistingRemovedAndFlushedEntityRealiser() {
+	protected Consumer<Vehicle> setPersistingRemovedAndFlushedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("persistingRemovedAndFlushedEntityRealiser");
 			em.flush();
@@ -156,7 +156,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 
 	}
 
-	public Consumer<Vehicle> setMergingRemovedEntityRealiser() {
+	protected Consumer<Vehicle> setMergingRemovedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("mergingRemovedEntityRealiser");
 			em.flush();
@@ -184,7 +184,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 	// input entity will be merge into that . Input entity continue remaining
 	// unmanaged .
 
-	public Consumer<Vehicle> setMergedEntityRealiser() {
+	protected Consumer<Vehicle> setMergedEntityRealiser() {
 		return vehicle -> {
 			vehicle.setVehicleNumber("mergingRemovedEntityRealiser");
 			em.flush();
@@ -216,7 +216,7 @@ public class VehicleLifeCycleRealiser extends EntityLifeCycleRealiser<Vehicle> {
 	// input entity will be merge into that . Input entity continue remaining
 	// unmanaged .
 
-	public Consumer<Vehicle> setMergedEntityRealiser_AlreadyPresentInPC() {
+	protected Consumer<Vehicle> setMergedEntityRealiser_AlreadyPresentInPC() {
 		return vehicle -> {
 			Vehicle fromDb = em.find(Vehicle.class, 2);
 			System.out.println(fromDb);
