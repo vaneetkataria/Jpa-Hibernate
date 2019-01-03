@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils;
+import com.katariasoft.technologies.jpaHibernate.college.data.utils.Executable;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
 @RunWith(SpringRunner.class)
@@ -27,7 +28,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void cruTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -44,7 +45,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void crudTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -65,7 +66,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void crud_Flush_Test() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -91,7 +92,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void cru_Flush_Detach_Test() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -115,7 +116,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void removingDetachedEntityTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -140,7 +141,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void persistingDetachedEntityTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -164,7 +165,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void mergingDetachedEntityTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -188,7 +189,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void detachingRemovedEntityTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -213,7 +214,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void persistingRemovedEntityTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -238,7 +239,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void detachingRemovedAndFlushedEntityTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -263,7 +264,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void persistingRemovedAndFlushedEntityTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -289,7 +290,7 @@ public class EntityLifeCycle_FromCreate_Tests {
 	@Test
 	@Rollback(false)
 	public void mergingRemovedEntityTest() {
-		transactionTemplate.doInTransaction(() -> {
+		doInTransaction(() -> {
 			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
 			// create
 			em.persist(instructor);
@@ -307,6 +308,10 @@ public class EntityLifeCycle_FromCreate_Tests {
 			em.merge(instructor);
 
 		});
+	}
+
+	private void doInTransaction(Executable executable) {
+		transactionTemplate.doInTransaction(executable);
 	}
 
 }
