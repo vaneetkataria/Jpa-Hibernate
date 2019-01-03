@@ -29,7 +29,7 @@ import com.katariasoft.technologies.jpaHibernate.college.data.enums.VechicleType
 @Entity
 @DynamicInsert
 @DynamicUpdate
-public class vehicle {
+public class Vehicle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
@@ -39,9 +39,9 @@ public class vehicle {
 	@Column(nullable = false, length = 30)
 	@Enumerated(EnumType.STRING)
 	private VechicleType vechicleType;
-	@Size(min = 8, max = 30)
+	@Size(min = 8, max = 100)
 	@NotBlank
-	@Column(length = 30, nullable = false, unique = true)
+	@Column(length = 100, nullable = false, unique = true)
 	private String vehicleNumber;
 	@Past
 	@Column(columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)", nullable = false)

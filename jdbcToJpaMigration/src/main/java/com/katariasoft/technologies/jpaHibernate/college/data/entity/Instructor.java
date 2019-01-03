@@ -78,8 +78,8 @@ public class Instructor {
 	@JoinColumn(name = "proof_id")
 	private IdProof idProof;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "instructor")
-	private Set<vehicle> vehicles;
-	@ManyToMany()
+	private Set<Vehicle> vehicles;
+	@ManyToMany
 	@JoinTable(name = "instructors_students_junction_tbl", joinColumns = {
 			@JoinColumn(name = "instructor_id") }, inverseJoinColumns = { @JoinColumn(name = "student_id") })
 	private Set<Student> students;
@@ -144,11 +144,11 @@ public class Instructor {
 		this.idProof = idProof;
 	}
 
-	public Set<vehicle> getVehicles() {
+	public Set<Vehicle> getVehicles() {
 		return vehicles;
 	}
 
-	public void setVehicles(Set<vehicle> vehicles) {
+	public void setVehicles(Set<Vehicle> vehicles) {
 		this.vehicles = vehicles;
 	}
 
