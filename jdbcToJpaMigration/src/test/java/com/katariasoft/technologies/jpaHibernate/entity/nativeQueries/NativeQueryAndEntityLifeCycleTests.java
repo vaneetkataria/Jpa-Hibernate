@@ -57,7 +57,7 @@ public class NativeQueryAndEntityLifeCycleTests {
 	}
 
 	private void doInTransaction(Executable executable) {
-		doInTransaction(() -> transactionTemplate.doInTransaction(executable));
+		transactionTemplate.doInTransaction(executable);
 	}
 
 }

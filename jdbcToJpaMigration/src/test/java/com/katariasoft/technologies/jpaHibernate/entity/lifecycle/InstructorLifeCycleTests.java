@@ -1,5 +1,7 @@
 package com.katariasoft.technologies.jpaHibernate.entity.lifecycle;
 
+import static org.junit.Assert.assertTrue;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -25,7 +27,7 @@ public class InstructorLifeCycleTests {
 	private static final String FETCH_FROM_DIFFERENT_TARNSACTION = "FETCH_FROM_DIFFERENT_TARNSACTION";
 	private static final String TRANSIENT = "TRANSIENT";
 	private static final String DETACHED = "DETACHED";
-	private String executionCase = FETCH_FROM_SAME_TARNSACTION;
+	private String executionCase = DETACHED;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -40,6 +42,12 @@ public class InstructorLifeCycleTests {
 	@Rollback(false)
 	public void ruTest() {
 		doInTransaction(() -> realiser.updateRealiser().accept(getInstructorForTest()));
+		// ruRealiser
+		Instructor instructor = em.find(Instructor.class, 1);
+		assertTrue(instructor.getAddress().equalsIgnoreCase("ruRealiser")
+				&& instructor.getFatherName().equalsIgnoreCase("ruRealiser")
+				&& instructor.getMotherName().equalsIgnoreCase("ruRealiser"));
+
 	}
 
 	@Test
