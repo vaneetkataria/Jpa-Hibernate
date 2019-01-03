@@ -104,38 +104,12 @@ public class IdProofLifeCycleTests {
 		doInTransaction(() -> realiser.mergingRemovedEntityRealiser().accept(getIdProofForTest()));
 	}
 
-	// 1. Merge method looks up to database if entity with same id and version is
-	// found then a new object is created for that in PC and input entity state is
-	// merged into it .
-	// 2. New entity becomes persistent and input entity continue remain unmanaged
-	// by
-	// PC
-	// 3.If record is not present in db even then a new object is created and input
-	// entity state is
-	// merged into it .
-	// 4. Merging input entity never becomes persistent .
-	// 5. If an entity already present in PC then no db lookup will happen and
-	// input entity will be merge into that . Input entity continue remaining
-	// unmanaged .
 	@Test
 	@Rollback(false)
 	public void mergedEntityTest() {
 		doInTransaction(() -> realiser.mergedEntityRealiser().accept(getIdProofForTest()));
 	}
 
-	// 1. Merge method looks up to database if entity with same id and version is
-	// found then a new object is created for that in PC and input entity state is
-	// merged into it .
-	// 2. New entity becomes persistent and input entity continue remain unmanaged
-	// by
-	// PC
-	// 3.If record is not present in db even then a new object is created and input
-	// entity state is
-	// merged into it .
-	// 4. Merging input entity never becomes persistent .
-	// 5. If an entity already present in PC then no db lookup will happen and
-	// input entity will be merge into that . Input entity continue remaining
-	// unmanaged .
 	@Test
 	@Rollback(false)
 	public void mergedEntityTest_AlreadyPresentInPC() {

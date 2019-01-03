@@ -239,7 +239,7 @@ public class InstructorLifeCycleRealiser extends EntityLifeCycleRealiser<Instruc
 
 	protected Consumer<Instructor> setMergedEntityRealiser_AlreadyPresentInPC() {
 		return instructor -> {
-			Instructor fromDb = em.find(Instructor.class, 2);
+			Instructor fromDb = em.find(Instructor.class, 1);
 			System.out.println(fromDb);
 			instructor.setAddress("mergingRemovedEntityRealiser");
 			em.flush();
