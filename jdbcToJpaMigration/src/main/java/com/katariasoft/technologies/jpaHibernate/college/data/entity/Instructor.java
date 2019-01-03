@@ -80,7 +80,7 @@ public class Instructor {
 	private IdProof idProof;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "instructor")
 	private Set<Vehicle> vehicles;
-	@ManyToMany
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinTable(name = "instructors_students_junction_tbl", joinColumns = {
 			@JoinColumn(name = "instructor_id") }, inverseJoinColumns = { @JoinColumn(name = "student_id") })
 	private Set<Student> students;
