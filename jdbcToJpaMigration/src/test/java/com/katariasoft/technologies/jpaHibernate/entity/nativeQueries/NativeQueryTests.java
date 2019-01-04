@@ -2,8 +2,6 @@ package com.katariasoft.technologies.jpaHibernate.entity.nativeQueries;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.katariasoft.technologies.jpaHibernate.college.data.dao.InstructorRepository;
-import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
-import com.katariasoft.technologies.jpaHibernate.college.data.entity.lifecycle.InstructorLifeCycleRealiser;
-import com.katariasoft.technologies.jpaHibernate.college.data.utils.DataPrinters;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.Executable;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
@@ -25,18 +20,6 @@ public class NativeQueryTests {
 	private InstructorRepository instructorRepository;
 	@Autowired
 	private TransactionExecutionTemplate transactionTemplate;
-	@Autowired
-	private InstructorLifeCycleRealiser realiser;
-
-	@Test
-	@Rollback(false)
-	public void fetchAllInstructors() {
-		doInTransaction(() -> {
-			List<Instructor> instructors = instructorRepository.fetchAllInstructors();
-			DataPrinters.listDataPrinter.accept(instructors);
-			instructors.stream().forEach(realiser.updateRealiser());
-		});
-	}
 
 	@Test
 	@Rollback(false)

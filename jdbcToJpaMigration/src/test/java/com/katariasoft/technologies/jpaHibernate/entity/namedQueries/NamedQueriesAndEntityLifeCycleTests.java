@@ -5,7 +5,6 @@ import static com.katariasoft.technologies.jpaHibernate.college.data.utils.DataP
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -54,7 +53,7 @@ public class NamedQueriesAndEntityLifeCycleTests {
 					.findNameAndSalaryHavingSalaryGreterThan(BigDecimal.valueOf(100000));
 			listDataPrinter.accept(instructors);
 			instructors.stream().forEach(oa -> {
-				oa[0] = "Chnaged After fetch.";
+				oa[0] = "Changed After fetch.";
 				oa[1] = BigDecimal.valueOf(0.0);
 			});
 			listDataPrinter.accept(instructors);
@@ -67,9 +66,14 @@ public class NamedQueriesAndEntityLifeCycleTests {
 		doInTransaction(() -> {
 			List<String> instructors = instructorDao.findDistinctFatherName();
 			listDataPrinter.accept(instructors);
-			instructors.stream().forEach(n -> n = "Changed");
+			instructors.stream().peek(System.out::println).forEach(name -> {
+				name = name + "1";
+				System.out.println(name);
+			});
+			listDataPrinter.accept(instructors);
 
 		});
+
 	}
 
 	@Test
@@ -92,8 +96,12 @@ public class NamedQueriesAndEntityLifeCycleTests {
 			List<Object[]> objs = instructorDao.countHavingFatherName(BigDecimal.valueOf(0));
 			System.out.println(objs);
 			objs.stream().forEach(oa -> {
-				oa[0] = "Chnaged";
+				oa[0] = "Changed";
 				oa[1] = 15000;
+			});
+			objs.stream().forEach(oa -> {
+				System.out.println("Name is :" + oa[0]);
+				System.out.println("count is :" + oa[1]);
 			});
 		});
 	}
