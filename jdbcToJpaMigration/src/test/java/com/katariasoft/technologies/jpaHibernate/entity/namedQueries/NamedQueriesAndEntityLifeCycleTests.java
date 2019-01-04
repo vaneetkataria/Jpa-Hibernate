@@ -42,6 +42,7 @@ public class NamedQueriesAndEntityLifeCycleTests {
 			listDataPrinter.accept(instructors);
 			if (Objects.nonNull(instructors))
 				instructors.stream().forEach(realiser.updateRealiser());
+
 		});
 	}
 

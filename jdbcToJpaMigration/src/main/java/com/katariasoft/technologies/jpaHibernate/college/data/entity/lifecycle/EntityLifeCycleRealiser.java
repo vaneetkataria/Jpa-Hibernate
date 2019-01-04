@@ -4,20 +4,20 @@ import java.util.function.Consumer;
 
 public abstract class EntityLifeCycleRealiser<T> {
 
+	private Consumer<T> persistingDetachedEntityRealiser = setPersistingDetachedEntityRealiser();
+	private Consumer<T> persistingRemovedEntityRealiser = setPersistingRemovedEntityRealiser();
+	private Consumer<T> persistingRemovedAndFlushedEntityRealiser = setPersistingRemovedAndFlushedEntityRealiser();
 	private Consumer<T> updateRealiser = setUpdateRealiser();
 	private Consumer<T> updateAndDeleteRealiser = setUpdateAndDeleteRealiser();
 	private Consumer<T> updateDeleteFlushRealiser = setUpdateDeleteFlushRealiser();
 	private Consumer<T> updateFlushDetachRealiser = setUpdateFlushDetachRealiser();
-	private Consumer<T> removingDetachedEntityRealiser = setRemovingDetachedEntityRealiser();
-	private Consumer<T> persistingDetachedEntityRealiser = setPersistingDetachedEntityRealiser();
-	private Consumer<T> mergingDetachedEntityRealiser = setMergingDetachedEntityRealiser();
 	private Consumer<T> detachingRemovedEntityRealiser = setDetachingRemovedEntityRealiser();
-	private Consumer<T> persistingRemovedEntityRealiser = setPersistingRemovedEntityRealiser();
 	private Consumer<T> detachingRemovedAndFlushedEntityRealiser = setDetachingRemovedAndFlushedEntityRealiser();
-	private Consumer<T> persistingRemovedAndFlushedEntityRealiser = setPersistingRemovedAndFlushedEntityRealiser();
+	private Consumer<T> mergingDetachedEntityRealiser = setMergingDetachedEntityRealiser();
 	private Consumer<T> mergingRemovedEntityRealiser = setMergingRemovedEntityRealiser();
 	private Consumer<T> mergedEntityRealiser = setMergedEntityRealiser();
 	private Consumer<T> mergedEntityRealiser_AlreadyPresentInPC = setMergedEntityRealiser_AlreadyPresentInPC();
+	private Consumer<T> removingDetachedEntityRealiser = setRemovingDetachedEntityRealiser();
 
 	public Consumer<T> updateRealiser() {
 		return updateRealiser;

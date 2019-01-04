@@ -27,7 +27,7 @@ public class InstructorLifeCycleTests {
 	private static final String FETCH_FROM_DIFFERENT_TARNSACTION = "FETCH_FROM_DIFFERENT_TARNSACTION";
 	private static final String TRANSIENT = "TRANSIENT";
 	private static final String DETACHED = "DETACHED";
-	private String executionCase = DETACHED;
+	private String executionCase = FETCH_FROM_SAME_TARNSACTION;
 
 	@PersistenceContext
 	private EntityManager em;
