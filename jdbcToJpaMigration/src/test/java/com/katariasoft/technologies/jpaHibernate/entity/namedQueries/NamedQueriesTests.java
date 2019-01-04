@@ -236,7 +236,7 @@ public class NamedQueriesTests {
 	}
 
 	private void doInTransaction(Executable executable) {
-		doInTransaction(executable);
+		transactionTemplate.doInTransaction(executable);
 	}
 
 }

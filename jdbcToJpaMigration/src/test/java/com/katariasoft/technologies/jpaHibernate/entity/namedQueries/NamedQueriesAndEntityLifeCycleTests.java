@@ -53,6 +53,11 @@ public class NamedQueriesAndEntityLifeCycleTests {
 			List<Object[]> instructors = instructorDao
 					.findNameAndSalaryHavingSalaryGreterThan(BigDecimal.valueOf(100000));
 			listDataPrinter.accept(instructors);
+			instructors.stream().forEach(oa -> {
+				oa[0] = "Chnaged After fetch.";
+				oa[1] = BigDecimal.valueOf(0.0);
+			});
+			listDataPrinter.accept(instructors);
 		});
 	}
 
@@ -62,6 +67,8 @@ public class NamedQueriesAndEntityLifeCycleTests {
 		doInTransaction(() -> {
 			List<String> instructors = instructorDao.findDistinctFatherName();
 			listDataPrinter.accept(instructors);
+			instructors.stream().forEach(n -> n = "Changed");
+
 		});
 	}
 
@@ -74,6 +81,7 @@ public class NamedQueriesAndEntityLifeCycleTests {
 			long count = instructorDao.countHavingSalaryBetween(salaryMin, salaryMax);
 			System.out.println("Number of Instructors having salary between " + salaryMin + " and salary max "
 					+ salaryMax + " are " + count);
+			count = 15000;
 		});
 	}
 
@@ -83,6 +91,10 @@ public class NamedQueriesAndEntityLifeCycleTests {
 		doInTransaction(() -> {
 			List<Object[]> objs = instructorDao.countHavingFatherName(BigDecimal.valueOf(0));
 			System.out.println(objs);
+			objs.stream().forEach(oa -> {
+				oa[0] = "Chnaged";
+				oa[1] = 15000;
+			});
 		});
 	}
 
@@ -90,7 +102,10 @@ public class NamedQueriesAndEntityLifeCycleTests {
 	@Rollback(false)
 	public void calculateAverageSalary() {
 		doInTransaction(() -> {
-			System.out.println("Average salary is : " + instructorDao.calculateAverageSalary());
+			double avgSalary = instructorDao.calculateAverageSalary();
+			System.out.println("Average salary is : " + avgSalary);
+			avgSalary = 0.0d;
+			System.out.println("Average salary is : " + avgSalary);
 		});
 	}
 
@@ -98,7 +113,10 @@ public class NamedQueriesAndEntityLifeCycleTests {
 	@Rollback(false)
 	public void minSalary() {
 		doInTransaction(() -> {
-			System.out.println("Min salary is : " + instructorDao.findMinSalary());
+			BigDecimal minSalary = instructorDao.findMinSalary();
+			System.out.println("Min salary is : " + minSalary);
+			minSalary = BigDecimal.ZERO;
+			System.out.println("Min salary is : " + minSalary);
 		});
 	}
 
@@ -106,7 +124,10 @@ public class NamedQueriesAndEntityLifeCycleTests {
 	@Rollback(false)
 	public void maxSalary() {
 		doInTransaction(() -> {
-			System.out.println("Max salary is : " + instructorDao.findMaxSalary());
+			BigDecimal maxSalary = instructorDao.findMaxSalary();
+			System.out.println("Max salary is : " + maxSalary);
+			maxSalary = BigDecimal.ZERO;
+			System.out.println("Min salary is : " + maxSalary);
 		});
 	}
 
