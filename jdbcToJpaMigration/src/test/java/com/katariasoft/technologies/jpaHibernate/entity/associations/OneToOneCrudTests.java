@@ -68,6 +68,15 @@ public class OneToOneCrudTests {
 		});
 	}
 
+	@Test
+	@Rollback(false)
+	public void orphanRemovalTest() {
+		doInTransaction(() -> {
+			Instructor instructor = em.find(Instructor.class, 1);
+			instructor.orphaniseIdProof();
+		});
+	}
+
 	private void doInTransaction(Executable executable) {
 		transactionTemplate.doInTransaction(executable);
 	}

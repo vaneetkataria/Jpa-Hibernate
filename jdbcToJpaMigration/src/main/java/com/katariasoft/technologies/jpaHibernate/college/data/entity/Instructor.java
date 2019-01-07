@@ -140,10 +140,6 @@ public class Instructor {
 		return idProof;
 	}
 
-	/*
-	 * public void setIdProof(IdProof idProof) { this.idProof = idProof; }
-	 */
-
 	public Set<Vehicle> getVehicles() {
 		return vehicles;
 	}
@@ -259,6 +255,10 @@ public class Instructor {
 		this.idProof = idProof;
 		if (Objects.nonNull(idProof))
 			idProof.setInstructor(this);
+	}
+
+	public void orphaniseIdProof() {
+		this.idProof = null;
 	}
 
 	@Override
