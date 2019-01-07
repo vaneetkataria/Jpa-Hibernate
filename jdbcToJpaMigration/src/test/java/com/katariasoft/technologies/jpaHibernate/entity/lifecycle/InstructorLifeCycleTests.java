@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.katariasoft.technologies.jpaHibernate.college.data.dao.InstructorRepository;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.lifecycle.InstructorLifeCycleRealiser;
-import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils;
+import static com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils.SINGLE_INSTRUCTOR_PROVIDER;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.Executable;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
@@ -131,9 +131,9 @@ public class InstructorLifeCycleTests {
 	private Instructor getInstructorForTest() {
 		switch (executionCase) {
 		case TRANSIENT:
-			return EntityUtils.singleInstructorSupplier().get();
+			return SINGLE_INSTRUCTOR_PROVIDER.get();
 		case DETACHED: {
-			Instructor instructor = EntityUtils.singleInstructorSupplier().get();
+			Instructor instructor = SINGLE_INSTRUCTOR_PROVIDER.get();
 			instructor.setId(1);
 			return instructor;
 		}

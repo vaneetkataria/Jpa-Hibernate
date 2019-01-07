@@ -16,6 +16,7 @@ public class TransactionExecutionTemplate {
 			executable.execute();
 		} catch (RuntimeException e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			throw e;
 		}
 	}
 

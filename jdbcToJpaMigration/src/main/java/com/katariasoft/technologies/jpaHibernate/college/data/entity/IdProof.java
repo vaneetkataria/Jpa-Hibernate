@@ -33,7 +33,7 @@ public class IdProof {
 	private int version;
 	@Column(length = 20, name = "proof_sequence_no", nullable = false, unique = true)
 	private String proofNo;
-	@OneToOne(mappedBy = "idProof", fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	private Instructor instructor;
 	@Column(length = 64, nullable = false)
 	private String name;

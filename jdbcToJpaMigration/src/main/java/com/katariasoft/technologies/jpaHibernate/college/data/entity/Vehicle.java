@@ -55,6 +55,21 @@ public class Vehicle {
 	@Column(columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)", nullable = false)
 	private Instant updatedDate;
 
+	public Vehicle() {
+		super();
+	}
+
+	public Vehicle(VechicleType vechicleType, @Size(min = 8, max = 100) @NotBlank String vehicleNumber,
+			@Past Instant purchasedDateTime, int purchasedDateZoneOffset, Instant creationDate, Instant updatedDate) {
+		super();
+		this.vechicleType = vechicleType;
+		this.vehicleNumber = vehicleNumber;
+		this.purchasedDateTime = purchasedDateTime;
+		this.purchasedDateZoneOffset = purchasedDateZoneOffset;
+		this.creationDate = creationDate;
+		this.updatedDate = updatedDate;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -75,14 +76,12 @@ public class Instructor {
 	private String name;
 	@Column(length = 64, nullable = false)
 	private String fatherName;
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "instructor", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "proof_id")
 	private IdProof idProof;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "instructor")
+	@OneToMany(mappedBy = "instructor", orphanRemoval = true, cascade = CascadeType.ALL)
 	private Set<Vehicle> vehicles;
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	@JoinTable(name = "instructors_students_junction_tbl", joinColumns = {
-			@JoinColumn(name = "instructor_id") }, inverseJoinColumns = { @JoinColumn(name = "student_id") })
+	@ManyToMany(mappedBy = "instructors", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<Student> students;
 	@Column(length = 64)
 	private String motherName;
@@ -141,9 +140,9 @@ public class Instructor {
 		return idProof;
 	}
 
-	public void setIdProof(IdProof idProof) {
-		this.idProof = idProof;
-	}
+	/*
+	 * public void setIdProof(IdProof idProof) { this.idProof = idProof; }
+	 */
 
 	public Set<Vehicle> getVehicles() {
 		return vehicles;
@@ -253,6 +252,13 @@ public class Instructor {
 
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	// Helper methods for oneToOne Association with IdProof
+	public void addIdProof(IdProof idProof) {
+		this.idProof = idProof;
+		if (Objects.nonNull(idProof))
+			idProof.setInstructor(this);
 	}
 
 	@Override

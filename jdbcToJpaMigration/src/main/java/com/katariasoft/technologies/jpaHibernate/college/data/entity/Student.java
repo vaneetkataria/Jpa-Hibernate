@@ -5,11 +5,14 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Version;
 
@@ -35,7 +38,9 @@ public class Student {
 	private String motherName;
 	@Column(length = 1000, nullable = false)
 	private String address;
-	@ManyToMany(mappedBy = "students")
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@JoinTable(name = "students_instructors_junction_tbl", joinColumns = {
+			@JoinColumn(name = "student_id") }, inverseJoinColumns = { @JoinColumn(name = "instructor_id") })
 	private Set<Instructor> instructors;
 	@Column(columnDefinition = "BLOB")
 	private byte[] photo;
