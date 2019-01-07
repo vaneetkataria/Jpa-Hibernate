@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -83,7 +85,9 @@ public class Instructor {
 	private IdProof idProof;
 	@OneToMany(mappedBy = "instructor", orphanRemoval = true, cascade = CascadeType.ALL)
 	private Set<Vehicle> vehicles = new HashSet<>();
-	@ManyToMany(mappedBy = "instructors", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@JoinTable(name = "instructors_students_rel_tbl", joinColumns = {
+			@JoinColumn(name = "instructor_id") }, inverseJoinColumns = { @JoinColumn(name = "student_id") })
 	private Set<Student> students = new HashSet<>();
 	@Column(length = 64)
 	private String motherName;
@@ -168,6 +172,10 @@ public class Instructor {
 
 	public void setMotherName(String motherName) {
 		this.motherName = motherName;
+	}
+
+	public Set<Student> getStudents() {
+		return students;
 	}
 
 	public String getAddress() {
@@ -286,7 +294,28 @@ public class Instructor {
 	}
 
 	public void orphaniseVehicles() {
-		CollectionUtils.clearCollection(vehicles);
+		vehicles.clear();
+	}
+
+	// Helper methods for ManyToMany association with Student class.
+	public void addStudent(Student student) {
+		Objects.requireNonNull(student);
+		{
+			students.add(student);
+			student.getInstructors().add(this);
+		}
+	}
+
+	public void addStudents(Set<Student> students) {
+		if (Objects.nonNull(students))
+			students.forEach(s -> addStudent(s));
+	}
+
+	public void removeStudent(Student student) {
+		if (Objects.nonNull(student)) {
+			students.remove(student);
+			student.getInstructors().remove(this);
+		}
 	}
 
 	@Override

@@ -32,7 +32,6 @@ public class CollectionUtils {
 			iterator.next();
 			iterator.remove();
 		}
-
 	}
 
 }

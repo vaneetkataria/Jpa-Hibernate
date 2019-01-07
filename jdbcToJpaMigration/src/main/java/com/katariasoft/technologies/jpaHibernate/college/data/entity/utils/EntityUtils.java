@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.IdProof;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.Student;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Vehicle;
 import com.katariasoft.technologies.jpaHibernate.college.data.enums.VechicleType;
 
@@ -23,7 +24,9 @@ public class EntityUtils {
 	public static Supplier<Instructor> SINGLE_INSTRUCTOR_PROVIDER = EntityUtils::singleInstructorSupplierDef;
 	public static Function<String, IdProof> SINGLE_ID_PROOF_PROVIDER = EntityUtils::idProofProviderDef;
 	public static Function<String, Set<Vehicle>> MULTIPLE_VEHICLES_PROVIDER = EntityUtils::multiVehiclesProviderDef;
-	private static final int numVehicles = 2000;
+	public static Supplier<Set<Student>> MULTIPLE_STUDENTS_PROVIDER = EntityUtils::multipleStudentsProvider;
+	private static final int numVehicles = 5;
+	private static final int numStudents = 5;
 
 	private static Instructor singleInstructorSupplierDef() {
 		Instructor instructor = new Instructor("Vaneet", "Naresh", "Neemal", "Pankhon wali gali.", null,
@@ -44,6 +47,13 @@ public class EntityUtils {
 		return IntStream.iterate(0, i -> i + 1).limit(numVehicles)
 				.mapToObj(i -> new Vehicle(VechicleType.TWO_WHEELER, vehicleNo + i,
 						Instant.now().minus(10, ChronoUnit.DAYS), 19800, Instant.now(), Instant.now()))
+				.collect(Collectors.toSet());
+	}
+
+	public static Set<Student> multipleStudentsProvider() {
+		return IntStream.range(0, numStudents)
+				.mapToObj(i -> new Student("Name:" + i, "FatherName:" + i, "MotherName:" + i, "Address:" + i, null,
+						BigDecimal.valueOf(0.0), LocalTime.now(), LocalTime.now(), Instant.now(), Instant.now()))
 				.collect(Collectors.toSet());
 	}
 

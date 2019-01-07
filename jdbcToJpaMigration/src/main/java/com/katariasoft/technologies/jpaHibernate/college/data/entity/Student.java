@@ -39,9 +39,7 @@ public class Student {
 	private String motherName;
 	@Column(length = 1000, nullable = false)
 	private String address;
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	@JoinTable(name = "students_instructors_junction_tbl", joinColumns = {
-			@JoinColumn(name = "student_id") }, inverseJoinColumns = { @JoinColumn(name = "instructor_id") })
+	@ManyToMany(mappedBy = "students", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<Instructor> instructors = new HashSet<>();
 	@Column(columnDefinition = "BLOB")
 	private byte[] photo;
@@ -82,6 +80,10 @@ public class Student {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public Set<Instructor> getInstructors() {
+		return instructors;
 	}
 
 	public String getName() {
