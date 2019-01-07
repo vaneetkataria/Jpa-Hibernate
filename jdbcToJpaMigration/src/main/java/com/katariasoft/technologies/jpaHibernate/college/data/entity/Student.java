@@ -3,6 +3,7 @@ package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,7 +42,7 @@ public class Student {
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinTable(name = "students_instructors_junction_tbl", joinColumns = {
 			@JoinColumn(name = "student_id") }, inverseJoinColumns = { @JoinColumn(name = "instructor_id") })
-	private Set<Instructor> instructors;
+	private Set<Instructor> instructors = new HashSet<>();
 	@Column(columnDefinition = "BLOB")
 	private byte[] photo;
 	@Column(precision = 9, scale = 2, nullable = false)

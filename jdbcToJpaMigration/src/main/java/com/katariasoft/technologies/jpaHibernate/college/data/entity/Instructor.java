@@ -1,12 +1,12 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 
 import java.math.BigDecimal;
-
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,18 +18,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.katariasoft.technologies.jpaHibernate.college.data.utils.CollectionUtils;
 
 @Entity
 @DynamicUpdate
@@ -80,9 +82,9 @@ public class Instructor {
 	@JoinColumn(name = "proof_id")
 	private IdProof idProof;
 	@OneToMany(mappedBy = "instructor", orphanRemoval = true, cascade = CascadeType.ALL)
-	private Set<Vehicle> vehicles;
+	private Set<Vehicle> vehicles = new HashSet<>();
 	@ManyToMany(mappedBy = "instructors", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	private Set<Student> students;
+	private Set<Student> students = new HashSet<>();
 	@Column(length = 64)
 	private String motherName;
 	@Column(length = 1000, nullable = false)
@@ -142,10 +144,6 @@ public class Instructor {
 
 	public Set<Vehicle> getVehicles() {
 		return vehicles;
-	}
-
-	public void setVehicles(Set<Vehicle> vehicles) {
-		this.vehicles = vehicles;
 	}
 
 	public String getName() {
@@ -259,6 +257,36 @@ public class Instructor {
 
 	public void orphaniseIdProof() {
 		this.idProof = null;
+	}
+
+	// Helper methods for oneToMany association with Vehicle.
+	public void addVehicle(Vehicle vehicle) {
+		if (Objects.nonNull(vehicle)) {
+			vehicles.add(vehicle);
+			vehicle.setInstructor(this);
+		}
+	}
+
+	public void removeVehicle(Vehicle vehicle) {
+		if (Objects.nonNull(vehicle)) {
+			vehicles.remove(vehicle);
+			vehicle.setInstructor(null);
+		}
+	}
+
+	public void addVehicles(Set<Vehicle> vehicles) {
+		if (Objects.nonNull(vehicles))
+			vehicles.forEach(v -> addVehicle(v));
+	}
+
+	public void removeVehicles(Set<Vehicle> vehicles) {
+		if (Objects.nonNull(vehicles)) {
+			vehicles.forEach(v -> removeVehicle(v));
+		}
+	}
+
+	public void orphaniseVehicles() {
+		CollectionUtils.clearCollection(vehicles);
 	}
 
 	@Override

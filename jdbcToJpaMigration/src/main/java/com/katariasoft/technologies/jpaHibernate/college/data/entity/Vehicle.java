@@ -94,6 +94,14 @@ public class Vehicle {
 		this.vehicleNumber = vehicleNumber;
 	}
 
+	public Instructor getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(Instructor instructor) {
+		this.instructor = instructor;
+	}
+
 	public void setPurchasedOffsetDateTime(OffsetDateTime purchasedOffsetDateTime) {
 		this.purchasedDateTime = Objects.isNull(purchasedOffsetDateTime) ? null : purchasedOffsetDateTime.toInstant();
 		this.purchasedDateZoneOffset = Objects.isNull(purchasedOffsetDateTime) ? 0

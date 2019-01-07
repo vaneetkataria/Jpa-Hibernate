@@ -23,7 +23,7 @@ public class EntityUtils {
 	public static Supplier<Instructor> SINGLE_INSTRUCTOR_PROVIDER = EntityUtils::singleInstructorSupplierDef;
 	public static Function<String, IdProof> SINGLE_ID_PROOF_PROVIDER = EntityUtils::idProofProviderDef;
 	public static Function<String, Set<Vehicle>> MULTIPLE_VEHICLES_PROVIDER = EntityUtils::multiVehiclesProviderDef;
-	private static final int numVehicles = 20;
+	private static final int numVehicles = 2000;
 
 	private static Instructor singleInstructorSupplierDef() {
 		Instructor instructor = new Instructor("Vaneet", "Naresh", "Neemal", "Pankhon wali gali.", null,

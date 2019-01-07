@@ -3,6 +3,8 @@ package com.katariasoft.technologies.jpaHibernate.entity.associations;
 import static com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils.SINGLE_ID_PROOF_PROVIDER;
 import static com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils.SINGLE_INSTRUCTOR_PROVIDER;
 
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -15,24 +17,27 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.IdProof;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.Vehicle;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.Executable;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OneToOneCrudTests {
+public class OneToManyCrudTests {
 
 	@PersistenceContext
 	private EntityManager em;
 	@Autowired
 	private TransactionExecutionTemplate transactionTemplate;
 
-	@Test
+	// @Test
 	@Rollback(false)
 	public void createTest() {
 		doInTransaction(() -> {
 			Instructor instructor = SINGLE_INSTRUCTOR_PROVIDER.get();
 			instructor.addIdProof(SINGLE_ID_PROOF_PROVIDER.apply("8760_5152_3510"));
+			instructor.addVehicles(EntityUtils.MULTIPLE_VEHICLES_PROVIDER.apply("HR02 U570"));
 			em.persist(instructor);
 		});
 	}
@@ -43,9 +48,10 @@ public class OneToOneCrudTests {
 		doInTransaction(() -> {
 			Instructor instructor = em.find(Instructor.class, 1);
 			IdProof idProof = instructor.getIdProof();
+			Set<Vehicle> vehicles = instructor.getVehicles();
 			System.out.println(instructor);
 			System.out.println(idProof);
-
+			vehicles.forEach(v -> System.out.println(v.getVehicleNumber()));
 		});
 	}
 
@@ -54,8 +60,9 @@ public class OneToOneCrudTests {
 	public void updateTest() {
 		doInTransaction(() -> {
 			Instructor instructor = em.find(Instructor.class, 1);
-			instructor.setAddress("Updated in updateTest");
-			instructor.getIdProof().setAddress("Updated in updateTest");
+			instructor.setAddress("Updated:" + instructor.getAddress());
+			instructor.getIdProof().setAddress("Updated:" + instructor.getIdProof().getAddress());
+			instructor.getVehicles().forEach(v -> v.setVehicleNumber("Updated:" + v.getVehicleNumber()));
 		});
 	}
 
@@ -74,18 +81,7 @@ public class OneToOneCrudTests {
 		doInTransaction(() -> {
 			Instructor instructor = em.find(Instructor.class, 1);
 			instructor.orphaniseIdProof();
-		});
-	}
-
-	@Test
-	@Rollback(false)
-	public void mergeTest() {
-		doInTransaction(() -> {
-			Instructor instructor = SINGLE_INSTRUCTOR_PROVIDER.get();
-			// instructor.setId(1);
-			instructor.addIdProof(SINGLE_ID_PROOF_PROVIDER.apply("8760_5152_3510"));
-			// instructor.getIdProof().setId(1);
-			em.merge(instructor);
+			instructor.orphaniseVehicles();
 		});
 	}
 
