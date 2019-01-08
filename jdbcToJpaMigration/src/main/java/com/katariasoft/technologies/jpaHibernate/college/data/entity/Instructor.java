@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -278,7 +279,6 @@ public class Instructor {
 	public void removeVehicle(Vehicle vehicle) {
 		if (Objects.nonNull(vehicle)) {
 			vehicles.remove(vehicle);
-			vehicle.setInstructor(null);
 		}
 	}
 
@@ -314,8 +314,17 @@ public class Instructor {
 	public void removeStudent(Student student) {
 		if (Objects.nonNull(student)) {
 			students.remove(student);
-			student.getInstructors().remove(this);
 		}
+	}
+
+	public void removeStudents(Set<Student> students) {
+		if (Objects.nonNull(students)) {
+			students.forEach(s -> removeStudent(s));
+		}
+	}
+
+	public void removeAllStudents() {
+		students.clear();
 	}
 
 	@Override

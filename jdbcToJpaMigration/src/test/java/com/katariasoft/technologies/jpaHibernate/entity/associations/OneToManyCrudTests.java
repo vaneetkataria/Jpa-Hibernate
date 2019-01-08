@@ -4,6 +4,7 @@ import static com.katariasoft.technologies.jpaHibernate.college.data.entity.util
 import static com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils.SINGLE_INSTRUCTOR_PROVIDER;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -72,6 +73,16 @@ public class OneToManyCrudTests {
 		doInTransaction(() -> {
 			Instructor instructor = em.find(Instructor.class, 1);
 			em.remove(instructor);
+		});
+	}
+
+	@Test
+	@Rollback(false)
+	public void removeSomeVehiclesTest() {
+		doInTransaction(() -> {
+			Instructor instructor = em.find(Instructor.class, 9);
+			Set<Vehicle> vehicles = instructor.getVehicles().stream().limit(2).collect(Collectors.toSet());
+			instructor.removeVehicles(vehicles);
 		});
 	}
 

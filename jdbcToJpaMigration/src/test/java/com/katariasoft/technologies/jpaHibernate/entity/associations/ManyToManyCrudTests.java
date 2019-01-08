@@ -4,6 +4,8 @@ import static com.katariasoft.technologies.jpaHibernate.college.data.entity.util
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -89,6 +91,25 @@ public class ManyToManyCrudTests {
 			Instructor instructor = em.find(Instructor.class, 3);
 			em.remove(instructor);
 
+		});
+	}
+
+	@Test
+	@Rollback(false)
+	public void removeSomeStudentsTest() {
+		doInTransaction(() -> {
+			Instructor instructor = em.find(Instructor.class, 9);
+			Set<Student> students = instructor.getStudents().stream().limit(2).collect(Collectors.toSet());
+			instructor.removeStudents(students);
+		});
+	}
+
+	@Test
+	@Rollback(false)
+	public void removeAllStudentsTest() {
+		doInTransaction(() -> {
+			Instructor instructor = em.find(Instructor.class, 6);
+			instructor.removeAllStudents();
 		});
 	}
 
