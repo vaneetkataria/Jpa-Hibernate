@@ -3,6 +3,7 @@ package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -172,6 +173,14 @@ public class Student {
 
 	public void setUpdatedDate(Instant updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", version=" + version + ", name=" + name + ", fatherName=" + fatherName
+				+ ", motherName=" + motherName + ", address=" + address + ", photo=" + Arrays.toString(photo)
+				+ ", fees=" + fees + ", dayStartTime=" + dayStartTime + ", dayOffTime=" + dayOffTime + ", createdDate="
+				+ createdDate + ", updatedDate=" + updatedDate + "]";
 	}
 
 }

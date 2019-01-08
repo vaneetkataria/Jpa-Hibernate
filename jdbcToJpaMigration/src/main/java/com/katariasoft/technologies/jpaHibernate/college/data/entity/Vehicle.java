@@ -133,4 +133,11 @@ public class Vehicle {
 		this.updatedDate = updatedDate;
 	}
 
+	@Override
+	public String toString() {
+		return "Vehicle [id=" + id + ", vechicleType=" + vechicleType + ", vehicleNumber=" + vehicleNumber
+				+ ", purchasedDateTime=" + purchasedDateTime + ", purchasedDateZoneOffset=" + purchasedDateZoneOffset
+				+ ", creationDate=" + creationDate + ", updatedDate=" + updatedDate + "]";
+	}
+
 }

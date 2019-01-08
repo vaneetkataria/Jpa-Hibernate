@@ -7,10 +7,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,8 +31,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.katariasoft.technologies.jpaHibernate.college.data.utils.CollectionUtils;
 
 @Entity
 @DynamicUpdate
@@ -329,15 +325,11 @@ public class Instructor {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Instructor [id=").append(id).append(", version=").append(version).append(", name=").append(name)
-				.append(", fatherName=").append(fatherName).append(", motherName=").append(motherName)
-				.append(", address=").append(address).append(", photo=").append(Arrays.toString(photo))
-				.append(", salary=").append(salary).append(", birthDateTime=").append(birthDateTime)
-				.append(", birthDateTimeZoneOffset=").append(birthDateTimeZoneOffset).append(", dayStartTime=")
-				.append(dayStartTime).append(", dayOffTime=").append(dayOffTime).append(", createdDate=")
-				.append(createdDate).append(", updatedDate=").append(updatedDate).append("]");
-		return builder.toString();
+		return "Instructor [id=" + id + ", version=" + version + ", name=" + name + ", fatherName=" + fatherName
+				+ ", motherName=" + motherName + ", address=" + address + ", salary=" + salary + ", birthDateTime="
+				+ birthDateTime + ", birthDateTimeZoneOffset=" + birthDateTimeZoneOffset + ", dayStartTime="
+				+ dayStartTime + ", dayOffTime=" + dayOffTime + ", createdDate=" + createdDate + ", updatedDate="
+				+ updatedDate + "]";
 	}
 
 }

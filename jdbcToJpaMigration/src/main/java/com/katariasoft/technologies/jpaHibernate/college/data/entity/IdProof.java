@@ -161,13 +161,10 @@ public class IdProof {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("IdProof [id=").append(id).append(", version=").append(version).append(", proofNo=")
-				.append(proofNo).append(", name=").append(name).append(", fatherName=").append(fatherName)
-				.append(", motherName=").append(motherName).append(", address=").append(address).append(", sex=")
-				.append(sex).append(", isForeigner=").append(isForeigner).append(", createdDate=").append(createdDate)
-				.append(", updatedDate=").append(updatedDate).append("]");
-		return builder.toString();
+		return "IdProof [id=" + id + ", version=" + version + ", proofNo=" + proofNo + ", name=" + name
+				+ ", fatherName=" + fatherName + ", motherName=" + motherName + ", address=" + address + ", sex=" + sex
+				+ ", isForeigner=" + isForeigner + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate
+				+ "]";
 	}
 
 }
