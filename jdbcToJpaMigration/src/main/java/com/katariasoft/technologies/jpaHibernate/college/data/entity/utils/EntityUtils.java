@@ -6,6 +6,9 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -22,11 +25,13 @@ import com.katariasoft.technologies.jpaHibernate.college.data.enums.VechicleType
 public class EntityUtils {
 
 	public static Supplier<Instructor> SINGLE_INSTRUCTOR_PROVIDER = EntityUtils::singleInstructorSupplierDef;
+	public static Supplier<List<Instructor>> MULTI_INSTRUCTOR_PROVIDER = EntityUtils::multiInstructorSupplierDef;
 	public static Function<String, IdProof> SINGLE_ID_PROOF_PROVIDER = EntityUtils::idProofProviderDef;
 	public static Function<String, Set<Vehicle>> MULTIPLE_VEHICLES_PROVIDER = EntityUtils::multiVehiclesProviderDef;
 	public static Supplier<Set<Student>> MULTIPLE_STUDENTS_PROVIDER = EntityUtils::multipleStudentsProvider;
-	private static final int numVehicles = 5;
-	private static final int numStudents = 5;
+	private static final int numInstructors = 60;
+	private static final int numVehicles = 10;
+	private static final int numStudents = 10;
 
 	private static Instructor singleInstructorSupplierDef() {
 		Instructor instructor = new Instructor("Vaneet", "Naresh", "Neemal", "Pankhon wali gali.", null,
@@ -55,6 +60,11 @@ public class EntityUtils {
 				.mapToObj(i -> new Student("Name:" + i, "FatherName:" + i, "MotherName:" + i, "Address:" + i, null,
 						BigDecimal.valueOf(0.0), LocalTime.now(), LocalTime.now(), Instant.now(), Instant.now()))
 				.collect(Collectors.toSet());
+	}
+
+	public static List<Instructor> multiInstructorSupplierDef() {
+		return IntStream.iterate(0, i -> i + 1).limit(numInstructors).mapToObj(i -> SINGLE_INSTRUCTOR_PROVIDER.get())
+				.collect(Collectors.toList());
 	}
 
 }
