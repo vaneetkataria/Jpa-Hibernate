@@ -1,15 +1,12 @@
 package com.katariasoft.technologies.jpaHibernate.entity.fetch.entitygraph.dynamic;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +18,27 @@ import com.katariasoft.technologies.jpaHibernate.college.data.entity.IdProof;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Student;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Vehicle;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityGraphUtils;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.Executable;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SingleInstructorsEntityGrpahTests {
+public class SingleInstructorsDynamicEntityGrpahTests {
 
 	@PersistenceContext
 	private EntityManager em;
 	@Autowired
 	private TransactionExecutionTemplate transactionTemplate;
+	@Autowired
+	private EntityGraphUtils entityGraphUtils;
 
 	@Test
 	@Rollback(false)
 	public void fetchInstructorsWithIdProof() {
-		EntityGraph instructorIdProof = em.getEntityGraph("graph.instructor.idProof");
 		doInTransaction(() -> {
-			Instructor instructor = em.find(Instructor.class, 1,
-					Collections.singletonMap("javax.persistence.fetchgraph", instructorIdProof));
+			Instructor instructor = em.find(Instructor.class, 1, Collections.singletonMap(EntityGraphUtils.FETCH_GRAPH,
+					entityGraphUtils.createGraph(Instructor.class, "idProof")));
 			if (Objects.nonNull(instructor)) {
 				IdProof idProof = instructor.getIdProof();
 				Set<Vehicle> vehicles = instructor.getVehicles();
@@ -57,10 +56,9 @@ public class SingleInstructorsEntityGrpahTests {
 	@Test
 	@Rollback(false)
 	public void fetchInstructorsWithIdProofAndVehicles() {
-		EntityGraph instructorIdProofVehicles = em.getEntityGraph("graph.instructor.idProof.vehicles");
 		doInTransaction(() -> {
-			Instructor instructor = em.find(Instructor.class, 1,
-					Collections.singletonMap("javax.persistence.fetchgraph", instructorIdProofVehicles));
+			Instructor instructor = em.find(Instructor.class, 1, Collections.singletonMap(EntityGraphUtils.FETCH_GRAPH,
+					entityGraphUtils.createGraph(Instructor.class, "idProof", "vehicles")));
 			if (Objects.nonNull(instructor)) {
 				IdProof idProof = instructor.getIdProof();
 				Set<Vehicle> vehicles = instructor.getVehicles();
@@ -78,10 +76,9 @@ public class SingleInstructorsEntityGrpahTests {
 	@Test
 	@Rollback(false)
 	public void fetchInstructorsWithIdProofAndVehiclesAndStudents() {
-		EntityGraph instructorIdProofVehiclesStudents = em.getEntityGraph("graph.instructor.idProof.vehicles.students");
 		doInTransaction(() -> {
-			Instructor instructor = em.find(Instructor.class, 1,
-					Collections.singletonMap("javax.persistence.fetchgraph", instructorIdProofVehiclesStudents));
+			Instructor instructor = em.find(Instructor.class, 1, Collections.singletonMap(EntityGraphUtils.FETCH_GRAPH,
+					entityGraphUtils.createGraph(Instructor.class, "idProof", "vehicles", "students")));
 			if (Objects.nonNull(instructor)) {
 				IdProof idProof = instructor.getIdProof();
 				Set<Vehicle> vehicles = instructor.getVehicles();

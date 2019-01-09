@@ -25,7 +25,7 @@ import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionE
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MultiInstructorsEntityGrpahTests {
+public class MultiInstructorsDynamicEntityGrpahTests {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -35,10 +35,9 @@ public class MultiInstructorsEntityGrpahTests {
 	@Test
 	@Rollback(false)
 	public void fetchInstructorsWithIdProof() {
-		EntityGraph instructorIdProof = em.getEntityGraph("graph.instructor.idProof");
 		doInTransaction(() -> {
 			TypedQuery<Instructor> query = em.createQuery("select i from Instructor i ", Instructor.class)
-					.setHint("javax.persistence.fetchgraph", instructorIdProof);
+					.setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.instructor.idProof"));
 			List<Instructor> instructors = query.getResultList();
 			if (Objects.nonNull(instructors))
 				instructors.forEach(instructor -> {
@@ -58,10 +57,9 @@ public class MultiInstructorsEntityGrpahTests {
 	@Test
 	@Rollback(false)
 	public void fetchInstructorsWithIdProofAndVehicles() {
-		EntityGraph instructorIdProofVehicles = em.getEntityGraph("graph.instructor.idProof.vehicles");
 		doInTransaction(() -> {
 			TypedQuery<Instructor> query = em.createQuery("select i from Instructor i ", Instructor.class)
-					.setHint("javax.persistence.fetchgraph", instructorIdProofVehicles);
+					.setHint("javax.persistence.fetchgraph", em.getEntityGraph("graph.instructor.idProof.vehicles"));
 			List<Instructor> instructors = query.getResultList();
 			if (Objects.nonNull(instructors))
 				instructors.forEach(instructor -> {
@@ -81,10 +79,9 @@ public class MultiInstructorsEntityGrpahTests {
 	@Test
 	@Rollback(false)
 	public void fetchInstructorsWithIdProofAndVehiclesAndStudents() {
-		EntityGraph instructorIdProofVehiclesStudents = em.getEntityGraph("graph.instructor.idProof.vehicles.students");
 		doInTransaction(() -> {
-			TypedQuery<Instructor> query = em.createQuery("select i from Instructor i ", Instructor.class)
-					.setHint("javax.persistence.fetchgraph", instructorIdProofVehiclesStudents);
+			TypedQuery<Instructor> query = em.createQuery("select i from Instructor i ", Instructor.class).setHint(
+					"javax.persistence.fetchgraph", em.getEntityGraph("graph.instructor.idProof.vehicles.students"));
 			List<Instructor> instructors = query.getResultList();
 			if (Objects.nonNull(instructors))
 				instructors.forEach(instructor -> {
@@ -104,11 +101,10 @@ public class MultiInstructorsEntityGrpahTests {
 	@Test
 	@Rollback(false)
 	public void fetchInstructorsWithIdProofAndVehiclesAndStudentsAndTheirInstructors() {
-		EntityGraph instructorIdProofVehiclesStudents = em
-				.getEntityGraph("graph.instructor.idProof.vehicles.students.instructors");
 		doInTransaction(() -> {
-			TypedQuery<Instructor> query = em.createQuery("select i from Instructor i ", Instructor.class)
-					.setHint("javax.persistence.loadgraph", instructorIdProofVehiclesStudents);
+			TypedQuery<Instructor> query = em.createQuery("select i from Instructor i ", Instructor.class).setHint(
+					"javax.persistence.loadgraph",
+					em.getEntityGraph("graph.instructor.idProof.vehicles.students.instructors"));
 			List<Instructor> instructors = query.getResultList();
 			if (Objects.nonNull(instructors))
 				instructors.forEach(instructor -> {
