@@ -3,13 +3,9 @@ package com.katariasoft.technologies.jpaHibernate.entity.batch;
 import static com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityUtils.*;
 
 import java.math.BigDecimal;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,10 +18,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.dao.InstructorRepository;
-import com.katariasoft.technologies.jpaHibernate.college.data.entity.IdProof;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
-import com.katariasoft.technologies.jpaHibernate.college.data.entity.Student;
-import com.katariasoft.technologies.jpaHibernate.college.data.entity.Vehicle;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.Executable;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
