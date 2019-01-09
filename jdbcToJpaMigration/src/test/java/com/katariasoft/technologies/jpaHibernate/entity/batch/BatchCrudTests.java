@@ -87,6 +87,7 @@ public class BatchCrudTests {
 					i.removeAllStudents();
 				});
 				em.flush();
+				instructors.forEach(i -> em.remove(i));
 			}
 		});
 	}
