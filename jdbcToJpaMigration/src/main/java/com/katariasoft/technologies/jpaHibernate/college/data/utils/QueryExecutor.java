@@ -19,9 +19,7 @@ public class QueryExecutor {
 
 	public <T> List<T> fetchList(String queryName, Map<String, Object> queryParams, Class<T> clazz) {
 		try {
-			TypedQuery<T> typedQuery = em.createNamedQuery(queryName, clazz);
-			applyParameters(typedQuery, queryParams);
-			return typedQuery.getResultList();
+			return fetchList(em.createNamedQuery(queryName, clazz), queryParams);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -29,12 +27,36 @@ public class QueryExecutor {
 
 	public <T> T fetchValue(String queryName, Map<String, Object> queryParams, Class<T> clazz) {
 		try {
-			TypedQuery<T> typedQuery = em.createNamedQuery(queryName, clazz);
-			applyParameters(typedQuery, queryParams);
-			return typedQuery.getSingleResult();
+			return fetchValue(em.createNamedQuery(queryName, clazz), queryParams);
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	public <T> List<T> fetchListForJpqlQuery(String queryString, Map<String, Object> queryParams, Class<T> clazz) {
+		try {
+			return fetchList(em.createQuery(queryString, clazz), queryParams);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public <T> T fetchSingleResultForJpqlQuery(String queryString, Map<String, Object> queryParams, Class<T> clazz) {
+		try {
+			return fetchValue(em.createQuery(queryString, clazz), queryParams);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public <T> List<T> fetchList(TypedQuery<T> typedQuery, Map<String, Object> queryParams) {
+		applyParameters(typedQuery, queryParams);
+		return typedQuery.getResultList();
+	}
+
+	public <T> T fetchValue(TypedQuery<T> typedQuery, Map<String, Object> queryParams) {
+		applyParameters(typedQuery, queryParams);
+		return typedQuery.getSingleResult();
 	}
 
 	public void execute(String queryName, Map<String, Object> queryParams) {
@@ -58,9 +80,9 @@ public class QueryExecutor {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> List<T> fetchListWithNativeQuery(String query, Map<String, Object> queryParams, Class<T> clazz) {
+	public <T> List<T> fetchListWithNativeQuery(String queryString, Map<String, Object> queryParams, Class<T> clazz) {
 		try {
-			Query typedQuery = em.createNativeQuery(query, clazz);
+			Query typedQuery = em.createNativeQuery(queryString, clazz);
 			applyParameters(typedQuery, queryParams);
 			return typedQuery.getResultList();
 		} catch (Exception e) {

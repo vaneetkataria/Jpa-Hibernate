@@ -19,8 +19,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
@@ -56,6 +60,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 		@NamedQuery(name = "countHavingFatherName", query = "select i.fatherName , count(i) from Instructor i where i.salary > :salary group by i.fatherName having count(i) > 0")
 
 })
+@NamedEntityGraphs({
+		@NamedEntityGraph(name = "graph.instructor.idProof", attributeNodes = {
+				@NamedAttributeNode(value = "idProof") }),
+		@NamedEntityGraph(name = "graph.instructor.idProof.vehicles", attributeNodes = {
+				@NamedAttributeNode(value = "vehicles"), @NamedAttributeNode(value = "idProof") }),
+		@NamedEntityGraph(name = "graph.instructor.idProof.vehicles.students", attributeNodes = {
+				@NamedAttributeNode(value = "vehicles"), @NamedAttributeNode(value = "idProof"),
+				@NamedAttributeNode(value = "students") }),
+		@NamedEntityGraph(name = "graph.instructor.idProof.vehicles.students.instructors", attributeNodes = {
+				@NamedAttributeNode(value = "vehicles"), @NamedAttributeNode(value = "idProof"),
+				@NamedAttributeNode(value = "students", subgraph = "student.instructors") }, subgraphs = @NamedSubgraph(name = "student.instructors", attributeNodes = {
+						@NamedAttributeNode(value = "instructors") })) })
 public class Instructor {
 	public static final String FIND_ALL_INSTRUCTORS = "select * from instructor";
 	public static final String DELETE_INSTRICTORS_HAVING_IDS = "delete from instructor where id IN (:ids) ";
