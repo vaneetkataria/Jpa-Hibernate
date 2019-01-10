@@ -7,8 +7,6 @@ import java.util.Set;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Subgraph;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.IdProof;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor_;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Student;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Vehicle;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityGraphUtils;
@@ -39,8 +38,10 @@ public class SingleInstructorsDynamicEntityGrpahTests {
 	@Rollback(false)
 	public void fetchInstructorsWithIdProof() {
 		doInTransaction(() -> {
-			Instructor instructor = em.find(Instructor.class, 1, Collections.singletonMap(EntityGraphUtils.FETCH_GRAPH,
-					entityGraphUtils.createGraph(Instructor.class, "idProof")));
+			EntityGraph<Instructor> instructorGraph = em.createEntityGraph(Instructor.class);
+			instructorGraph.addSubgraph(Instructor_.idProof);
+			Instructor instructor = em.find(Instructor.class, 1,
+					Collections.singletonMap(EntityGraphUtils.FETCH_GRAPH, instructorGraph));
 			if (Objects.nonNull(instructor)) {
 				IdProof idProof = instructor.getIdProof();
 				Set<Vehicle> vehicles = instructor.getVehicles();
@@ -99,9 +100,8 @@ public class SingleInstructorsDynamicEntityGrpahTests {
 	@Rollback(false)
 	public void fetchInstructorsWithIdProofVehiclesStudentsAndTheirInstructors() {
 		doInTransaction(() -> {
-			EntityGraph<Instructor> graph = entityGraphUtils.createGraph(Instructor.class, "idProof", "vehicles");
-			Subgraph<Student> studentSubGraph = graph.addSubgraph("students");
-			studentSubGraph.addSubgraph("instructors");
+			EntityGraph<Instructor> graph = entityGraphUtils.createGraph(Instructor.class, "idProof", "vehicles",
+					"students.instructors");
 			Instructor instructor = em.find(Instructor.class, 1,
 					Collections.singletonMap(EntityGraphUtils.FETCH_GRAPH, graph));
 			if (Objects.nonNull(instructor)) {
