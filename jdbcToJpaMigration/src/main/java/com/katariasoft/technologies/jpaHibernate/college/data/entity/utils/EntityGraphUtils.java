@@ -1,11 +1,15 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.entity.utils;
 
-import java.util.Objects;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Subgraph;
 
 import org.springframework.stereotype.Repository;
+
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.IdProof;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.Student;
 
 @Repository
 public class EntityGraphUtils {
@@ -16,9 +20,17 @@ public class EntityGraphUtils {
 	private EntityManager em;
 
 	public <T> EntityGraph<T> createGraph(Class<T> clazz, String... attributeNames) {
-		Objects.requireNonNull(attributeNames);
 		EntityGraph<T> graph = em.createEntityGraph(clazz);
 		graph.addAttributeNodes(attributeNames);
+		return graph;
+	}
+
+	public EntityGraph<Instructor> createGraph(String... attributeNames) {
+		EntityGraph<Instructor> graph = em.createEntityGraph(Instructor.class);
+		graph.addSubgraph("idProof");
+		graph.addSubgraph("vehicles");
+		Subgraph<Student> studentSubGraph = graph.addSubgraph("students");
+		studentSubGraph.addSubgraph("instructors");
 		return graph;
 	}
 

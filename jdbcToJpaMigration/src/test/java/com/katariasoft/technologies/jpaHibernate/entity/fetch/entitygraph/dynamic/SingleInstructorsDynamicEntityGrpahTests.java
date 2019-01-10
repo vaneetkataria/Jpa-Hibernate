@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Subgraph;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +77,7 @@ public class SingleInstructorsDynamicEntityGrpahTests {
 
 	@Test
 	@Rollback(false)
-	public void fetchInstructorsWithIdProofAndVehiclesAndStudents() {
+	public void fetchInstructorsWithIdProofVehiclesAndStudents() {
 		doInTransaction(() -> {
 			Instructor instructor = em.find(Instructor.class, 1, Collections.singletonMap(EntityGraphUtils.FETCH_GRAPH,
 					entityGraphUtils.createGraph(Instructor.class, "idProof", "vehicles", "students")));
@@ -95,12 +97,13 @@ public class SingleInstructorsDynamicEntityGrpahTests {
 
 	@Test
 	@Rollback(false)
-	public void fetchInstructorsWithIdProofAndVehiclesAndStudentsAndTheirInstructors() {
-		EntityGraph instructorIdProofVehiclesStudents = em
-				.getEntityGraph("graph.instructor.idProof.vehicles.students.instructors");
+	public void fetchInstructorsWithIdProofVehiclesStudentsAndTheirInstructors() {
 		doInTransaction(() -> {
+			EntityGraph<Instructor> graph = entityGraphUtils.createGraph(Instructor.class, "idProof", "vehicles");
+			Subgraph<Student> studentSubGraph = graph.addSubgraph("students");
+			studentSubGraph.addSubgraph("instructors");
 			Instructor instructor = em.find(Instructor.class, 1,
-					Collections.singletonMap("javax.persistence.loadgraph", instructorIdProofVehiclesStudents));
+					Collections.singletonMap(EntityGraphUtils.FETCH_GRAPH, graph));
 			if (Objects.nonNull(instructor)) {
 				IdProof idProof = instructor.getIdProof();
 				Set<Vehicle> vehicles = instructor.getVehicles();
