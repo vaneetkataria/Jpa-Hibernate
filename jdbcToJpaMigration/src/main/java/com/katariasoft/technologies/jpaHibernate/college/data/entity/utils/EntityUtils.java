@@ -6,8 +6,6 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -49,10 +47,15 @@ public class EntityUtils {
 	}
 
 	private static Set<Vehicle> multiVehiclesProviderDef(String vehicleNo) {
-		return IntStream.iterate(0, i -> i + 1).limit(numVehicles)
-				.mapToObj(i -> new Vehicle(VechicleType.TWO_WHEELER, vehicleNo + i,
-						Instant.now().minus(10, ChronoUnit.DAYS), 19800, Instant.now(), Instant.now()))
-				.collect(Collectors.toSet());
+		return IntStream.iterate(0, i -> i + 1).limit(numVehicles).mapToObj(i -> {
+			Vehicle vehicle = new Vehicle(VechicleType.TWO_WHEELER, vehicleNo + i,
+					Instant.now().minus(10, ChronoUnit.DAYS), 19800, Instant.now(), Instant.now());
+			IntStream.range(0, 5).forEach(j -> {
+				vehicle.addDocument(new Document(j + ""));
+			});
+			return vehicle;
+
+		}).collect(Collectors.toSet());
 	}
 
 	public static Set<Student> multipleStudentsProvider() {

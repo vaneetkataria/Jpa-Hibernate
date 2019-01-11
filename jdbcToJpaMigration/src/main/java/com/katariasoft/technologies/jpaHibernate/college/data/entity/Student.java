@@ -1,10 +1,14 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.entity;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -44,6 +48,8 @@ public class Student {
 	private String motherName;
 	@Column(length = 1000, nullable = false)
 	private String address;
+	@OneToMany(mappedBy = "student", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+	private Set<Vehicle> vehicles = new HashSet<>();
 	@ManyToMany(mappedBy = "students", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<Instructor> instructors = new HashSet<>();
 	@Column(columnDefinition = "BLOB")
@@ -177,6 +183,23 @@ public class Student {
 
 	public void setUpdatedDate(Instant updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public void addVehicle(Vehicle vehicle) {
+		if (Objects.nonNull(vehicle)) {
+			vehicles.add(vehicle);
+			vehicle.setStudent(this);
+		}
+
+	}
+
+	public void addVehicles(Set<Vehicle> vehicles) {
+		if (Objects.nonNull(vehicles))
+			vehicles.forEach(v -> addVehicle(v));
+	}
+
+	public Set<Vehicle> getVehicles() {
+		return vehicles;
 	}
 
 	@Override

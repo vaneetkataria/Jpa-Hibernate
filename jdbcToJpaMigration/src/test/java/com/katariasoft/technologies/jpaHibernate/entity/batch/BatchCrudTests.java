@@ -5,6 +5,7 @@ import static com.katariasoft.technologies.jpaHibernate.college.data.entity.util
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.dao.InstructorRepository;
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.Student;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.Executable;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
@@ -40,11 +42,15 @@ public class BatchCrudTests {
 			List<Instructor> instructors = MULTI_INSTRUCTOR_PROVIDER.get();
 			IntStream.range(0, instructors.size()).forEach(i -> {
 				Instructor instructor = instructors.get(i);
-				instructor.addIdProof(SINGLE_ID_PROOF_PROVIDER.apply("8760_5152_3510" + i + "l"));
-				instructor.addVehicles(MULTIPLE_VEHICLES_PROVIDER.apply("HR02 U570" + i + "l"));
+				instructor.addIdProof(SINGLE_ID_PROOF_PROVIDER.apply("8760_5152_3510" + i + "I"));
+				instructor.addVehicles(MULTIPLE_VEHICLES_PROVIDER.apply("INS-U570" + i + "I"));
 				instructor.addStudents(MULTIPLE_STUDENTS_PROVIDER.get());
-				em.persist(instructor);
+				List<Student> students = instructor.getStudents().stream().collect(Collectors.toList());
+				IntStream.range(0, students.size()).forEach(j -> {
+					students.get(j).addVehicles(MULTIPLE_VEHICLES_PROVIDER.apply("STU-U570" + i + j + "S"));
+				});
 
+				em.persist(instructor);
 				if ((i + 1) % 30 == 0) {
 					em.flush();
 					em.clear();
