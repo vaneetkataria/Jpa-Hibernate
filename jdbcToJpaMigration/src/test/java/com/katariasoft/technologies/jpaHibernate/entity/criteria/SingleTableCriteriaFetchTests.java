@@ -40,7 +40,7 @@ public class SingleTableCriteriaFetchTests {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
 		CriteriaQuery<Instructor> cq = cb.createQuery(Instructor.class);
 		Root<Instructor> root = cq.from(Instructor.class);
-		printResultList(cq.select(root).where(cb.greaterThan(root.get(Instructor_.salary), BigDecimal.ZERO)));
+		printResultList(cq.select(root).where(cb.greaterThan(root.get(Instructor_.salary), BigDecimal.valueOf(30000))));
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class SingleTableCriteriaFetchTests {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
 		CriteriaQuery<Instructor> cq = cb.createQuery(Instructor.class);
 		Root<Instructor> root = cq.from(Instructor.class);
-		printResultList(cq.select(root).where(cb.like(root.get(Instructor_.address), "#1034")));
+		printResultList(cq.select(root).where(cb.like(root.get(Instructor_.address), "%#1074%")));
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class SingleTableCriteriaFetchTests {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
 		CriteriaQuery<Instructor> cq = cb.createQuery(Instructor.class);
 		Root<Instructor> root = cq.from(Instructor.class);
-		printResultList(cq.select(root).where(cb.like(root.get(Instructor_.fatherName), "Nare")));
+		printResultList(cq.select(root).where(cb.like(root.get(Instructor_.fatherName), "%Nare%")));
 
 	}
 
@@ -65,7 +65,7 @@ public class SingleTableCriteriaFetchTests {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
 		CriteriaQuery<Instructor> cq = cb.createQuery(Instructor.class);
 		Root<Instructor> root = cq.from(Instructor.class);
-		printResultList(cq.select(root).where(cb.notLike(root.get(Instructor_.fatherName), "Nare")));
+		printResultList(cq.select(root).where(cb.notLike(root.get(Instructor_.fatherName), "%Nare%")));
 	}
 
 	@Test
@@ -73,14 +73,28 @@ public class SingleTableCriteriaFetchTests {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
 		CriteriaQuery<Instructor> cq = cb.createQuery(Instructor.class);
 		Root<Instructor> root = cq.from(Instructor.class);
-		cq.select(root)
-				.where(cb.like(root.get(Instructor_.address), "#1074"),
-						cb.like(root.get(Instructor_.fatherName), "nare"),
-						cb.lessThan(root.get(Instructor_.salary), BigDecimal.valueOf(0.0)))
-				.orderBy(cb.desc(root.get(Instructor_.birthDateTime)), cb.asc(root.get(Instructor_.name)));
+		printResultList(cq.select(root)
+				.where(cb.greaterThan(root.get(Instructor_.salary), BigDecimal.ZERO),
+						cb.like(root.get(Instructor_.fatherName), "%nare%"))
+				.orderBy(cb.asc(root.get(Instructor_.birthDateTime)), cb.desc(root.get(Instructor_.name))));
 
 	}
 
+	@Test
+	public void findAllHavingAddressAndFatherNameLikeOrSalaryLessThan() {
+		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
+		CriteriaQuery<Instructor> cq = cb.createQuery(Instructor.class);
+		Root<Instructor> root = cq.from(Instructor.class);
+		printResultList(cq.select(root)
+				.where(cb.or(
+						cb.and(cb.greaterThan(root.get(Instructor_.salary), BigDecimal.ZERO),
+								cb.like(root.get(Instructor_.fatherName), "%nare%")),
+						cb.lessThan(root.get(Instructor_.salary), BigDecimal.valueOf(20000))))
+				.orderBy(cb.asc(root.get(Instructor_.birthDateTime)), cb.asc(root.get(Instructor_.name))));
+
+	}
+
+	//TODO
 	@Test
 	public void findAllOrderByBirthDateTimeDesc() {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
