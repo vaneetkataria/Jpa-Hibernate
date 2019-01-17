@@ -1,4 +1,4 @@
-package com.katariasoft.technologies.jpaHibernate.entity.fetch.entitygraph.dynamic;
+package criteria.copy;
 
 import java.util.List;
 import java.util.Objects;

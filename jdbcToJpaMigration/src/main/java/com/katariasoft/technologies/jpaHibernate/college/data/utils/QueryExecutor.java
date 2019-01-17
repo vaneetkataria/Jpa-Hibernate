@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 
 import org.springframework.stereotype.Repository;
 
@@ -57,6 +58,14 @@ public class QueryExecutor {
 	public <T> T fetchValue(TypedQuery<T> typedQuery, Map<String, Object> queryParams) {
 		applyParameters(typedQuery, queryParams);
 		return typedQuery.getSingleResult();
+	}
+
+	public <T> List<T> fetchListForCriteriaQuery(CriteriaQuery<T> criteriaQuery) {
+		return fetchList(em.createQuery(criteriaQuery), null);
+	}
+
+	public <T> T fetchValueForCriteriaQuery(CriteriaQuery<T> criteriaQuery) {
+		return fetchValue(em.createQuery(criteriaQuery), null);
 	}
 
 	public void execute(String queryName, Map<String, Object> queryParams) {

@@ -6,14 +6,16 @@ import java.util.function.Consumer;
 
 public class DataPrinters {
 
-	public static Consumer<List<?>> listDataPrinter = l -> {
-		if (Objects.nonNull(l) && !l.isEmpty())
-			l.stream().forEach(System.out::println);
-	};
+	public static Consumer<List<?>> listDataPrinter = DataPrinters::printList;
 
 	public static <T> void print(List<T> dataList) {
 		if (Objects.nonNull(dataList) && !dataList.isEmpty())
 			dataList.stream().forEach(System.out::println);
+	}
+
+	public static void printList(List<?> list) {
+		if (Objects.nonNull(list) && !list.isEmpty())
+			list.stream().forEach(System.out::println);
 	}
 
 }
