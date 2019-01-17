@@ -14,8 +14,6 @@ import javax.persistence.criteria.CriteriaUpdate;
 
 import org.springframework.stereotype.Repository;
 
-import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
-
 @Repository
 public class QueryExecutor {
 

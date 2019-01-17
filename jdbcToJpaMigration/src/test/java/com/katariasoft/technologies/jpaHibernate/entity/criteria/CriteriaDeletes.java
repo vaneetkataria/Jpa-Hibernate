@@ -6,11 +6,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
@@ -27,6 +29,8 @@ public class CriteriaDeletes {
 	private QueryExecutor queryExecutor;
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	public void deleteHavingIdsIn() {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
 		CriteriaDelete<Instructor> cq = cb.createCriteriaDelete(Instructor.class);
@@ -37,12 +41,14 @@ public class CriteriaDeletes {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	public void deleteHavingFatherNameAndAddressLike() {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
 		CriteriaDelete<Instructor> cq = cb.createCriteriaDelete(Instructor.class);
 		Root<Instructor> root = cq.from(Instructor.class);
-		executeDelete(cq.where(cb.like(root.get(Instructor_.fatherName), "nare"),
-				cb.like(root.get(Instructor_.address), "#1074")));
+		executeDelete(cq.where(cb.like(root.get(Instructor_.fatherName), "%ram%"),
+				cb.like(root.get(Instructor_.address), "%#1074%")));
 
 	}
 

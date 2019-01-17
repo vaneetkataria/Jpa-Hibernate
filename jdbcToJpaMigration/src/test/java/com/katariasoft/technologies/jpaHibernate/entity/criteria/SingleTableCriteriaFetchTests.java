@@ -94,7 +94,6 @@ public class SingleTableCriteriaFetchTests {
 
 	}
 
-	//TODO
 	@Test
 	public void findAllOrderByBirthDateTimeDesc() {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
@@ -152,7 +151,7 @@ public class SingleTableCriteriaFetchTests {
 		CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
 		Root<Instructor> root = cq.from(Instructor.class);
 		printResultList(cq.multiselect(root.get(Instructor_.name), root.get(Instructor_.salary))
-				.where(cb.greaterThan(root.get(Instructor_.salary), BigDecimal.ZERO)));
+				.where(cb.greaterThan(root.get(Instructor_.salary), BigDecimal.valueOf(75000))));
 	}
 
 	@Test
@@ -169,9 +168,10 @@ public class SingleTableCriteriaFetchTests {
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<Instructor> root = cq.from(Instructor.class);
 		printValue((cq.select(cb.count(root))
-				.where(cb.between(root.get(Instructor_.salary), BigDecimal.ZERO, BigDecimal.valueOf(1000000000.00)))));
+				.where(cb.between(root.get(Instructor_.salary), BigDecimal.ZERO, BigDecimal.valueOf(100000.00)))));
 	}
 
+	// TODO
 	@Test
 	public void findMinSalary() {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
@@ -201,8 +201,8 @@ public class SingleTableCriteriaFetchTests {
 		CriteriaBuilder cb = criteriaUtils.criteriaBuilder();
 		CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
 		Root<Instructor> root = cq.from(Instructor.class);
-		cq.multiselect(root.get(Instructor_.fatherName), cb.count(root)).groupBy(root.get(Instructor_.fatherName))
-				.having(cb.gt(cb.count(root), 0));
+		printResultList(cq.multiselect(root.get(Instructor_.fatherName), cb.count(root)).groupBy(root.get(Instructor_.fatherName))
+				.having(cb.gt(cb.count(root), 0)));
 	}
 
 	private <T> void printResultList(CriteriaQuery<T> criteriaQuery) {
