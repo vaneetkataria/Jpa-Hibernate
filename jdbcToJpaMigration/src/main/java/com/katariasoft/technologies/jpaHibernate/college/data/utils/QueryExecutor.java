@@ -8,9 +8,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 
 import org.springframework.stereotype.Repository;
+
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
 
 @Repository
 public class QueryExecutor {
@@ -66,6 +70,22 @@ public class QueryExecutor {
 
 	public <T> T fetchValueForCriteriaQuery(CriteriaQuery<T> criteriaQuery) {
 		return fetchValue(em.createQuery(criteriaQuery), null);
+	}
+
+	public <T> void executeUpdateWithCriteriaQuery(CriteriaUpdate<T> criteriaUpdate) {
+		try {
+			em.createQuery(criteriaUpdate).executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public <T> void executeDeleteWithCriteriaQuery(CriteriaDelete<T> criteriaDelete) {
+		try {
+			em.createQuery(criteriaDelete).executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	public void execute(String queryName, Map<String, Object> queryParams) {
