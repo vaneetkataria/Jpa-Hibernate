@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -13,6 +14,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 
 import org.springframework.stereotype.Repository;
+
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.EntityGraphUtils;
 
 @Repository
 public class QueryExecutor {
@@ -52,6 +55,28 @@ public class QueryExecutor {
 		}
 	}
 
+	public <T> List<T> fetchListForJpqlQuery(String queryString, Map<String, Object> queryParams, Class<T> clazz,
+			EntityGraph<T> entityGraph) {
+		try {
+			Objects.requireNonNull(entityGraph, "EntityGraph must not be empty.");
+			return fetchList(em.createQuery(queryString, clazz).setHint(EntityGraphUtils.FETCH_GRAPH, entityGraph),
+					queryParams);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public <T> T fetchSingleResultForJpqlQuery(String queryString, Map<String, Object> queryParams, Class<T> clazz,
+			EntityGraph<T> entityGraph) {
+		try {
+			Objects.requireNonNull(entityGraph, "EntityGraph must not be empty.");
+			return fetchValue(em.createQuery(queryString, clazz).setHint(EntityGraphUtils.FETCH_GRAPH, entityGraph),
+					queryParams);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 	public <T> List<T> fetchList(TypedQuery<T> typedQuery, Map<String, Object> queryParams) {
 		applyParameters(typedQuery, queryParams);
 		return typedQuery.getResultList();
@@ -68,6 +93,10 @@ public class QueryExecutor {
 
 	public <T> T fetchValueForCriteriaQuery(CriteriaQuery<T> criteriaQuery) {
 		return fetchValue(em.createQuery(criteriaQuery), null);
+	}
+
+	public <T> List<T> fetchListForCriteriaQuery(CriteriaQuery<T> criteriaQuery, EntityGraph<T> entityGraph) {
+		return fetchList(em.createQuery(criteriaQuery).setHint(EntityGraphUtils.FETCH_GRAPH, entityGraph), null);
 	}
 
 	public <T> void executeUpdateWithCriteriaQuery(CriteriaUpdate<T> criteriaUpdate) {

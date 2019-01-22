@@ -54,5 +54,7 @@ public class CriteriaUpdates {
 	private <T> void executeUpdate(CriteriaUpdate<T> criteriaUpdate) {
 		queryExecutor.executeUpdateWithCriteriaQuery(criteriaUpdate);
 	}
+	
+	
 
 }
