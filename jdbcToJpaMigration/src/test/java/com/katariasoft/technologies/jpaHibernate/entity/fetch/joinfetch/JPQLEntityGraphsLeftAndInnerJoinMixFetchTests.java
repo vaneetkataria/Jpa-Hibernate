@@ -73,12 +73,15 @@ public class JPQLEntityGraphsLeftAndInnerJoinMixFetchTests {
 		List<Instructor> instructorsWithLeftJoin = typedQueryLeftJoin.getResultList();
 
 		try {
-			TypedQuery<Instructor> typedQueryLeftJoinAndJoinFetchMixed = em.createQuery(" select i from Instructor i "
-					+ " join fetch i.idProof id " + "left join i.vehicles v " + " join fetch v.documents vd ",
+			TypedQuery<Instructor> typedQueryLeftJoinAndJoinFetchMixed = em.createQuery(
+					" select i from Instructor i " + " join fetch i.idProof id " + "left join i.vehicles v "
+							+ " left join v.documents vd " + " where vd.name in (:names)",
 					Instructor.class);
+			typedQueryLeftJoinAndJoinFetchMixed.setParameter("names", Arrays.asList("1", "2", "3"));
 			typedQueryLeftJoinAndJoinFetchMixed.setHint("javax.persistence.fetchgraph", instructorGraph);
 			List<Instructor> instructorsWithLeftJoinAndJoinFetchMixed = typedQueryLeftJoinAndJoinFetchMixed
 					.getResultList();
+			DataPrinters.listDataPrinter.accept(instructorsWithLeftJoinAndJoinFetchMixed);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

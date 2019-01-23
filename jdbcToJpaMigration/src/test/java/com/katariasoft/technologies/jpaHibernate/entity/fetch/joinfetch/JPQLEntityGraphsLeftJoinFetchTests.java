@@ -78,8 +78,8 @@ public class JPQLEntityGraphsLeftJoinFetchTests {
 		EntityGraph<Instructor> eg = em.createEntityGraph(Instructor.class);
 		eg.addAttributeNodes(Instructor_.idProof);
 		List<Instructor> instructors = queryExecutor.fetchListForJpqlQuery(
-				"select i from Instructor i " + "left join i.idProof id" + " where i.id > :id ",
-				Collections.singletonMap("id", 2), Instructor.class, eg);
+				"select i from Instructor i " + "left join i.idProof id" + " where i.id > :id and id.sex != :sex",
+				CollectionUtils.mapOf("id", 2, "sex", 'M'), Instructor.class, eg);
 		DataPrinters.listDataPrinter.accept(instructors);
 	}
 
