@@ -53,9 +53,8 @@ public class JPQLEntityGraphsLeftJoinFetchTests {
 		List<Instructor> instructors = queryExecutor.fetchListForJpqlQuery(
 				"select i from Instructor i " + "left join i.idProof id " + "left join i.vehicles v "
 						+ "left join i.students s " + "left join s.instructors si " + "left join s.vehicles sv "
-						+ "left join sv.documents svd " + "where i.id > :id and svd.name in (:names)",
-				CollectionUtils.mapOf("id", 2, "names", Arrays.asList("1", "2", "3")), Instructor.class,
-				entityGraphUtils.fullEntityGraph());
+						+ "left join sv.documents svd " + "where i.id > :id and s.name = :name",
+				CollectionUtils.mapOf("id", 2, "name", "Name:0"), Instructor.class, entityGraphUtils.fullEntityGraph());
 		DataPrinters.listDataPrinter.accept(instructors);
 	}
 
