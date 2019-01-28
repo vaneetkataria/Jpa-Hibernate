@@ -42,7 +42,7 @@ public class JPQLEntityGraphsLeftJoinFetchTests {
 						+ "left join v.documents vd " + "left join i.students s " + "left join s.instructors si "
 						+ "left join s.vehicles sv " + "left join sv.documents svd "
 						+ "where i.id > :id and svd.name in (:names)",
-				CollectionUtils.mapOf("id", 2, "names", Arrays.asList("1", "2", "3", "4", "5")), Instructor.class);
+				CollectionUtils.mapOf("id", 0, "names", Arrays.asList("1", "2", "3", "4", "5")), Instructor.class);
 		DataPrinters.listDataPrinter.accept(instructors);
 	}
 

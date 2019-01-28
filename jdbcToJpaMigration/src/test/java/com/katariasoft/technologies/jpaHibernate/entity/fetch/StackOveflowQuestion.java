@@ -32,13 +32,13 @@ public class StackOveflowQuestion {
 	@Transactional
 	@Rollback(false)
 	public void fetchTest1() {
-		// join fetch i.students fetchTest4s join fetch s.vehicles sv join fetch sv.documents svd
+		// join fetch i.students fetchTest4s join fetch s.vehicles sv join fetch
+		// sv.documents svd
 		EntityGraph<Instructor> eg = em.createEntityGraph(Instructor.class);
 		eg.addAttributeNodes(Instructor_.vehicles);
-
 		List<Instructor> instructorsJpqlJoinFetch = em
 				.createQuery("select distinct i from Instructor i join fetch i.vehicles v ", Instructor.class)
-				/*.setHint(EntityGraphUtils.FETCH_GRAPH, eg)*/.getResultList();
+				/* .setHint(EntityGraphUtils.FETCH_GRAPH, eg) */.getResultList();
 		print(instructorsJpqlJoinFetch);
 
 	}
@@ -52,7 +52,7 @@ public class StackOveflowQuestion {
 
 		List<Instructor> instructorsJpqlLeftJoin = em
 				.createQuery("select distinct i from Instructor i left join i.vehicles v ", Instructor.class)
-				/*.setHint(EntityGraphUtils.FETCH_GRAPH, eg)*/.getResultList();
+				/* .setHint(EntityGraphUtils.FETCH_GRAPH, eg) */.getResultList();
 		print(instructorsJpqlLeftJoin);
 
 	}
