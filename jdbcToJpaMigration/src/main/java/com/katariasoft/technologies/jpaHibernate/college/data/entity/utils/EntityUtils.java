@@ -27,7 +27,7 @@ public class EntityUtils {
 	public static Function<String, IdProof> SINGLE_ID_PROOF_PROVIDER = EntityUtils::idProofProviderDef;
 	public static Function<String, Set<Vehicle>> MULTIPLE_VEHICLES_PROVIDER = EntityUtils::multiVehiclesProviderDef;
 	public static Supplier<Set<Student>> MULTIPLE_STUDENTS_PROVIDER = EntityUtils::multipleStudentsProvider;
-	private static final int numInstructors = 60;
+	private static final int numInstructors = 5;
 	private static final int numVehicles = 10;
 	private static final int numStudents = 10;
 

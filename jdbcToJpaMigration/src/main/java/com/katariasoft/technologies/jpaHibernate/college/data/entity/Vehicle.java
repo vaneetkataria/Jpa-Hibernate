@@ -161,6 +161,10 @@ public class Vehicle {
 		if (Objects.nonNull(documents))
 			documents.forEach(d -> addDocument(d));
 	}
+	
+	public Set<Document> getDocuments() {
+		return documents;
+	}
 
 	@Override
 	public String toString() {
