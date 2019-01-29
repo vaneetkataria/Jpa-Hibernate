@@ -56,7 +56,7 @@ public class JPQLEntityGraphsLeftAndInnerJoinMixFetchTests {
 	@Transactional
 	public void fetchPartialDataWithJPQLQueryWithEqualEntityGraph() {
 		EntityGraph<Instructor> instructorGraph = em.createEntityGraph(Instructor.class);
-		instructorGraph.addAttributeNodes(Instructor_.idProof);
+		
 		Subgraph<Vehicle> vehcileSubgraph = instructorGraph.addSubgraph(Instructor_.VEHICLES);
 		vehcileSubgraph.addAttributeNodes(Vehicle_.documents);
 
@@ -75,7 +75,7 @@ public class JPQLEntityGraphsLeftAndInnerJoinMixFetchTests {
 		try {
 			TypedQuery<Instructor> typedQueryLeftJoinAndJoinFetchMixed = em.createQuery(
 					" select i from Instructor i " + " join fetch i.idProof id " + "left join i.vehicles v "
-							+ " left join v.documents vd " + " where vd.name in (:names)",
+							+ "  left join v.documents vd " + " where vd.name in (:names)",
 					Instructor.class);
 			typedQueryLeftJoinAndJoinFetchMixed.setParameter("names", Arrays.asList("1", "2", "3"));
 			typedQueryLeftJoinAndJoinFetchMixed.setHint("javax.persistence.fetchgraph", instructorGraph);
