@@ -1,4 +1,4 @@
-package com.katariasoft.technologies.jpaHibernate.entity.fetch;
+package com.katariasoft.technologies.jpaHibernate.entity.fetch.optimising;
 
 import java.util.List;
 

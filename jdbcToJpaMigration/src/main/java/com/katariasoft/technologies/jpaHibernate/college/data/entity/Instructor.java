@@ -29,6 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -84,43 +85,61 @@ public class Instructor {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
+
 	@Version
 	@Column(columnDefinition = "int(11) not null default 0")
 	private int version = 0;
+
 	@Column(length = 64, nullable = false)
 	// @Size(min = 10, max = 64)
 	private String name;
+
 	@Column(length = 64, nullable = false)
 	private String fatherName;
+
 	@OneToOne(mappedBy = "instructor", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "proof_id")
 	private IdProof idProof;
+
+	@BatchSize(size = 50)
 	@OneToMany(mappedBy = "instructor", orphanRemoval = true, cascade = CascadeType.ALL)
 	private Set<Vehicle> vehicles = new HashSet<>();
+
+	@BatchSize(size = 50)
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinTable(name = "instructors_students_rel_tbl", joinColumns = {
 			@JoinColumn(name = "instructor_id") }, inverseJoinColumns = { @JoinColumn(name = "student_id") })
 	private Set<Student> students = new HashSet<>();
+
 	@Column(length = 64)
 	private String motherName;
+
 	@Column(length = 1000, nullable = false)
 	private String address;
+
 	@Column(columnDefinition = "BLOB")
 	private byte[] photo;
+
 	@Column(nullable = false, name = "monthly_salary", scale = 2, precision = 9)
 	// @DecimalMin(value = "10.00")
 	private BigDecimal salary;
+
 	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)")
 	private Instant birthDateTime;
+
 	@Column(nullable = false)
 	private int birthDateTimeZoneOffset;
+
 	@Column(nullable = false)
 	private LocalTime dayStartTime;
+
 	@Column(nullable = false)
 	private LocalTime dayOffTime;
+
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
 	private Instant createdDate;
+
 	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)")
 	private Instant updatedDate;

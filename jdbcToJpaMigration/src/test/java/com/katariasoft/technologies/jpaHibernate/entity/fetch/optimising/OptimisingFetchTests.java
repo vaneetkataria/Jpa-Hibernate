@@ -1,4 +1,4 @@
-package com.katariasoft.technologies.jpaHibernate.entity.optimisedFetch;
+package com.katariasoft.technologies.jpaHibernate.entity.fetch.optimising;
 
 import java.util.Arrays;
 
@@ -33,7 +33,7 @@ import com.katariasoft.technologies.jpaHibernate.college.data.utils.QueryExecuto
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OptimiseFetchTests {
+public class OptimisingFetchTests {
 
 	@Autowired
 	private QueryExecutor queryExecutor;

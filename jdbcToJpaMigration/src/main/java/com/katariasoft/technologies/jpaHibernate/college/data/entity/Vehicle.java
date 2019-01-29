@@ -22,6 +22,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -50,8 +51,11 @@ public class Vehicle {
 	@NotBlank
 	@Column(length = 100, nullable = false, unique = true)
 	private String vehicleNumber;
+
+	@BatchSize(size = 10)
 	@OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
 	private Set<Document> documents = new HashSet<>();
+
 	@Past
 	@Column(columnDefinition = "TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP(6)", nullable = false)
 	private Instant purchasedDateTime;
@@ -161,7 +165,7 @@ public class Vehicle {
 		if (Objects.nonNull(documents))
 			documents.forEach(d -> addDocument(d));
 	}
-	
+
 	public Set<Document> getDocuments() {
 		return documents;
 	}
