@@ -34,6 +34,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
@@ -97,6 +99,7 @@ public class Instructor {
 	@Column(length = 64, nullable = false)
 	private String fatherName;
 
+	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@OneToOne(mappedBy = "instructor", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "proof_id")
 	private IdProof idProof;
@@ -355,6 +358,10 @@ public class Instructor {
 
 	public void removeAllStudents() {
 		students.clear();
+	}
+
+	public int getVersion() {
+		return version;
 	}
 
 	@Override
