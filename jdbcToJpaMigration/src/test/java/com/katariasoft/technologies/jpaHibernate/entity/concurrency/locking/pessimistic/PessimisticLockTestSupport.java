@@ -71,6 +71,52 @@ public class PessimisticLockTestSupport {
 
 	}
 
+	public void testAquirePessimisticLocking(int recordId, Optional<LockModeType> mainThreadLock,
+			Optional<LockModeType> secondaryThreadLock, long mainThreadwaitms, long secondaryThreadWaitMs,
+			long lockTimeOut) {
+
+		Map<String, Object> lockProperties = CollectionUtils.mapOf("javax.persistence.lock.timeout", lockTimeOut);
+
+		doInTransansaction(em -> {
+
+			Instructor instructor = em.find(Instructor.class, recordId);
+
+			if (mainThreadLock.isPresent())
+				em.lock(instructor, mainThreadLock.get(), lockProperties);
+
+			instructor.setName("simpleOptimisticLockTest_MainThread");
+			logger.info("Instructor in main Thread is {} :", instructor);
+
+			executeAsync(() -> {
+
+				doInTransansaction(em_ -> {
+
+					Instructor instructor_ = em_.find(Instructor.class, recordId);
+
+					if (secondaryThreadLock.isPresent())
+						em_.lock(instructor_, secondaryThreadLock.get(), lockProperties);
+
+					logger.info("Instructor in secondary Thread is {} :", instructor_);
+					instructor_.setName("simpleOptimisticLockTest_SecondaryThread");
+					logger.info(
+							"###Going to commit Second Thread transaction with updating name as simpleOptimisticLockTest_Secondary");
+
+					if (secondaryThreadWaitMs > 0)
+						WAIT_MS(secondaryThreadWaitMs);
+
+				});
+			});
+
+			if (mainThreadwaitms > 0)
+				WAIT_MS(mainThreadwaitms);
+
+			logger.info("###Going to commit Main Thread transaction with updating name as simpleOptimisticLockTest");
+
+			// throw new RuntimeException();
+		});
+
+	}
+
 	public void testPessimisticLocking(int recordId, Optional<LockModeType> mainThreadLock,
 			Optional<LockModeType> secondaryThreadLock) {
 		testPessimisticLocking(recordId, mainThreadLock, secondaryThreadLock, 0, 0, 0);
@@ -84,6 +130,21 @@ public class PessimisticLockTestSupport {
 	public void testPessimisticLocking(int recordId, Optional<LockModeType> mainThreadLock,
 			Optional<LockModeType> secondaryThreadLock, long waitms, long secondaryThreadWaitMs) {
 		testPessimisticLocking(recordId, mainThreadLock, secondaryThreadLock, waitms, secondaryThreadWaitMs, 0);
+	}
+
+	public void testAquirePessimisticLocking(int recordId, Optional<LockModeType> mainThreadLock,
+			Optional<LockModeType> secondaryThreadLock) {
+		testAquirePessimisticLocking(recordId, mainThreadLock, secondaryThreadLock, 0, 0, 0);
+	}
+
+	public void testAquirePessimisticLocking(int recordId, Optional<LockModeType> mainThreadLock,
+			Optional<LockModeType> secondaryThreadLock, long waitms) {
+		testAquirePessimisticLocking(recordId, mainThreadLock, secondaryThreadLock, waitms, 0, 0);
+	}
+
+	public void testAquirePessimisticLocking(int recordId, Optional<LockModeType> mainThreadLock,
+			Optional<LockModeType> secondaryThreadLock, long waitms, long secondaryThreadWaitMs) {
+		testAquirePessimisticLocking(recordId, mainThreadLock, secondaryThreadLock, waitms, secondaryThreadWaitMs, 0);
 	}
 
 	public void doInTransansaction(Consumer<EntityManager> executable) {

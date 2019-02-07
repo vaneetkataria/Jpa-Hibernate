@@ -1,6 +1,5 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.utils;
 
-import java.sql.Connection;
 import java.util.Objects;
 import java.util.function.Consumer;
 

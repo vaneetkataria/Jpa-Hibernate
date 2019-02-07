@@ -50,6 +50,8 @@ public class ExplicitOptimisticLockTest {
 		});
 
 	}
+	
+
 
 	private void doInTransansaction(Consumer<EntityManager> executable) {
 		transactionTemplate.doInProgramaticTx(executable);
