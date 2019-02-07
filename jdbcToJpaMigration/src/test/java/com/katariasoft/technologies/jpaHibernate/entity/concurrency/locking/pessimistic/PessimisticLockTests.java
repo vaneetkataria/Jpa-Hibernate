@@ -17,41 +17,41 @@ public class PessimisticLockTests extends PessimisticLockTestSupport {
 	@Test
 	@Rollback(false)
 	public void pessimisticReadSimpleReadTest() {
-		testPessimisticLocking(21, Optional.of(LockModeType.PESSIMISTIC_READ), Optional.empty());
+		testPessimisticLocking(2, Optional.of(LockModeType.PESSIMISTIC_READ), Optional.empty(), 5000L);
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticReadPessimisticReadTest() {
-		testPessimisticLocking(35, Optional.of(LockModeType.PESSIMISTIC_READ),
+		testPessimisticLocking(15, Optional.of(LockModeType.PESSIMISTIC_READ),
 				Optional.of(LockModeType.PESSIMISTIC_READ));
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticReadPessimisticWriteTest() {
-		testPessimisticLocking(40, Optional.of(LockModeType.PESSIMISTIC_READ),
-				Optional.of(LockModeType.PESSIMISTIC_WRITE), 0, 5000L);
+		testPessimisticLocking(19, Optional.of(LockModeType.PESSIMISTIC_READ),
+				Optional.of(LockModeType.PESSIMISTIC_WRITE) , 0 , 0 , 5000L);
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticWriteSimpleReadTest() {
-		testPessimisticLocking(33, Optional.of(LockModeType.PESSIMISTIC_WRITE), Optional.empty());
+		testPessimisticLocking(22, Optional.of(LockModeType.PESSIMISTIC_WRITE), Optional.empty());
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticWritePessimisticReadTest() {
-		testPessimisticLocking(31, Optional.of(LockModeType.PESSIMISTIC_WRITE),
-				Optional.of(LockModeType.PESSIMISTIC_READ), 0, 5000L);
+		testPessimisticLocking(20, Optional.of(LockModeType.PESSIMISTIC_WRITE),
+				Optional.of(LockModeType.PESSIMISTIC_READ));
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticWritePessimisticWriteTest() {
-		testPessimisticLocking(32, Optional.of(LockModeType.PESSIMISTIC_WRITE),
-				Optional.of(LockModeType.PESSIMISTIC_WRITE), 0, 5000L);
+		testPessimisticLocking(50, Optional.of(LockModeType.PESSIMISTIC_WRITE),
+				Optional.of(LockModeType.PESSIMISTIC_WRITE));
 	}
 
 }
