@@ -33,8 +33,8 @@ public class PessimisticLockTestSupport {
 	@Autowired
 	protected EntityManager em;
 
-	protected int revision = 7;
-	protected long defaultMainThreadWaitMs = 2000L;
+	protected int revision = 16;
+	protected long defaultMainThreadWaitMs = 5000L;
 
 	private static final Logger logger = LoggerFactory.getLogger(PessimisticLockTestSupport.class);
 
@@ -131,8 +131,8 @@ public class PessimisticLockTestSupport {
 	public void testPessimisticLockingWithQuery(Optional<LockModeType> mainThreadLock,
 			Consumer<EntityManager> secondaryThreadRunnable, long mainThreadwaitms) {
 		doInTransansaction(em -> {
-			TypedQuery<Document> query = em.createQuery("select d from Document d where d.id > :id", Document.class)
-					.setParameter("id", 50);
+			TypedQuery<Document> query = em.createQuery("select d from Document d where d.id < :id", Document.class)
+					.setParameter("id", 16).setFirstResult(0).setMaxResults(2);
 
 			if (mainThreadLock.isPresent())
 				query.setLockMode(mainThreadLock.get());

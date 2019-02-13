@@ -16,20 +16,14 @@ public class PessimisticLockTests extends PessimisticLockTestSupport {
 
 	@Test
 	@Rollback(false)
-	public void pessimisticReadSimpleReadTest1() {
-		testPessimisticLocking(40, Optional.empty(), Optional.empty(), 50000L, 50000L);
-	}
-
-	@Test
-	@Rollback(false)
 	public void pessimisticReadSimpleReadTest() {
-		testPessimisticLocking(5, Optional.of(LockModeType.PESSIMISTIC_READ), Optional.empty());
+		testPessimisticLocking(2, Optional.of(LockModeType.PESSIMISTIC_READ), Optional.empty());
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticReadPessimisticReadTest() {
-		testPessimisticLocking(15, Optional.of(LockModeType.PESSIMISTIC_READ),
+		testPessimisticLocking(4, Optional.of(LockModeType.PESSIMISTIC_READ),
 				Optional.of(LockModeType.PESSIMISTIC_READ));
 	}
 
@@ -37,28 +31,28 @@ public class PessimisticLockTests extends PessimisticLockTestSupport {
 	@Test
 	@Rollback(false)
 	public void pessimisticReadPessimisticWriteTest() {
-		testPessimisticLocking(31, Optional.of(LockModeType.PESSIMISTIC_READ),
-				Optional.of(LockModeType.PESSIMISTIC_WRITE));
+		testPessimisticLocking(6, Optional.of(LockModeType.PESSIMISTIC_READ),
+				Optional.of(LockModeType.PESSIMISTIC_WRITE) , 0 , 0 , 5000L);
 	}
 
 	// unclear
 	@Test
 	@Rollback(false)
 	public void pessimisticWriteSimpleReadTest() {
-		testPessimisticLocking(32, Optional.of(LockModeType.PESSIMISTIC_WRITE), Optional.empty());
+		testPessimisticLocking(7, Optional.of(LockModeType.PESSIMISTIC_WRITE), Optional.empty());
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticWritePessimisticReadTest() {
-		testPessimisticLocking(20, Optional.of(LockModeType.PESSIMISTIC_WRITE),
+		testPessimisticLocking(8, Optional.of(LockModeType.PESSIMISTIC_WRITE),
 				Optional.of(LockModeType.PESSIMISTIC_READ));
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticWritePessimisticWriteTest() {
-		testPessimisticLocking(6, Optional.of(LockModeType.PESSIMISTIC_WRITE),
+		testPessimisticLocking(9, Optional.of(LockModeType.PESSIMISTIC_WRITE),
 				Optional.of(LockModeType.PESSIMISTIC_WRITE));
 	}
 
