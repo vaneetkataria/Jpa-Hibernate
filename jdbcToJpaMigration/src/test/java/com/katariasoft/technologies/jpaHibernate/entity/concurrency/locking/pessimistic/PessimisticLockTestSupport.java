@@ -2,11 +2,13 @@ package com.katariasoft.technologies.jpaHibernate.entity.concurrency.locking.pes
 
 import static com.katariasoft.technologies.jpaHibernate.entity.utilities.ThreadUtil.executeAsync;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.Document;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.CollectionUtils;
+import com.katariasoft.technologies.jpaHibernate.college.data.utils.QueryExecutor;
 import com.katariasoft.technologies.jpaHibernate.college.data.utils.TransactionExecutionTemplate;
 
 import static com.katariasoft.technologies.jpaHibernate.entity.utilities.ThreadUtil.*;
@@ -23,7 +27,14 @@ import static com.katariasoft.technologies.jpaHibernate.entity.utilities.ThreadU
 public class PessimisticLockTestSupport {
 
 	@Autowired
-	private TransactionExecutionTemplate transactionTemplate;
+	protected TransactionExecutionTemplate transactionTemplate;
+	@Autowired
+	protected QueryExecutor queryExecutor;
+	@Autowired
+	protected EntityManager em;
+
+	protected int revision = 3;
+	protected long defaultMainThreadWaitMs = 0L;
 
 	private static final Logger logger = LoggerFactory.getLogger(PessimisticLockTestSupport.class);
 
@@ -115,6 +126,24 @@ public class PessimisticLockTestSupport {
 			// throw new RuntimeException();
 		});
 
+	}
+
+	public void testPessimisticLockingWithQuery(Optional<LockModeType> mainThreadLock,
+			Consumer<EntityManager> secondaryThreadRunnable, long mainThreadwaitms) {
+		doInTransansaction(em -> {
+			TypedQuery<Document> query = em.createQuery("select d from Document d where d.id > :id", Document.class);
+			query.setParameter("id", 2);
+			if (mainThreadLock.isPresent())
+				query.setLockMode(mainThreadLock.get());
+			List<Document> documents = query.getResultList();
+			documents.forEach(d -> d.setName("UpdatedByQueryPessimisticLockTest:" + revision));
+			executeAsync(() -> doInTransansaction(secondaryThreadRunnable));
+
+			if (mainThreadwaitms > 0)
+				WAIT_MS(mainThreadwaitms);
+
+			logger.info("Going to update all documents fetched with in thread {} ", Thread.currentThread().getName());
+		});
 	}
 
 	public void testPessimisticLocking(int recordId, Optional<LockModeType> mainThreadLock,

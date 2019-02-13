@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -42,6 +43,18 @@ public class QueryExecutor {
 	public <T> List<T> fetchListForJpqlQuery(String queryString, Map<String, Object> queryParams, Class<T> clazz) {
 		try {
 			return fetchList(em.createQuery(queryString, clazz), queryParams);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public <T> List<T> fetchListForJpqlQuery(String queryString, Map<String, Object> queryParams, Class<T> clazz,
+			LockModeType lockModeType) {
+		try {
+			TypedQuery<T> query = em.createQuery(queryString, clazz);
+			if (Objects.nonNull(lockModeType))
+				query.setLockMode(lockModeType);
+			return fetchList(query, queryParams);
 		} catch (Exception e) {
 			throw e;
 		}

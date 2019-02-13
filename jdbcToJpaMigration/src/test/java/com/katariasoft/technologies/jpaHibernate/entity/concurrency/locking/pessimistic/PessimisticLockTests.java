@@ -23,7 +23,7 @@ public class PessimisticLockTests extends PessimisticLockTestSupport {
 	@Test
 	@Rollback(false)
 	public void pessimisticReadSimpleReadTest() {
-		testPessimisticLocking(2, Optional.of(LockModeType.PESSIMISTIC_READ), Optional.empty(), 5000L);
+		testPessimisticLocking(5, Optional.of(LockModeType.PESSIMISTIC_READ), Optional.empty());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class PessimisticLockTests extends PessimisticLockTestSupport {
 	@Test
 	@Rollback(false)
 	public void pessimisticWritePessimisticWriteTest() {
-		testPessimisticLocking(50, Optional.of(LockModeType.PESSIMISTIC_WRITE),
+		testPessimisticLocking(6, Optional.of(LockModeType.PESSIMISTIC_WRITE),
 				Optional.of(LockModeType.PESSIMISTIC_WRITE));
 	}
 

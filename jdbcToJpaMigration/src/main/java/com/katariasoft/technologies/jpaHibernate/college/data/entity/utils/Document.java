@@ -1,7 +1,5 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.entity.utils;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -63,6 +61,11 @@ public class Document {
 
 	public void setVehicle(Vehicle vehicle) {
 		this.vehicle = vehicle;
+	}
+
+	@Override
+	public String toString() {
+		return "Document [id=" + id + ", name=" + name + "]";
 	}
 
 }
