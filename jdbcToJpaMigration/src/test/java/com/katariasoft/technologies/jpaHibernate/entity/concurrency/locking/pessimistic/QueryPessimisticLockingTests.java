@@ -22,12 +22,13 @@ public class QueryPessimisticLockingTests extends PessimisticLockTestSupport {
 
 	private static final Logger logger = LoggerFactory.getLogger(QueryPessimisticLockingTests.class);
 
+	// unclear
 	@Test
 	@Rollback(false)
 	public void pessimisticReadLockWithUpdateQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_READ), em -> {
-			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id > :id ");
-			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 40)
+			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id <= :id ");
+			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 50)
 					.forEach(query::setParameter);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} with for updation  ", Thread.currentThread().getName());
@@ -35,12 +36,13 @@ public class QueryPessimisticLockingTests extends PessimisticLockTestSupport {
 
 	}
 
+	// unclear
 	@Test
 	@Rollback(false)
 	public void pessimisticReadLockWithDeleteQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_READ), em -> {
-			Query query = em.createNativeQuery("delete document d where d.id > :id ");
-			query.setParameter("id", 40);
+			Query query = em.createNativeQuery("delete from document where id < :id ");
+			query.setParameter("id", 50);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} for deletion ", Thread.currentThread().getName());
 		}, defaultMainThreadWaitMs);
@@ -61,20 +63,19 @@ public class QueryPessimisticLockingTests extends PessimisticLockTestSupport {
 	public void pessimisticWriteLockWithUpdateQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_WRITE), em -> {
 			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id > :id ");
-			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 40)
+			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 0)
 					.forEach(query::setParameter);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} with for updation  ", Thread.currentThread().getName());
 		}, defaultMainThreadWaitMs);
-
 	}
 
 	@Test
 	@Rollback(false)
 	public void pessimisticWriteLockWithDeleteQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_WRITE), em -> {
-			Query query = em.createNativeQuery("delete document d where d.id > :id ");
-			query.setParameter("id", 40);
+			Query query = em.createNativeQuery("delete from document where id > :id ");
+			query.setParameter("id", 2);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} for deletion ", Thread.currentThread().getName());
 		}, defaultMainThreadWaitMs);
