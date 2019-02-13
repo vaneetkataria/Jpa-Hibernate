@@ -27,8 +27,8 @@ public class QueryPessimisticLockingTests extends PessimisticLockTestSupport {
 	@Rollback(false)
 	public void pessimisticReadLockWithUpdateQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_READ), em -> {
-			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id <= :id ");
-			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 50)
+			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id < :id ");
+			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 100)
 					.forEach(query::setParameter);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} with for updation  ", Thread.currentThread().getName());
@@ -62,8 +62,8 @@ public class QueryPessimisticLockingTests extends PessimisticLockTestSupport {
 	@Rollback(false)
 	public void pessimisticWriteLockWithUpdateQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_WRITE), em -> {
-			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id > :id ");
-			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 0)
+			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id < :id ");
+			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 100)
 					.forEach(query::setParameter);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} with for updation  ", Thread.currentThread().getName());

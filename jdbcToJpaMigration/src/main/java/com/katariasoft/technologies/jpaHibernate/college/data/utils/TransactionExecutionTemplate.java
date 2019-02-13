@@ -1,5 +1,7 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.utils;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -7,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 
+import org.hibernate.Session;
+import org.hibernate.jdbc.Work;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +45,12 @@ public class TransactionExecutionTemplate {
 		try {
 			em.getTransaction().begin();
 			logger.info("Transaction started for entity Manager Instance for Thread {} ", threadName);
-			executable.accept(em);
+			em.unwrap(Session.class).doWork(connection -> {
+				connection.setTransactionIsolation(2);
+				logger.info("Thread {} trannsaction isolation level is : {} ", threadName,
+						connection.getTransactionIsolation());
+				executable.accept(em);
+			});
 			logger.info("Going to commit Transaction for entity Manager Instance for Thread {} ", threadName);
 			em.getTransaction().commit();
 			logger.info("Committed transaction properly for Thread {} ", threadName);
