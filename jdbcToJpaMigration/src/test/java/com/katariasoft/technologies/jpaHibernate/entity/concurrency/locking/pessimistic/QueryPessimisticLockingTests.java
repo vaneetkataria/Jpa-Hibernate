@@ -106,7 +106,59 @@ public class QueryPessimisticLockingTests extends PessimisticLockTestSupport {
 	public void pessimisticWriteLockWithDeleteQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_WRITE), em -> {
 			Query query = em.createNativeQuery("delete from document where id > :id ");
-			query.setParameter("id", 16);
+			query.setParameter("id", 15);
+			query.executeUpdate();
+			logger.info("Going to commit secondary thread {} for deletion ", Thread.currentThread().getName());
+		}, defaultMainThreadWaitMs);
+
+	}
+
+	/**
+	 * 1. With Read committed Proper blocking for conflicting data and non blocking
+	 * for non conflicting data.
+	 * <p>
+	 * 2. With Repeatable Read Proper blocking for conflicting data and non blocking
+	 * for non conflicting data.
+	 * <p>
+	 * 3. As soon as gets the lock increments version in fetched objects as well as
+	 * issues a query to increment version in db.
+	 * <p>
+	 * 4. Now if further changes are done in objects version will be further
+	 * incremented from 1 to 2 as a query to increment version from 0 to 1 will
+	 * first go to db then to increment from 1 to 2.
+	 */
+	@Test
+	@Rollback(false)
+	public void pessimisticForceIncrementLockWithUpdateQueryTest() {
+		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_FORCE_INCREMENT), em -> {
+			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id > :id ");
+			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 90)
+					.forEach(query::setParameter);
+			query.executeUpdate();
+			logger.info("Going to commit secondary thread {} with for updation  ", Thread.currentThread().getName());
+		}, defaultMainThreadWaitMs);
+	}
+
+	/**
+	 * 1. With Read committed Proper blocking for conflicting data and non blocking
+	 * for non conflicting data.
+	 * <p>
+	 * 2. With Repeatable Read Proper blocking for conflicting data and non blocking
+	 * for non conflicting data.
+	 * <p>
+	 * 3. As soon as gets the lock increments version in fetched objects as well as
+	 * issues a query to increment version in db.
+	 * <p>
+	 * 4. Now if further changes are done in objects version will be further
+	 * incremented from 1 to 2 as a query to increment version from 0 to 1 will
+	 * first go to db then to increment from 1 to 2.
+	 */
+	@Test
+	@Rollback(false)
+	public void pessimisticForceIncrementLockWithDeleteQueryTest() {
+		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_FORCE_INCREMENT), em -> {
+			Query query = em.createNativeQuery("delete from document where id > :id ");
+			query.setParameter("id", 90);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} for deletion ", Thread.currentThread().getName());
 		}, defaultMainThreadWaitMs);

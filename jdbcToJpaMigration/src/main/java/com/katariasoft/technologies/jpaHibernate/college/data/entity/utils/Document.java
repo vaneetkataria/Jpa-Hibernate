@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -29,6 +30,9 @@ public class Document {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Vehicle vehicle;
+
+	@Version
+	private int version;
 
 	public Document() {
 	}
@@ -65,7 +69,7 @@ public class Document {
 
 	@Override
 	public String toString() {
-		return "Document [id=" + id + ", name=" + name + "]";
+		return "Document [id=" + id + ", name=" + name + ", vehicle=" + vehicle + ", version=" + version + "]";
 	}
 
 }
