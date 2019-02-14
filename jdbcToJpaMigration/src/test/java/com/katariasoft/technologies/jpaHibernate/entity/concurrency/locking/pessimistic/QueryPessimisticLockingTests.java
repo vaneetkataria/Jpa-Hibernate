@@ -132,7 +132,7 @@ public class QueryPessimisticLockingTests extends PessimisticLockTestSupport {
 	public void pessimisticForceIncrementLockWithUpdateQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_FORCE_INCREMENT), em -> {
 			Query query = em.createNativeQuery("update document d set d.name = :name  where d.id > :id ");
-			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 90)
+			CollectionUtils.mapOf("name", "UpdatedInSecondaryRunnable" + revision, "id", 80)
 					.forEach(query::setParameter);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} with for updation  ", Thread.currentThread().getName());
@@ -158,7 +158,7 @@ public class QueryPessimisticLockingTests extends PessimisticLockTestSupport {
 	public void pessimisticForceIncrementLockWithDeleteQueryTest() {
 		testPessimisticLockingWithQuery(Optional.of(LockModeType.PESSIMISTIC_FORCE_INCREMENT), em -> {
 			Query query = em.createNativeQuery("delete from document where id > :id ");
-			query.setParameter("id", 90);
+			query.setParameter("id", 80);
 			query.executeUpdate();
 			logger.info("Going to commit secondary thread {} for deletion ", Thread.currentThread().getName());
 		}, defaultMainThreadWaitMs);
