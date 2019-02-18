@@ -6,7 +6,6 @@ import static com.katariasoft.technologies.jpaHibernate.college.data.utils.Asser
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +21,13 @@ public class TransactionPropagationStarters {
 
 	private static Propagation propagation = Propagation.REQUIRED;
 	private static final Logger logger = LoggerFactory.getLogger(TransactionPropagationTests.class);
+
 	@Autowired
 	private TransactionPropagationsTestsSupport propagationSupport;
+
 	@PersistenceContext
 	private EntityManager em;
 
-	@Test
 	@Transactional
 	public void testRequiredWithSelfSucceedSubsequentSucceed() {
 		logger.info("Entity Manager intance in test method is {}", em);
@@ -37,10 +37,8 @@ public class TransactionPropagationStarters {
 		System.out.println("########Completed propagation call");
 	}
 
-	@Test
 	@Transactional
 	public void testRequiredWithSelfSucceedSubsequentFail() {
-
 		logger.info("Entity Manager intance in test method is {}", em);
 		Instructor instructor = em.find(Instructor.class, 1);
 		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
@@ -53,7 +51,6 @@ public class TransactionPropagationStarters {
 		System.out.println("########Completed propagation call");
 	}
 
-	@Test
 	@Transactional
 	public void testRequiredWithSelfFailSubsequentSucceed() {
 		logger.info("Entity Manager intance in test method is {}", em);
@@ -64,10 +61,8 @@ public class TransactionPropagationStarters {
 		isTrue(true, RuntimeException::new, "Exception occured in testRequiredWithSubsequentFailSelfFail .");
 	}
 
-	@Test
 	@Transactional
 	public void testRequiredWithSelfFailSubsequentFail() {
-
 		logger.info("Entity Manager intance in test method is {}", em);
 		Instructor instructor = em.find(Instructor.class, 1);
 		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
