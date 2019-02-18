@@ -8,7 +8,7 @@ public class Assert {
 
 	public static <X extends Throwable> void isTrue(boolean expression, Function<String, ? extends X> execptionSupplier,
 			String message) throws X {
-		if (!expression)
+		if (expression)
 			throw execptionSupplier.apply(message);
 	}
 
