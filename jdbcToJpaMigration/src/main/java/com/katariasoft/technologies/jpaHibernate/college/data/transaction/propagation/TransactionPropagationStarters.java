@@ -1,6 +1,5 @@
 package com.katariasoft.technologies.jpaHibernate.college.data.transaction.propagation;
 
-import static com.katariasoft.technologies.jpaHibernate.college.data.transaction.propagation.TransactionPropagationsTestsSupport.revision;
 import static com.katariasoft.technologies.jpaHibernate.college.data.utils.Assert.isTrue;
 
 import javax.persistence.EntityManager;
@@ -19,7 +18,6 @@ import com.katariasoft.technologies.jpaHibernate.entity.transactions.propagation
 @Service
 public class TransactionPropagationStarters {
 
-	private static Propagation propagation = Propagation.REQUIRED;
 	private static final Logger logger = LoggerFactory.getLogger(TransactionPropagationTests.class);
 
 	@Autowired
@@ -29,45 +27,12 @@ public class TransactionPropagationStarters {
 	private EntityManager em;
 
 	@Transactional
-	public void testRequiredWithSelfSucceedSubsequentSucceed() {
-		logger.info("Entity Manager intance in test method is {}", em);
-		Instructor instructor = em.find(Instructor.class, 1);
-		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
-		propagate(true);
-		System.out.println("########Completed propagation call");
-	}
-
-	@Transactional
-	public void testRequiredWithSelfSucceedSubsequentFail() {
+	public void testRequiredWithSelfFailSubsequentFail(int revision, Propagation propagation) {
 		logger.info("Entity Manager intance in test method is {}", em);
 		Instructor instructor = em.find(Instructor.class, 1);
 		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
 		try {
-			propagate(false);
-		} catch (Exception e) {
-			logger.error("Exception occured while execuiting subsequent transaction. Exception is {} ", e);
-			throw e;
-		}
-		System.out.println("########Completed propagation call");
-	}
-
-	@Transactional
-	public void testRequiredWithSelfFailSubsequentSucceed() {
-		logger.info("Entity Manager intance in test method is {}", em);
-		Instructor instructor = em.find(Instructor.class, 1);
-		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
-		propagate(true);
-		System.out.println("########Completed propagation call");
-		isTrue(true, RuntimeException::new, "Exception occured in testRequiredWithSubsequentFailSelfFail .");
-	}
-
-	@Transactional
-	public void testRequiredWithSelfFailSubsequentFail() {
-		logger.info("Entity Manager intance in test method is {}", em);
-		Instructor instructor = em.find(Instructor.class, 1);
-		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
-		try {
-			propagate(false);
+			propagate(false, propagation);
 		} catch (Exception e) {
 			logger.error("Exception occured while execuiting subsequent transaction. Exception is {} ", e);
 		}
@@ -75,7 +40,39 @@ public class TransactionPropagationStarters {
 		isTrue(true, RuntimeException::new, "Exception occured in testRequiredWithSubsequentFailSelfFail .");
 	}
 
-	private void propagate(boolean succeed) {
+	@Transactional
+	public void testRequiredWithSelfFailSubsequentSucceed(int revision, Propagation propagation) {
+		logger.info("Entity Manager intance in test method is {}", em);
+		Instructor instructor = em.find(Instructor.class, 1);
+		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
+		propagate(true, propagation);
+		System.out.println("########Completed propagation call");
+		isTrue(true, RuntimeException::new, "Exception occured in testRequiredWithSubsequentFailSelfFail .");
+	}
+
+	@Transactional
+	public void testRequiredWithSelfSucceedSubsequentFail(int revision, Propagation propagation) {
+		logger.info("Entity Manager intance in test method is {}", em);
+		Instructor instructor = em.find(Instructor.class, 1);
+		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
+		try {
+			propagate(false, propagation);
+		} catch (Exception e) {
+			logger.error("Exception occured while execuiting subsequent transaction. Exception is {} ", e);
+		}
+		System.out.println("########Completed propagation call");
+	}
+
+	@Transactional
+	public void testRequiredWithSelfSucceedSubsequentSucceed(int revision, Propagation propagation) {
+		logger.info("Entity Manager intance in test method is {}", em);
+		Instructor instructor = em.find(Instructor.class, 1);
+		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
+		propagate(true, propagation);
+		System.out.println("########Completed propagation call");
+	}
+
+	private void propagate(boolean succeed, Propagation propagation) {
 		switch (propagation) {
 		case REQUIRES_NEW:
 			propagationSupport.requiresNewPropagation(succeed);

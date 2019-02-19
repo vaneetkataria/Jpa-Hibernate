@@ -15,7 +15,7 @@ import static com.katariasoft.technologies.jpaHibernate.college.data.utils.Asser
 @Service
 public class TransactionPropagationsTestsSupport {
 
-	public static final int revision = 1;
+	public static final int revision = 7;
 	private static final String HIPHEN = "-";
 	private static final Logger logger = LoggerFactory.getLogger(TransactionPropagationsTestsSupport.class);
 

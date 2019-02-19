@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.transaction.propagation.TransactionPropagationStarters;
 
@@ -12,27 +13,52 @@ import com.katariasoft.technologies.jpaHibernate.college.data.transaction.propag
 @SpringBootTest
 public class TransactionPropagationTests {
 
+	public static final int revision = 7;
+	private static Propagation propagation = Propagation.NEVER;
+
 	@Autowired
 	private TransactionPropagationStarters txStarters;
+	
 
-	@Test
-	public void testRequiredWithSelfSucceedSubsequentSucceed() {
-		txStarters.testRequiredWithSelfSucceedSubsequentSucceed();
-	}
-
-	@Test
-	public void testRequiredWithSelfSucceedSubsequentFail() {
-		txStarters.testRequiredWithSelfSucceedSubsequentFail();
-	}
-
-	@Test
-	public void testRequiredWithSelfFailSubsequentSucceed() {
-		txStarters.testRequiredWithSelfFailSubsequentSucceed();
-	}
-
+	// 00
 	@Test
 	public void testRequiredWithSelfFailSubsequentFail() {
-		txStarters.testRequiredWithSelfFailSubsequentFail();
+		try {
+			txStarters.testRequiredWithSelfFailSubsequentFail( revision , propagation);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 01
+	@Test
+	public void testRequiredWithSelfFailSubsequentSucceed() {
+		try {
+			txStarters.testRequiredWithSelfFailSubsequentSucceed(revision , propagation);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 10
+	@Test
+	public void testRequiredWithSelfSucceedSubsequentFail() {
+		try {
+			txStarters.testRequiredWithSelfSucceedSubsequentFail(revision , propagation);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 11
+	@Test
+	public void testRequiredWithSelfSucceedSubsequentSucceed() {
+
+		try {
+			txStarters.testRequiredWithSelfSucceedSubsequentSucceed(revision , propagation);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
