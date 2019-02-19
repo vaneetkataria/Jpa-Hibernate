@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.katariasoft.technologies.jpaHibernate.college.data.entity.Instructor;
+import com.katariasoft.technologies.jpaHibernate.college.data.entity.utils.Document;
 import com.katariasoft.technologies.jpaHibernate.entity.transactions.propagation.TransactionPropagationTests;
 
 @Service
@@ -70,6 +71,13 @@ public class TransactionPropagationStarters {
 		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
 		propagate(true, propagation, revision);
 		System.out.println("########Completed propagation call");
+	}
+
+	@Transactional(readOnly = true)
+	public void performReadOnlyTransaction() {
+		logger.info("Entity Manager intance in nestedPropagation method is {}", em);
+		Document document = em.find(Document.class, 1);
+		document.setName("UpdatedIn" + "-" + Propagation.NESTED.name() + "OK");
 	}
 
 	private void propagate(boolean succeed, Propagation propagation, int revision) {

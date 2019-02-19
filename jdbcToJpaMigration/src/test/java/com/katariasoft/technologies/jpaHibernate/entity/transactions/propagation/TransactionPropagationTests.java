@@ -59,4 +59,13 @@ public class TransactionPropagationTests {
 		}
 	}
 
+	@Test
+	public void performReadOnlyTransactionTest() {
+		try {
+			txStarters.performReadOnlyTransaction();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
