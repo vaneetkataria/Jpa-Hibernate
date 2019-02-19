@@ -32,7 +32,7 @@ public class TransactionPropagationStarters {
 		Instructor instructor = em.find(Instructor.class, 1);
 		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
 		try {
-			propagate(false, propagation);
+			propagate(false, propagation, revision);
 		} catch (Exception e) {
 			logger.error("Exception occured while execuiting subsequent transaction. Exception is {} ", e);
 		}
@@ -45,7 +45,7 @@ public class TransactionPropagationStarters {
 		logger.info("Entity Manager intance in test method is {}", em);
 		Instructor instructor = em.find(Instructor.class, 1);
 		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
-		propagate(true, propagation);
+		propagate(true, propagation, revision);
 		System.out.println("########Completed propagation call");
 		isTrue(true, RuntimeException::new, "Exception occured in testRequiredWithSubsequentFailSelfFail .");
 	}
@@ -56,7 +56,7 @@ public class TransactionPropagationStarters {
 		Instructor instructor = em.find(Instructor.class, 1);
 		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
 		try {
-			propagate(false, propagation);
+			propagate(false, propagation, revision);
 		} catch (Exception e) {
 			logger.error("Exception occured while execuiting subsequent transaction. Exception is {} ", e);
 		}
@@ -68,29 +68,32 @@ public class TransactionPropagationStarters {
 		logger.info("Entity Manager intance in test method is {}", em);
 		Instructor instructor = em.find(Instructor.class, 1);
 		instructor.setName("testRequiredWithSubsequentSucceed" + revision);
-		propagate(true, propagation);
+		propagate(true, propagation, revision);
 		System.out.println("########Completed propagation call");
 	}
 
-	private void propagate(boolean succeed, Propagation propagation) {
+	private void propagate(boolean succeed, Propagation propagation, int revision) {
 		switch (propagation) {
 		case REQUIRES_NEW:
-			propagationSupport.requiresNewPropagation(succeed);
+			propagationSupport.requiresNewPropagation(succeed, revision);
 			break;
 		case MANDATORY:
-			propagationSupport.manadatoryPropagation(succeed);
+			propagationSupport.manadatoryPropagation(succeed, revision);
 			break;
 		case NEVER:
-			propagationSupport.neverPropagation(succeed);
+			propagationSupport.neverPropagation(succeed, revision);
 			break;
 		case SUPPORTS:
-			propagationSupport.supportsPropagation(succeed);
+			propagationSupport.supportsPropagation(succeed, revision);
 			break;
 		case NOT_SUPPORTED:
-			propagationSupport.notSupportedPropagation(succeed);
+			propagationSupport.notSupportedPropagation(succeed, revision);
+			break;
+		case NESTED:
+			propagationSupport.nestedPropagation(succeed, revision);
 			break;
 		default:
-			propagationSupport.requiredPropagation(succeed);
+			propagationSupport.requiredPropagation(succeed, revision);
 		}
 
 	}

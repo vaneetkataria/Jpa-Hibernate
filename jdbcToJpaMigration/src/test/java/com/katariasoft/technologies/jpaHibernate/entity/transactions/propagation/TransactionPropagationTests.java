@@ -13,18 +13,17 @@ import com.katariasoft.technologies.jpaHibernate.college.data.transaction.propag
 @SpringBootTest
 public class TransactionPropagationTests {
 
-	public static final int revision = 7;
-	private static Propagation propagation = Propagation.NEVER;
+	public static final int revision = 17;
+	private static Propagation propagation = Propagation.NOT_SUPPORTED;
 
 	@Autowired
 	private TransactionPropagationStarters txStarters;
-	
 
 	// 00
 	@Test
 	public void testRequiredWithSelfFailSubsequentFail() {
 		try {
-			txStarters.testRequiredWithSelfFailSubsequentFail( revision , propagation);
+			txStarters.testRequiredWithSelfFailSubsequentFail(revision, propagation);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -34,7 +33,7 @@ public class TransactionPropagationTests {
 	@Test
 	public void testRequiredWithSelfFailSubsequentSucceed() {
 		try {
-			txStarters.testRequiredWithSelfFailSubsequentSucceed(revision , propagation);
+			txStarters.testRequiredWithSelfFailSubsequentSucceed(revision, propagation);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,7 +43,7 @@ public class TransactionPropagationTests {
 	@Test
 	public void testRequiredWithSelfSucceedSubsequentFail() {
 		try {
-			txStarters.testRequiredWithSelfSucceedSubsequentFail(revision , propagation);
+			txStarters.testRequiredWithSelfSucceedSubsequentFail(revision, propagation);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,9 +52,8 @@ public class TransactionPropagationTests {
 	// 11
 	@Test
 	public void testRequiredWithSelfSucceedSubsequentSucceed() {
-
 		try {
-			txStarters.testRequiredWithSelfSucceedSubsequentSucceed(revision , propagation);
+			txStarters.testRequiredWithSelfSucceedSubsequentSucceed(revision, propagation);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

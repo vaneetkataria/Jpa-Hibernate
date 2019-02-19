@@ -15,7 +15,6 @@ import static com.katariasoft.technologies.jpaHibernate.college.data.utils.Asser
 @Service
 public class TransactionPropagationsTestsSupport {
 
-	public static final int revision = 7;
 	private static final String HIPHEN = "-";
 	private static final Logger logger = LoggerFactory.getLogger(TransactionPropagationsTestsSupport.class);
 
@@ -23,7 +22,7 @@ public class TransactionPropagationsTestsSupport {
 	private EntityManager em;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void requiredPropagation(boolean succeed) {
+	public void requiredPropagation(boolean succeed, int revision) {
 		logger.info("Entity Manager intance in requiredPropagation method is {}", em);
 		Document document = em.find(Document.class, 1);
 		document.setName("UpdatedIn" + HIPHEN + Propagation.REQUIRED.name() + HIPHEN + revision);
@@ -32,7 +31,7 @@ public class TransactionPropagationsTestsSupport {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void requiresNewPropagation(boolean succeed) {
+	public void requiresNewPropagation(boolean succeed, int revision) {
 		logger.info("Entity Manager intance in requiresNewPropagation method is {}", em);
 		Document document = em.find(Document.class, 1);
 		document.setName("UpdatedIn" + HIPHEN + Propagation.REQUIRES_NEW.name() + HIPHEN + revision);
@@ -41,7 +40,7 @@ public class TransactionPropagationsTestsSupport {
 	}
 
 	@Transactional(propagation = Propagation.MANDATORY)
-	public void manadatoryPropagation(boolean succeed) {
+	public void manadatoryPropagation(boolean succeed, int revision) {
 		logger.info("Entity Manager intance in manadatoryPropagation method is {}", em);
 		Document document = em.find(Document.class, 1);
 		document.setName("UpdatedIn" + HIPHEN + Propagation.MANDATORY.name() + HIPHEN + revision);
@@ -50,7 +49,7 @@ public class TransactionPropagationsTestsSupport {
 	}
 
 	@Transactional(propagation = Propagation.NEVER)
-	public void neverPropagation(boolean succeed) {
+	public void neverPropagation(boolean succeed, int revision) {
 		logger.info("Entity Manager intance in neverPropagation method is {}", em);
 		Document document = em.find(Document.class, 1);
 		document.setName("UpdatedIn" + HIPHEN + Propagation.NEVER.name() + HIPHEN + revision);
@@ -58,7 +57,7 @@ public class TransactionPropagationsTestsSupport {
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public void supportsPropagation(boolean succeed) {
+	public void supportsPropagation(boolean succeed, int revision) {
 		logger.info("Entity Manager intance in supportsPropagation method is {}", em);
 		Document document = em.find(Document.class, 1);
 		document.setName("UpdatedIn" + HIPHEN + Propagation.SUPPORTS.name() + HIPHEN + revision);
@@ -67,12 +66,21 @@ public class TransactionPropagationsTestsSupport {
 	}
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
-	public void notSupportedPropagation(boolean succeed) {
+	public void notSupportedPropagation(boolean succeed, int revision) {
 		logger.info("Entity Manager intance in notSupportedPropagation method is {}", em);
 		Document document = em.find(Document.class, 1);
 		document.setName("UpdatedIn" + HIPHEN + Propagation.NOT_SUPPORTED.name() + HIPHEN + revision);
 		isTrue(!succeed, RuntimeException::new,
 				"Exception occured while saving document in notSupportedPropagation method. ");
+	}
+
+	@Transactional(propagation = Propagation.NESTED)
+	public void nestedPropagation(boolean succeed, int revision) {
+		logger.info("Entity Manager intance in nestedPropagation method is {}", em);
+		Document document = em.find(Document.class, 1);
+		document.setName("UpdatedIn" + HIPHEN + Propagation.NESTED.name() + HIPHEN + revision);
+		isTrue(!succeed, RuntimeException::new,
+				"Exception occured while saving document in nestedPropagation method. ");
 	}
 
 }
